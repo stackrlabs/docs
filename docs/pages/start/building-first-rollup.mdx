@@ -1,13 +1,15 @@
----
-title: "Building your first Micro-Rollup"
-description: "Setup up your first Micro-Rollup and take it for a spin in just 5 easy steps"
----
+import { Callout } from "vocs/components";
 
-### 1. Initialize new project
+# Building your first Micro-Rollup [Setup up your first Micro-Rollup and take it for a spin in just 5 easy steps]
+
+
+
+
+## 1. Initialize new project
 
 Using the Stackr-CLI you can initialize a new Micro-Rollup project.
 
-```bash
+```bash [Terminal]
 stackr init --project-name counter
 ```
 
@@ -17,7 +19,6 @@ By default the project will be initialized with a template that includes a simpl
 :::info
 You will notice typescript throwing some missing file errors, Don't worry this
 will be taken care of in the next steps
-
 :::
 
 :::warning
@@ -26,7 +27,7 @@ previous step because for some odd reason bun doesn't install it properly
 
 :::
 
-### 2. Checkout `stackr.config.ts`
+## 2. Checkout `stackr.config.ts`
 
 The `stackr.config.ts` file is the main configuration file for your Micro-Rollup.
 It contains rollup's operational information like app inbox, block time, block size, verification delay etc.
@@ -39,7 +40,7 @@ This key is also used to deploy the rollup inbox contract and genesis state.
 
 Add a private key which has some funds in it.
 
-```ts stackr.config.ts
+```ts [example.ts]
 operator: {
     accounts: [
       {
@@ -56,7 +57,7 @@ operator: {
 Stackr uses EIP-712 for signing the actions. The domain is used to generate the domain separator for the EIP-712 signing.
 You can learn more about EIP-712 [here](https://eips.ethereum.org/EIPS/eip-712).
 
-```ts stackr.config.ts
+```ts [stackr.config.ts]
 domain: {
     name: "<YOUR_APP_NAME>",
     version: "<APP_VERSION>",
@@ -66,9 +67,9 @@ domain: {
   }
 ```
 
-### 3. Register your micro-rollup to Stackr's on-chain registry
+## 3. Register your micro-rollup to Stackr's on-chain registry
 
-```bash
+```bash [Terminal]
 stackr register
 ```
 
@@ -84,13 +85,13 @@ deployment of the contracts
 
 This will create a `deployment.json` file in the root of your project that looks like this
 
-```json
+```json [deployment.json]
 { "app_id": 1, "app_inbox": "0xa16e02e87b7454126e5e10d957a927a7f5b5d2be" }
 ```
 
-### 4. Compile your micro-rollup
+## 4. Compile your micro-rollup
 
-```bash
+```bash [Terminal]
 stackr compile
 ```
 
@@ -100,9 +101,9 @@ putting it all into an executable WASM binary inside the `build` folder.
 (This step is kinda boring from outside NGL, but the most technically impressive one behind the scenes,
 like seriously TS -> WASM in one step? Are ya kidding me?)
 
-### 5. Deploy your micro-rollup
+## 5. Deploy your micro-rollup
 
-```bash
+```bash [Terminal]
 stackr deploy
 ```
 
