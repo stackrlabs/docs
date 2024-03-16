@@ -1,7 +1,7 @@
----
-title: "Rollup State"
-description: "Basis of Rollup for compute"
----
+import { Callout } from "vocs/components";
+
+# Rollup State [Basis of Rollup for compute]
+
 
 Stackr-JS comes with a base `RollupState` base class that can be extended to create a custom rollup.
 
@@ -40,14 +40,14 @@ This method is used to create a transport object that will be used to wrap a Sta
 
 :::code-group
 
-```ts simpler
+```ts [simpler]
 createTransport(state: StateVariable): StateTransport {
     return { currentCount: state };
   }
 
 ```
 
-```ts simple
+```ts [simple]
 createTransport(accounts: accountsVariable): MerkleTreeTransport {
     const newTree = new BetterMerkleTree(state);
     return newTree;
@@ -62,13 +62,13 @@ This is the opposite of `createTransport` and is used to extract the state from 
 
 :::code-group
 
-```ts simpler
+```ts [simpler]
 getState(transport: StateTransport): StateVariable {
     return transport.currentCount;
   }
 ```
 
-```ts simple
+```ts [simple]
 getState(transport: MerkleTreeTransport): accountsVariable {
     return transport.leaves;
   }
@@ -83,7 +83,7 @@ The idea behind is that the rollups must converge into single state root that is
 
 :::code-group
 
-```ts simpler
+```ts [simpler]
 calculateRoot(): ethers.BytesLike {
     return ethers.solidityPackedKeccak256(
       ["uint256"],
@@ -92,7 +92,7 @@ calculateRoot(): ethers.BytesLike {
   }
 ```
 
-```ts simple
+```ts [simple]
 calculateRoot(): ethers.BytesLike {
     return this.transport.merkleTree.getHexRoot();
   }
