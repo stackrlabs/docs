@@ -62,35 +62,35 @@ export default defineConfig({
         },
         {
           text: "State",
-          link: "develop/state",
+          link: "/develop/state",
         },
         {
           text: "Rollup State",
-          link: "develop/rollup-state",
+          link: "/develop/rollup-state",
         },
         {
           text: "State Transition Function",
-          link: "develop/state-transition-function",
+          link: "/develop/state-transition-function",
         },
         {
           text: "Almost Micro Rollup",
-          link: "develop/almost-micro-rollup",
+          link: "/develop/almost-micro-rollup",
         },
         {
           text: "Stackr Config",
-          link: "develop/stackr-config",
+          link: "/develop/stackr-config",
         },
         {
           text: "Builder Sequencer",
-          link: "develop/builder-sequencer",
+          link: "/develop/builder-sequencer",
         },
         {
           text: "Micro Rollup",
-          link: "develop/micro-rollup",
+          link: "/develop/micro-rollup",
         },
         {
           text: "Micro Rollup Utilities",
-          link: "develop/micro-rollup-utilities",
+          link: "/develop/micro-rollup-utilities",
         },
       ],
     },
