@@ -2,6 +2,7 @@ import { defineConfig } from "vocs";
 
 export default defineConfig({
   logoUrl: "/logo/dark.svg",
+  iconUrl: "/logo/favicon.svg",
   markdown: {},
   theme: {
     accentColor: "#62EDED",
