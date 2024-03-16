@@ -1,0 +1,47 @@
+---
+title: "Sequencer"
+description: "Ordering is important"
+---
+
+Stackr allows applications to perform their own ordering of the actions inside the block
+It comes with a basic sequencer which can be extended to perform more complex ordering.
+
+### Strategies
+
+The basic sequencing strategy bundled with the SDK is the FIFO strategy. It does nothing tbh.
+
+```ts
+import { FIFOStrategy } from "@stackr/stackr-js";
+
+const buildStrategy = new FIFOStrategy();
+```
+
+### Custom strategies
+
+You can create your own strategy by extending the `BaseStrategy` and overriding the `orderTxLogic` class and pass it on to the rollup.
+
+Example:
+
+```ts
+import { BaseStrategy } from "@stackr/stackr-js";
+
+export class Randomize extends BaseStrategy {
+  constructor() {
+    super("RandomOrder");
+  }
+
+  async orderTxLogic(
+    actions: Action<AllowedInputTypes>[]
+  ): Promise<Action<AllowedInputTypes>[]> {
+    console.log("Random");
+
+    return Promise.resolve(
+      actions.sort(() => {
+        return 0.5 - Math.random();
+      })
+    );
+  }
+}
+```
+
+Not sure why but you can randomize the order of the actions inside the block like this 🤷🏻‍♂️

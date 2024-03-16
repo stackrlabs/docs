@@ -1,0 +1,50 @@
+import { Callout } from "vocs/components";
+
+# SDK Access [ Get access to stackr-js npm package ]
+
+<Callout type="info">
+  `@stackr/stackr-js` package is currently access-listed and is not available
+  for public use. If you want to try it out, please contact us at
+  gm@stackrlabs.xyz
+</Callout>
+
+## Stackr Hackerhouse participants
+
+Fill up [this](https://forms.gle/Bw6Roi6mkihMG2GA9) form to get added to Stackr's developer preview track and get access.
+
+## Generate NPM access token
+
+1. Login to your npm account
+2. Click on your profile picture on the top right corner and select `Access Tokens`
+3. Click on `Generate New Token` and select `Classic Token`
+4. Enter a name for your token and select `Read only` under `Permissions`
+5. Click on `Create Token` and copy the generated token
+
+Make sure you are added to the Stackr's NPM Org before continuing.
+
+## Add package scope to your bun config
+
+Create `bunfig.toml` in your root
+
+```bash
+touch ~/.bunfig.toml
+```
+
+edit the `.bunfig.toml` file and add the following lines
+
+```toml
+[install.scopes]
+"@stackr" = { token = "<GENERATED_TOKEN>", url = "https://registry.npmjs.com/" }
+```
+
+Refer bun's documentation for more - [Scopes and registries](https://bun.sh/docs/install/registries)
+
+## Uninstalling Stackr-CLI
+
+In case you want to remove the stackr CLI from your system,
+(the only case being you want to install a fresh setup 😤),
+you can do so by running the following command
+
+```bash
+rm -rf ~/.stackr
+```

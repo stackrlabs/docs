@@ -1,0 +1,180 @@
+---
+title: "Micro-Rollup Utilities"
+description: "Extending the use cases"
+---
+
+Micro-Rollup Object returns a bunch of useful utilities that can be used for interacting with it, getting more data out, or work on side-effects
+
+You can access all of these as return values from the `microRollup` object
+
+```ts
+const { actions, state, chain, builder, syncer, events } = await MicroRollup({...})
+```
+
+### `actions`
+
+Actions utility is used to both send an action to the micro-rollup and fetch an action from the micro-rollup. It exposed 3 methods
+
+**`getSchema`**
+returns the schema of the action
+
+**`submit`**
+submits an action to the micro-rollup
+
+**`fetch`**
+fetches an action from the micro-rollup using the action hash
+
+usage example
+
+```ts
+const schema = await actions.getSchema();
+const action = await actions.submit({ ... });
+const action = await actions.fetch("0x...");
+```
+
+### `state`
+
+You can access the latest state from within the micro-rollup using this function
+
+**`get`**
+returns the latest state
+
+usage example
+
+```ts
+const state = await state.get();
+```
+
+### `chain`
+
+You can access the current chain properties. There are 3 methods available
+
+**`getCurrentHeight`**
+returns the current height of the chain
+
+**`getBlockByHeight`**
+returns the block at a given height
+
+**`getBlockByHash`**
+returns the block at a given hash
+
+usage example
+
+```ts
+const height = await chain.getCurrentHeight();
+```
+
+### `builder`
+
+if you select `{autorun: false}` for builder you can manually build a batch of actions like this
+
+```ts
+await builder.tick();
+```
+
+### `syncer`
+
+if you select `{autorun: false}` for syncer you can manually build a batch of actions like this
+
+```ts
+await syncer.sendBatch();
+```
+
+### `events`
+
+Stackr uses a custom event emitters to notify of stuff happening behind the scenes like batching, execution etc.
+You can leverage these events to build your own custom logic on top of the stackr engine
+
+The available events are as follows:
+
+```ts
+export enum BuilderEvents {
+  ORDER_BATCH = "order_batch",
+}
+
+export enum ActionEvents {
+  SUBMIT_ACTION = "submit_action",
+  FETCH_ACTION = "fetch_action",
+}
+
+export enum ExecutorEvents {
+  EXECUTE_BATCH = "execute_batch",
+  EXECUTE_SINGLE = "execute_single",
+  UNPACK_ACTION = "unpack_action",
+  ADVANCE_STATE = "advance_state",
+}
+
+export enum BatcherEvents {
+  BATCH_ACTION = "batch_action",
+}
+
+export enum ConfirmationEvents {
+  C0_CONFIRMATION = "c0_confirmation",
+  C1_CONFIRMATION = "c1_confirmation",
+  C2_CONFIRMATION = "c2_confirmation",
+  C3_CONFIRMATION = "c3_confirmation",
+}
+```
+
+These can be used like this
+
+```ts
+import { ActionEvents, BatcherEvents, BuilderEvents } from "@stackr/stackr-js";
+
+events.action.onEvent(ActionEvents.SUBMIT_ACTION, (action) => {
+  console.log("action submitted", action);
+});
+
+events.batcher.onEvent(BatcherEvents.BATCH_ACTION, (batch) => {
+  console.log("action batched", batch);
+});
+
+events.builder.onEvent(BuilderEvents.ORDER_BATCH, (batch) => {
+  console.log("action batch ordered", batch);
+});
+```
+
+### For confimations
+
+- C0 = Application receives the action and returns a "signed" acknowledgement
+- C1 = Action that was included in a block gets executed
+- C2 = The block was verified by Vulcan
+- C3 = The block was posted on L1 by Vulcan
+
+```ts
+// C0_CONFIRMATION
+events.confirmation.onEvent(ConfirmationEvents.C0_CONFIRMATION, (data) => {
+  // Access these values from data
+  //
+  // actionHash
+  // msgSender
+  // signature
+  // payload
+  // acknowledgement
+});
+
+// C1_CONFIRMATION
+events.confirmation.onEvent(ConfirmationEvents.C1_CONFIRMATION, (data) => {
+  // Access these values from data
+  //
+  // actionHash
+  // msgSender
+  // signature
+  // payload
+  // state
+});
+
+// C2_CONFIRMATION
+events.confirmation.onEvent(ConfirmationEvents.C2_CONFIRMATION, (data) => {
+  // Access these values from data
+  //
+  // block
+});
+
+// C3_CONFIRMATION
+events.confirmation.onEvent(ConfirmationEvents.C3_CONFIRMATION, (data) => {
+  // Access these values from data
+  //
+  // blockhash
+});
+```

@@ -1,0 +1,96 @@
+---
+title: "Let's run it now"
+description: "Interact with the Micro-Rollup and build some blocks"
+---
+
+Micro-rollups are simple creatures, they are just like a backend application that can be interacted with via HTTP requests.
+
+### 1. Start the Micro-Rollup
+
+```bash
+bun run src/index.ts
+```
+
+If all goes well you should see the following output:
+
+```bash
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] AppModule dependencies initialized +84ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ActionPoolModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] EventsModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] DatastoreModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +1ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] LoggerModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] DiscoveryModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] OperatorModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] MemorystoreModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ScheduleModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +26ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +1ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] SyncerModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] BatcherModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ActionModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] ExecutionModule dependencies initialized +0ms
+[Nest] 80111  - 12/05/2023, 4:25:26 AM     LOG [InstanceLoader] BuilderModule dependencies initialized +0ms
+Listening on port 3000
+```
+
+Your rollup is now running on port 3000. Stackr's Micro-rollups are simply NestJS applications that have a bunch of modules responsible for different things
+like execution, batching, syncing state etc.
+
+### 2. Interact with the Micro-Rollup
+
+The template comes with a simple HTTP server that can be used to interact with the rollup. It exposed 2 endpoints for getting current state and also sending new actions.
+
+There is also a test script that can be used to send a bunch of actions to the rollup. This script is located at `test/stress-test.ts`. You can run it like so in a separate terminal:
+
+```bash
+bun run test/test-requests.ts
+```
+
+If all goes well you should see the following output (16 times):
+
+```json
+{"msgSender":"0x8D2D8bC5Af52Ae86263Cf9d61ABaAcEB3E90eE02","signature":"0x7fa1d10be99c623b83474912f21ddd437e0cb2ecd33f58c71ce25df2631dc7427993dbe1dcd9ff19f77acb95bdb636f56ea5de8defdadc9791d33c9103f848ff1b","payload":{"type":"increment"}}
+Requests per second: 25.64
+```
+
+and on the rollup side you should see something like this:
+
+```bash
+[Nest] 25662  - 12/06/2023, 2:15:40 PM     LOG [Action] Action Received : payload {"type":"decrement"} with hash 0x3abb2f93737d18b49fde86f6b7ac43348378ed77be8eccb26a5636581d3f7543
+[Nest] 25662  - 12/06/2023, 2:15:41 PM     LOG [Action] Acknowledgement Created : 0xbc9a3784a382985caa58e074a84a585492d1ab873f280202ea2ca25bdd45c774 for action hash 0x3abb2f93737d18b49fde86f6b7ac43348378ed77be8eccb26a5636581d3f7543
+[Nest] 25662  - 12/06/2023, 2:15:41 PM   DEBUG [Action] Action Execution Status Updated : 0x3abb2f93737d18b49fde86f6b7ac43348378ed77be8eccb26a5636581d3f7543 created -> received
+[Nest] 25662  - 12/06/2023, 2:15:41 PM   DEBUG [Action] Action Confirmation Status Updated : 0x3abb2f93737d18b49fde86f6b7ac43348378ed77be8eccb26a5636581d3f7543 CX -> C0
+.
+.
+.
+[Nest] 25662  - 12/06/2023, 2:15:41 PM     LOG [Builder] Building New Batch : 12 actions in batch
+[Nest] 25662  - 12/06/2023, 2:15:41 PM     LOG [Batcher] Block Finalized : Block Hash 0x56f9d8df48c99b019a6df2d20f21f49b9ed6f68c042958556fc45db61f0c908e Height 11
+[Nest] 25662  - 12/06/2023, 2:15:42 PM     LOG [L1-Syncer] Sending block 0x56f9d8df48c99b019a6df2d20f21f49b9ed6f68c042958556fc45db61f0c908e to Vulcan for verification, hash 0x56f9d8df48c99b019a6df2d20f21f49b9ed6f68c042958556fc45db61f0c908e height 11
+[Nest] 25662  - 12/06/2023, 2:15:43 PM     LOG [L1-Syncer] Received verification C2 from Vulcan: {"batch_status":"verified"}
+[Nest] 26009  - 12/06/2023, 2:21:19 PM     LOG [L1-Syncer] Received settlement confirmation C3 from L1: "0xc7777f094b004d7c9135193fae859dd319ff974a7004e1cb4bb7a8531e03bece"
+```
+
+This means that the rollup has processed the action and has created a new block. You can also see that the block has been confirmed by the Vulcan Node (C2) and data has been posted on L1 (C3).
+
+### 3. Check the state
+
+if you query the `http://localhost:3000/` endpoint as a GET request on you should see something like this:
+
+```json
+{ "state": 8 }
+```
+
+This means that the rollup has processed all the actions and has updated the state accordingly.
+
+### Congratulations! 🎉
+
+This is your first Micro-Rollup.
+
+### Next Steps
+
+You can now start building your own rollup by modifying the code in `src/state.ts` and `src/index.ts` files.

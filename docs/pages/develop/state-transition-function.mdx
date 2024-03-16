@@ -1,0 +1,149 @@
+---
+title: "State Transition Function"
+description: "Interacting with the state"
+---
+
+Stackr provides a comprehensive way to interact with your state. The state transition function is the only way to change the state.
+It is a pure function that takes the current state and an action as arguments and returns the new state.
+
+<Warning>
+  Do not perform any side effects or network calls in the state transition
+  function. It is a pure function.
+</Warning>
+
+### Custom Action Types -> STF Input
+
+<Info>
+  These are inputs to the STF, the inputs from user are also similar though
+</Info>
+
+Stackr calls transactions as Actions because it does not limit you to the type of transactions you can build.
+You are in-charge. You can define any custom action types you want.
+
+Fun-fact - "Actions" were called "UserIntents" in the initial versions of Stackr but then another definition of "Intents" came out.
+
+### Defining Custom Action Types
+
+```ts
+export interface CounterActionInput {
+  type: "increment" | "decrement";
+}
+```
+
+This action expects objects of the type `{type: "increment"}` to be passed to the state transition function.
+
+```ts
+export interface TransferActionInput {
+  type: "transfer";
+  to: string;
+  amount: number;
+}
+```
+
+This action expects a transaction object of the type `{type: "transfer", to: "0x123", amount: 100}` to be passed to the state transition function.
+
+<Info>Do not worry about signatures yet</Info>
+
+### Defining the State Transition Function
+
+oof, the big one. This is where you define how your state changes when an action is performed.
+
+Stackr-JS comes with a `STF` interface that can be extended.
+
+```ts
+import { STF } from "@stackr/stackr-js/execution";
+
+export const veryEfficientSTF: STF<RollupState, ActionInput>;
+```
+
+You need to pass the state and action input types to the `STF` interface.
+
+### Extending the STF Interface
+
+The `STF` interface has a single method `apply` that takes the input and an identifier.
+
+There are THREE steps to build an STF.
+
+#### 1. Get the current state
+
+usually via `transport.getState()`
+
+#### 2. modify the state based on the action input
+
+update the state based on the action input, use "switch" or "if" statements based on input
+
+#### 3. set the new state to the transport
+
+### here's an example
+
+<CodeGroup>
+
+```ts simple
+export const counterSTF: STF<CounterRollup, CounterActionInput> = {
+  identifier: "counterSTF",
+
+  apply(inputs: CounterActionInput, state: CounterRollup): void {
+    // step  1
+    let newState = state.getState();
+
+    // step 2
+    if (inputs.type === "increment") {
+      newState += 1;
+    } else if (inputs.type === "decrement") {
+      throw new Error("Not implemented");
+    }
+
+    // step 3
+    state.transport.currentCount = newState;
+  },
+};
+```
+
+```ts complex
+export const swapSTF: STF<DEXRollup, DEXActionInput> = {
+  identifier: "swap",
+
+  apply(inputs: DEXActionInput, state: DEXRollup): void {
+    // step 1
+    let newState = state.getState();
+
+    const { type, quantity, owner } = inputs;
+    const ownerObjIndex = newState.findIndex((order) => order.owner === owner);
+    if (ownerObjIndex === -1) {
+      throw new Error("Owner not found in state");
+    }
+    const ownerObj = newState[ownerObjIndex];
+
+    // step 2
+
+    if (type === "A") {
+      if (ownerObj.quantityB < quantity) {
+        throw new Error("Not enough tokens");
+      }
+
+      ownerObj.quantityA += quantity;
+      ownerObj.quantityB -= quantity;
+    } else if (type === "B") {
+      if (ownerObj.quantityA < quantity) {
+        throw new Error("Not enough tokens");
+      }
+
+      ownerObj.quantityB += quantity;
+      ownerObj.quantityA -= quantity;
+    } else {
+      throw new Error("Invalid type");
+    }
+
+    // step 3
+    newState[ownerObjIndex] = ownerObj;
+    state.transport.allOrders = newState;
+  },
+};
+```
+
+</CodeGroup>
+
+### Future scope
+
+Currently the SDK only supports a single STF and the various types are handled using a switch statement,
+However in the future, the Micro-rollups will be able to accept multiple different STFs

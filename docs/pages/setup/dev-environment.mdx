@@ -1,0 +1,104 @@
+import { Callout } from "vocs/components";
+
+# Installation [Prepare your development environment]
+
+The first step to start developing Micro-Rollups with Stackr is to prepare your development environment and making sure that all the system requirements are upto date and matches the required versions.
+
+## Install BunJS
+
+<Callout type="info">
+  Make sure you have the latest version of Bun installed that supports
+  decorators >= 1.0.15
+</Callout>
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+More information regarding Bun can be found at https://bun.sh
+
+## Install Rust
+
+<Callout type="info">
+  We recommend using Linux or macOS for development. If you are using Windows,
+  you can install WSL2 and use Linux.
+</Callout>
+
+For Linux and macOS:
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## Install `Stackr-CLI`
+
+CLI helps you to create new projects, compile and deploy your micro-rollups.
+
+For Mac ARM based chips:
+
+```bash
+curl -fsSL https://stackr-cli-bin.s3.ap-south-1.amazonaws.com/stackr-mac.sh | bash
+```
+
+For Linux :
+
+```bash
+sudo apt install gcc libssl-dev -y #Installs dependencies
+curl -fsSL https://stackr-cli-bin.s3.ap-south-1.amazonaws.com/stackr-linux.sh | bash
+```
+
+And for all other systems
+
+Rust installation comes with `cargo` package manager. We can also use cargo to install `stackr-cli`.
+
+```bash
+cargo install stackr
+```
+
+## Install Javy
+
+Directly install the binary for Mac with
+
+```bash
+curl -L https://github.com/bytecodealliance/javy/releases/download/v1.2.0/javy-arm-macos-v1.2.0.gz | gunzip > javy && chmod +x javy && sudo mv javy /usr/local/bin/
+```
+
+For Linux,
+
+```bash
+curl -L https://github.com/bytecodealliance/javy/releases/download/v1.2.0/javy-x86_64-linux-v1.2.0.gz | gunzip > javy && chmod +x javy && sudo mv javy /usr/local/bin/
+```
+
+This command asks for root permissions to move the binary to `/usr/local/bin`. Open a new terminal tab or source your shell to make sure the command runs.
+
+```bash
+javy --version
+```
+
+For other archs/platforms, please refer to the [Releases](https://github.com/bytecodealliance/javy/releases) page and `curl` the appropriate URL.
+
+This is the recommended approach. However, if it does not work, please build Javy from source.
+
+- On Ubuntu, `sudo apt-get install curl pkg-config libssl-dev clang`
+- `wasm32-wasi`, can be installed via `rustup target add wasm32-wasi`
+- `cmake`, depending on your operating system and architecture, it might not be installed by default. On MacOS it can be installed with homebrew via `brew install cmake`. - On Ubuntu, `sudo apt-get install cmake`.
+- Rosetta 2 if running MacOS on Apple Silicon, can be installed via `softwareupdate --install-rosetta`
+
+Then clone the repo and install `javy` cli globally:
+
+```bash
+git clone https://github.com/bytecodealliance/javy.git && cd javy
+cargo build -p javy-core --target=wasm32-wasi -r
+cargo install --path crates/cli
+javy --version
+```
+
+<Callout type="info">
+  {" "}
+  Please refer to https://github.com/bytecodealliance/javy for more information,
+  or contact the Stackr team for help :){" "}
+</Callout>
+
+## Install git
+
+You probably already have g(it).

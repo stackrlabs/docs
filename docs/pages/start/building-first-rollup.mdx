@@ -1,0 +1,111 @@
+---
+title: "Building your first Micro-Rollup"
+description: "Setup up your first Micro-Rollup and take it for a spin in just 5 easy steps"
+---
+
+### 1. Initialize new project
+
+Using the Stackr-CLI you can initialize a new Micro-Rollup project.
+
+```bash
+stackr init --project-name counter
+```
+
+This will create a new folder called `counter` and initialize a new Micro-Rollup project inside of it.
+By default the project will be initialized with a template that includes a simple counter.
+
+<Info>
+  You will notice typescript throwing some missing file errors, Don't worry this
+  will be taken care of in the next steps
+</Info>
+
+<Warning>
+  You might need to do `npm install sqlite3` in the rollup directory after the
+  previous step because for some odd reason bun doesn't install it properly
+</Warning>
+
+### 2. Checkout `stackr.config.ts`
+
+The `stackr.config.ts` file is the main configuration file for your Micro-Rollup.
+It contains rollup's operational information like app inbox, block time, block size, verification delay etc.
+It also contains the app's domain which will be used for EIP-712 signing of the actions.
+
+- **Update the private key**
+
+This private key is the operator's private key. This is the key that will be used to sign the rollup blocks.
+This key is also used to deploy the rollup inbox contract and genesis state.
+
+Add a private key which has some funds in it.
+
+```ts stackr.config.ts
+operator: {
+    accounts: [
+      {
+        privateKey: "<OPERATOR_KEY>",
+        purpose: KeyPurpose.BATCH,
+        scheme: SignatureScheme.ECDSA,
+      },
+    ],
+  },
+```
+
+- **Update the EIP-712 domain**
+
+Stackr uses EIP-712 for signing the actions. The domain is used to generate the domain separator for the EIP-712 signing.
+You can learn more about EIP-712 [here](https://eips.ethereum.org/EIPS/eip-712).
+
+```ts stackr.config.ts
+domain: {
+    name: "<YOUR_APP_NAME>",
+    version: "<APP_VERSION>",
+    chainId: "<CHAIN_ID>", // use 42069 for testnet
+    verifyingContract: deployment.app_inbox, // this is the app inbox contract address generated in the next step
+    salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // this is a random salt
+  }
+```
+
+### 3. Register your micro-rollup to Stackr's on-chain registry
+
+```bash
+stackr register
+```
+
+This command will register your micro-rollup to Stackr's on-chain registry.
+Essentially this deploys a new rollup inbox contract for your rollup where the rollup's transaction data will go and also generate an app-id for your micro-rollup.
+The app-id and the app inbox contract addresses are stored in `deployment.json` file which is used by the config.
+
+<Info>
+  Make sure that the private key you entered has sufficient funds to cover the
+  deployment of the contracts
+</Info>
+
+This will create a `deployment.json` file in the root of your project that looks like this
+
+```json
+{ "app_id": 1, "app_inbox": "0xa16e02e87b7454126e5e10d957a927a7f5b5d2be" }
+```
+
+### 4. Compile your micro-rollup
+
+```bash
+stackr compile
+```
+
+This command will compile your micro-rollup by parsing the state and the state transition function and
+putting it all into an executable WASM binary inside the `build` folder.
+
+(This step is kinda boring from outside NGL, but the most technically impressive one behind the scenes,
+like seriously TS -> WASM in one step? Are ya kidding me?)
+
+### 5. Deploy your micro-rollup
+
+```bash
+stackr deploy
+```
+
+This is the most exciting step. This command is similar to deploying a smart contract bytecode to Ethereum but over here
+the State machine goes to Vulcan and the the attestation to genesis state and the code logic goes on Ethereum.
+
+## That's it!
+
+You have successfully deployed your first micro-rollup.
