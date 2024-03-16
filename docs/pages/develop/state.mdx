@@ -1,9 +1,8 @@
----
-title: "State Variables"
-description: "Defining Custom State"
----
+import { Callout } from "vocs/components";
 
-### State Variable
+# State Variable [Defining Custom State]
+
+## State Variable
 
 Stackr allows rollupors to define their own custom state almost completely unrestricted in terms of what they can do with it
 
@@ -17,11 +16,11 @@ this could be as basic as a boolean or a single integer
 
 :::code-group
 
-```ts boolean
+```ts [boolean]
 export type StateVariable = boolean;
 ```
 
-```ts number
+```ts [number]
 export type StateVariable = number;
 ```
 
@@ -30,7 +29,7 @@ or as complex as a full object with multiple properties and methods.
 
 :::code-group
 
-```ts account
+```ts [account]
 export type StateVariable = {
   address: string;
   balance: number;
@@ -38,7 +37,7 @@ export type StateVariable = {
 }[];
 ```
 
-```ts dex
+```ts [dex]
 export type StateVariable = {
   orders: {
     id: string;
@@ -69,7 +68,7 @@ export type totalRollupSDKsThatAllowYouToBuildMicroRollups = 1;
 
 But hey, that's a constant 😉
 
-### State Transport
+## State Transport
 
 Once you have defined your state variable, you need to define how it is transported around.
 
@@ -80,13 +79,13 @@ This transport can also be whatever you want it to be.
 
 :::code-group
 
-```ts basic
+```ts [basic]
 interface StateTransport {
   currentCount: StateVariable;
 }
 ```
 
-```ts complex
+```ts [complex]
 import MerkleTree from "merkletreejs";
 
 class MerkleTreeTransport {
