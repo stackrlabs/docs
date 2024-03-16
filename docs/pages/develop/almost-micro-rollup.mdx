@@ -10,7 +10,7 @@ and can transition to another state when an event is triggered. The state machin
 
 Stackr-JS provides a simple state machine implementation that takes in the Rollup state and STF
 
-<Warning>All of this should go outside the `state.ts` file</Warning>
+:::warningAll of this should go outside the `state.ts` file:::
 
 **example**
 
@@ -37,8 +37,9 @@ The format is
 
 example
 
-<CodeGroup>
-```json counter 
+:::code-group
+
+```json counter
 { "state": 0 }
 ```
 
@@ -68,16 +69,17 @@ example
 { "state": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" }
 ```
 
-</CodeGroup>
+:::
 
 ### Input type schema
 
 The user-input type schema is the schema that is used to validate the user input. It is used to validate the user input before it is applied to the state machine.
 
-<Info>
-  This is what the user/ another entity send to the **app** or **rollup**. This
-  is NOT what is applied to the State transition function.
-</Info>
+:::info
+This is what the user/ another entity send to the **app** or **rollup**. This
+is NOT what is applied to the State transition function.
+
+:::
 
 You can define to get a custom input from the user using this schema -> optionally process it or add more items -> create an object for **ActionInput** for the state machine
 
@@ -112,10 +114,11 @@ const actionSchemaType = {
 
 #### Notice the types
 
-<Warning>
-  These are not TypeScript interfaces, these are actual Objects hence the way
-  the type is passed on is inside quotes.
-</Warning>
+:::warning
+These are not TypeScript interfaces, these are actual Objects hence the way
+the type is passed on is inside quotes.
+
+:::
 
 #### Supported user input types
 
@@ -131,7 +134,8 @@ export type SchemaType =
 
 So you can define both simple and complex input schema
 
-<CodeGroup>
+:::code-group
+
 ```ts simple
 const actionSchemaType = {
   type: "String",
@@ -164,12 +168,13 @@ const actionSchemaType = {
 };
 ```
 
-</CodeGroup>
+:::
 
-<Info>
-  Stackr Converts these to EIP-712 typed data fields and expects user signatures
-  on it
-</Info>
+:::info
+Stackr Converts these to EIP-712 typed data fields and expects user signatures
+on it
+
+:::
 
 You can now generate an `ActionSchema` from this
 

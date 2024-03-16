@@ -14,15 +14,17 @@ stackr init --project-name counter
 This will create a new folder called `counter` and initialize a new Micro-Rollup project inside of it.
 By default the project will be initialized with a template that includes a simple counter.
 
-<Info>
-  You will notice typescript throwing some missing file errors, Don't worry this
-  will be taken care of in the next steps
-</Info>
+:::info
+You will notice typescript throwing some missing file errors, Don't worry this
+will be taken care of in the next steps
 
-<Warning>
-  You might need to do `npm install sqlite3` in the rollup directory after the
-  previous step because for some odd reason bun doesn't install it properly
-</Warning>
+:::
+
+:::warning
+You might need to do `npm install sqlite3` in the rollup directory after the
+previous step because for some odd reason bun doesn't install it properly
+
+:::
 
 ### 2. Checkout `stackr.config.ts`
 
@@ -74,10 +76,11 @@ This command will register your micro-rollup to Stackr's on-chain registry.
 Essentially this deploys a new rollup inbox contract for your rollup where the rollup's transaction data will go and also generate an app-id for your micro-rollup.
 The app-id and the app inbox contract addresses are stored in `deployment.json` file which is used by the config.
 
-<Info>
-  Make sure that the private key you entered has sufficient funds to cover the
-  deployment of the contracts
-</Info>
+:::info
+Make sure that the private key you entered has sufficient funds to cover the
+deployment of the contracts
+
+:::
 
 This will create a `deployment.json` file in the root of your project that looks like this
 

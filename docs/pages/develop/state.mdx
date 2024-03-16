@@ -15,7 +15,7 @@ export type StateVariable = <YOUR_STATE_OBJECT>;
 
 this could be as basic as a boolean or a single integer
 
-<CodeGroup>
+:::code-group
 
 ```ts boolean
 export type StateVariable = boolean;
@@ -25,10 +25,10 @@ export type StateVariable = boolean;
 export type StateVariable = number;
 ```
 
-</CodeGroup>
+:::
 or as complex as a full object with multiple properties and methods.
 
-<CodeGroup>
+:::code-group
 
 ```ts account
 export type StateVariable = {
@@ -59,7 +59,7 @@ export type StateVariable = {
 };
 ```
 
-</CodeGroup>
+:::
 
 You can also rename the state variable to something more meaningful to your rollup.
 
@@ -78,7 +78,8 @@ It also helps in defining how it is stored and how the state root is calculated.
 
 This transport can also be whatever you want it to be.
 
-<CodeGroup>
+:::code-group
+
 ```ts basic
 interface StateTransport {
   currentCount: StateVariable;
@@ -109,6 +110,6 @@ class MerkleTreeTransport {
 }
 ```
 
-</CodeGroup>
+:::
 
 MerkleTree state is considered the most common state transport but Stackr allows you to define any crazy ideas that helps move state in most efficient format.

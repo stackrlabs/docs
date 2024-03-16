@@ -14,10 +14,11 @@ export class FastestUTXORollup extends RollupState<
 > {}
 ```
 
-<Info>
-  You need to provide the `StateVariable` and `StateTransport` types to the
-  `RollupState` class which you defined previously.
-</Info>
+:::info
+You need to provide the `StateVariable` and `StateTransport` types to the
+`RollupState` class which you defined previously.
+
+:::
 
 ### Extending RollupState
 
@@ -37,7 +38,7 @@ constructor(initialCount: StateVariable) {
 
 This method is used to create a transport object that will be used to wrap a StateVariable.
 
-<CodeGroup>
+:::code-group
 
 ```ts simpler
 createTransport(state: StateVariable): StateTransport {
@@ -53,13 +54,14 @@ createTransport(accounts: accountsVariable): MerkleTreeTransport {
   }
 ```
 
-</CodeGroup>
+:::
 
 ### `getState`
 
 This is the opposite of `createTransport` and is used to extract the state from a transport object.
 
-<CodeGroup>
+:::code-group
+
 ```ts simpler
 getState(transport: StateTransport): StateVariable {
     return transport.currentCount;
@@ -72,14 +74,14 @@ getState(transport: MerkleTreeTransport): accountsVariable {
   }
 ```
 
-</CodeGroup>
+:::
 
 ### `calculateRoot`
 
 This method is used to calculate the state root of the rollup.
 The idea behind is that the rollups must converge into single state root that is succint representation of the state of the rollup.
 
-<CodeGroup>
+:::code-group
 
 ```ts simpler
 calculateRoot(): ethers.BytesLike {
@@ -96,7 +98,7 @@ calculateRoot(): ethers.BytesLike {
   }
 ```
 
-</CodeGroup>
+:::
 
 ### Final RollupState
 
