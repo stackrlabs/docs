@@ -36,5 +36,23 @@ export default defineConfig({
         },
       ],
     },
+    {
+      text: "0-to-1",
+      items: [
+        {
+          text: "Start-Here",
+          link: "/start/start-here",
+        },
+        {
+          text: "Building First Rollup",
+          link: "/start/building-first-rollup",
+        },
+        {
+          text: "Running First Rollup",
+          link: "/start/running-first-rollup",
+        },
+      ],
+    },
   ],
+  
 });
