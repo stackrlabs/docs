@@ -124,7 +124,7 @@ the type is passed on is inside quotes.
 
 These are same as solidity types
 
-```ts internal stackr-js
+```ts [internal stackr-js]
 export type PrimitiveType = "String" | "Uint" | "Bool" | "Address" | "Bytes";
 export type SchemaType =
   | PrimitiveType
@@ -139,7 +139,7 @@ So you can define both simple and complex input schema
 ```ts [simple]
 const actionSchemaType = {
   type: "String",
-  owner: "String",
+owner: "String",
   quantityA: "Number",
   quantityB: "Number",
 };
