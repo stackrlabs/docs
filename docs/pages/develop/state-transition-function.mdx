@@ -12,7 +12,7 @@ function. It is a pure function.
 :::
 
 
-### Custom Action Types -> STF Input
+## Custom Action Types -> STF Input
 
 :::info
 These are inputs to the STF, the inputs from user are also similar though
@@ -23,7 +23,7 @@ You are in-charge. You can define any custom action types you want.
 
 Fun fact — "Actions" were called "UserIntents" in the initial versions of Stackr but then another definition of "Intents" came out.
 
-### Defining Custom Action Types
+## Defining Custom Action Types
 
 ```ts
 export interface CounterActionInput {
@@ -49,7 +49,7 @@ to be passed to the state transition function.
 Do not worry about signatures yet
 :::
 
-### Defining the State Transition Function
+## Defining the State Transition Function
 
 oof, the big one. This is where you define how your state changes when an action is performed.
 
@@ -63,7 +63,7 @@ export const veryEfficientSTF: STF<RollupState, ActionInput>;
 
 You need to pass the state and action input types to the `STF` interface.
 
-### Extending the STF Interface
+## Extending the STF Interface
 
 The `STF` interface has a single method `apply` that takes the input and an identifier.
 
@@ -79,7 +79,7 @@ update the state based on the action input, use "switch" or "if" statements base
 
 #### 3. set the new state to the transport
 
-### here's an example
+### Example
 
 :::code-group
 
@@ -148,7 +148,7 @@ export const swapSTF: STF<DEXRollup, DEXActionInput> = {
 
 :::
 
-### Future scope
+## Future scope
 
 Currently the SDK only supports a single STF and the various types are handled using a switch statement,
 However in the future, the Micro-rollups will be able to accept multiple different STFs
