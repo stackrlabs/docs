@@ -1,7 +1,7 @@
----
-title: "State Transition Function"
-description: "Interacting with the state"
----
+import { Callout } from "vocs/components";
+
+# State Transisition Function [Interacting with the state]
+
 
 Stackr provides a comprehensive way to interact with your state. The state transition function is the only way to change the state.
 It is a pure function that takes the current state and an action as arguments and returns the new state.
@@ -9,20 +9,19 @@ It is a pure function that takes the current state and an action as arguments an
 :::warning
 Do not perform any side effects or network calls in the state transition
 function. It is a pure function.
-
 :::
+
 
 ### Custom Action Types -> STF Input
 
 :::info
 These are inputs to the STF, the inputs from user are also similar though
-
 :::
 
 Stackr calls transactions as Actions because it does not limit you to the type of transactions you can build.
 You are in-charge. You can define any custom action types you want.
 
-Fun-fact - "Actions" were called "UserIntents" in the initial versions of Stackr but then another definition of "Intents" came out.
+Fun fact — "Actions" were called "UserIntents" in the initial versions of Stackr but then another definition of "Intents" came out.
 
 ### Defining Custom Action Types
 
@@ -42,9 +41,13 @@ export interface TransferActionInput {
 }
 ```
 
-This action expects a transaction object of the type `{type: "transfer", to: "0x123", amount: 100}` to be passed to the state transition function.
+This action expects a transaction object of the type 
+`{type: "transfer", to: "0x123", amount: 100}` 
+to be passed to the state transition function.
 
-:::infoDo not worry about signatures yet:::
+:::info
+Do not worry about signatures yet
+:::
 
 ### Defining the State Transition Function
 
@@ -80,7 +83,7 @@ update the state based on the action input, use "switch" or "if" statements base
 
 :::code-group
 
-```ts simple
+```ts [simple]
 export const counterSTF: STF<CounterRollup, CounterActionInput> = {
   identifier: "counterSTF",
 
@@ -101,7 +104,7 @@ export const counterSTF: STF<CounterRollup, CounterActionInput> = {
 };
 ```
 
-```ts complex
+```ts [complex]
 export const swapSTF: STF<DEXRollup, DEXActionInput> = {
   identifier: "swap",
 
