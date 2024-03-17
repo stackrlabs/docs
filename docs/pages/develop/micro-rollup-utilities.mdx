@@ -1,7 +1,6 @@
----
-title: "Micro-Rollup Utilities"
-description: "Extending the use cases"
----
+import { Callout } from "vocs/components";
+
+# Micro-Rollup Utilities [Extending the use cases]
 
 Micro-Rollup Object returns a bunch of useful utilities that can be used for interacting with it, getting more data out, or work on side-effects
 
@@ -11,7 +10,7 @@ You can access all of these as return values from the `microRollup` object
 const { actions, state, chain, builder, syncer, events } = await MicroRollup({...})
 ```
 
-### `actions`
+## `actions`
 
 Actions utility is used to both send an action to the micro-rollup and fetch an action from the micro-rollup. It exposed 3 methods
 
@@ -32,7 +31,7 @@ const action = await actions.submit({ ... });
 const action = await actions.fetch("0x...");
 ```
 
-### `state`
+## `state`
 
 You can access the latest state from within the micro-rollup using this function
 
@@ -45,7 +44,7 @@ usage example
 const state = await state.get();
 ```
 
-### `chain`
+## `chain`
 
 You can access the current chain properties. There are 3 methods available
 
@@ -64,7 +63,7 @@ usage example
 const height = await chain.getCurrentHeight();
 ```
 
-### `builder`
+## `builder`
 
 if you select `{autorun: false}` for builder you can manually build a batch of actions like this
 
@@ -72,7 +71,7 @@ if you select `{autorun: false}` for builder you can manually build a batch of a
 await builder.tick();
 ```
 
-### `syncer`
+## `syncer`
 
 if you select `{autorun: false}` for syncer you can manually build a batch of actions like this
 
@@ -80,7 +79,7 @@ if you select `{autorun: false}` for syncer you can manually build a batch of ac
 await syncer.sendBatch();
 ```
 
-### `events`
+## `events`
 
 Stackr uses a custom event emitters to notify of stuff happening behind the scenes like batching, execution etc.
 You can leverage these events to build your own custom logic on top of the stackr engine
@@ -134,7 +133,7 @@ events.builder.onEvent(BuilderEvents.ORDER_BATCH, (batch) => {
 });
 ```
 
-### For confimations
+## For confimations
 
 - C0 = Application receives the action and returns a "signed" acknowledgement
 - C1 = Action that was included in a block gets executed
