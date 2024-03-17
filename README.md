@@ -1,1 +1,3 @@
-This is a [Vocs](https://vocs.dev) project bootstrapped with the Vocs CLI.
+# Stackr Docs Stackrhouse 2023 (ETH India)
+
+## Updates for beta Q1 2024 [WIP]
