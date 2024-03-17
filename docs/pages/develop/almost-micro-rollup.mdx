@@ -1,18 +1,20 @@
----
-title: "Almost Micro-Rollup"
-description: "Packaging state machines inside the rollup and other things"
----
+import { Callout } from "vocs/components";
 
-### State Machines
+# Almost Micro-Rollup [Packaging state machines inside the rollup]
+
+
+## State Machines
 
 State machines are simple units that can be used to model the state of a system. They are composed of states, events, and transitions. A state machine can be in one state at a time,
 and can transition to another state when an event is triggered. The state machine can also have actions that are executed when a transition occurs.
 
 Stackr-JS provides a simple state machine implementation that takes in the Rollup state and STF
 
-:::warningAll of this should go outside the `state.ts` file:::
+:::warning
+All of this should go outside the `state.ts` file
+:::
 
-**example**
+**Example**
 
 ```ts
 import { StateMachine } from "@stackr/stackr-js/execution";
@@ -24,7 +26,7 @@ const counterFsm = new StateMachine({
 });
 ```
 
-### Genesis State
+## Genesis State
 
 The genesis state is the initial state of the state machine.
 It is the state that is used to initialize the state machine. It is also the state that is used to initialize the state of the rollup.
@@ -39,11 +41,11 @@ example
 
 :::code-group
 
-```json counter
+```json [counter]
 { "state": 0 }
 ```
 
-```json amm
+```json [amm]
 {
   "state": [
     {
@@ -65,20 +67,18 @@ example
 }
 ```
 
-```json chess
+```json [chess]
 { "state": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" }
 ```
-
 :::
 
-### Input type schema
+## Input type schema
 
 The user-input type schema is the schema that is used to validate the user input. It is used to validate the user input before it is applied to the state machine.
 
 :::info
-This is what the user/ another entity send to the **app** or **rollup**. This
+This is what the user/another entity sends to the **app** or **rollup**. This
 is NOT what is applied to the State transition function.
-
 :::
 
 You can define to get a custom input from the user using this schema -> optionally process it or add more items -> create an object for **ActionInput** for the state machine
@@ -136,7 +136,7 @@ So you can define both simple and complex input schema
 
 :::code-group
 
-```ts simple
+```ts [simple]
 const actionSchemaType = {
   type: "String",
   owner: "String",
@@ -145,7 +145,7 @@ const actionSchemaType = {
 };
 ```
 
-```ts nested
+```ts [nested]
 const actionSchemaType = {
   type: "String",
   owner: "String",
