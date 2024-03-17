@@ -1,12 +1,13 @@
----
-title: "Sequencer"
-description: "Ordering is important"
----
+import { Callout } from "vocs/components";
+
+# Sequencer [Ordering is important]
+
+
 
 Stackr allows applications to perform their own ordering of the actions inside the block
 It comes with a basic sequencer which can be extended to perform more complex ordering.
 
-### Strategies
+## Strategies
 
 The basic sequencing strategy bundled with the SDK is the FIFO strategy. It does nothing tbh.
 
@@ -16,7 +17,7 @@ import { FIFOStrategy } from "@stackr/stackr-js";
 const buildStrategy = new FIFOStrategy();
 ```
 
-### Custom strategies
+## Custom strategies
 
 You can create your own strategy by extending the `BaseStrategy` and overriding the `orderTxLogic` class and pass it on to the rollup.
 

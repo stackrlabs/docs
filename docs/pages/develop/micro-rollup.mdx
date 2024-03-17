@@ -1,11 +1,11 @@
----
-title: "Micro-Rollup"
-description: "Using and running a Micro-Rollup"
----
+import { Callout } from "vocs/components";
+
+# Micro-Rollup [Using and running a Micro-Rollup]
+
 
 Oh so you are finally here
 
-Stackr exposes a Micro-Rollup Api that takes in all the things we built previously and wrap it around an application
+Stackr exposes a Micro-Rollup API that takes in all the things we built previously and wrap it around an application.
 
 This is how it looks like
 
@@ -39,13 +39,15 @@ const { actions, ...otherUtilities } = await MicroRollup({
 
 yeah that's it! 🎉
 
-### Sending Actions to the Micro-Rollup
+## Sending Actions to the Micro-Rollup
 
 Now that we have a Micro-Rollup setup, we can send actions to it
 
-:::infoConsider this as kinda "frontend":::
+:::info
+Consider this as kinda "frontend"
+:::
 
-#### Step 1 : preparing data
+### Step 1: Preparing the payload
 
 ```ts
 // any user's/entities wallet
@@ -82,7 +84,7 @@ The payload is a JSON string that contains the following, and MUST conform to th
 }
 ```
 
-### Step 2 : sending the payload
+### Step 2: Sending the payload
 
 We use the actions object that we got from the Micro-Rollup and get the schema from it.
 Use the same identifier that was used to create the actionInput
@@ -96,7 +98,7 @@ const ack = await actions.submit(newAction);
 
 After submitting the action the Micro-rollup sends an acknowledgement receipt back
 
-### Usage with web-server
+## Usage with web-server
 
 You can also create an express app to interact with the rollup with users sending actions to it
 
@@ -131,15 +133,15 @@ app.listen(3000, () => {
 });
 ```
 
-### Modes
+## Modes
 
 You can send action to the Micro-rollup either directly or via an HTTP call or some other way
 
-### Ordering and Block Building
+## Ordering and Block Building
 
 The Micro-Rollup will order the actions and build blocks based on the strategy that was passed to it and the config which governs the block size and other parameters
 
-### Utilities
+## Utilities
 
 Micro-rollup object exposes a bunch of utilities that can be used to interact with the Micro-Rollup.
 
