@@ -1,0 +1,27 @@
+@layer vocs_preflight {
+  @tailwind base;
+}
+@tailwind components;
+@tailwind utilities;
+
+.vocs_Sidebar {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.vocs_Sidebar_sectionTitle {
+  padding: 0 0.5rem;
+}
+
+.vocs_Sidebar_items {
+  row-gap: 0.1rem;
+}
+
+.vocs_Sidebar_item {
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.vocs_Sidebar_item[data-active="true"] {
+  color: var(--vocs-color_textAccent);
+  background-color: rgba(98, 237, 237, 0.1);
+}
