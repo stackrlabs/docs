@@ -9,7 +9,7 @@ You have created an instance of `MicroRollup` and passed the necessary options.
 ### Action Registration
 You have added all the `ActionSchemas` to the `MicroRollup` constructor like this
 ```ts showLineNumbers [index.ts]
-const mru = new MicroRollup({
+const rollup = new MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...], // [!code focus]
     ...
 });
@@ -17,31 +17,31 @@ const mru = new MicroRollup({
 ### State Machine Registration
 You have added the State Machine lazily to the micro-rollup, using 
 ```ts showLineNumbers [index.ts]
-const mru = await MicroRollup({
+const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...],
     ...
 });
 
-mru.stateMachines.add(machine) // [!code focus]
+rollup.stateMachines.add(machine) // [!code focus]
 ```
 
 ### Initialization
 You have started the micro-rollup using
 ```ts showLineNumbers [index.ts]
-const mru = await MicroRollup({
+const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...],
     ...
 });
 
-mru.stateMachines.add(machine)
-await mru.init() // [!code focus]
+rollup.stateMachines.add(machine)
+await rollup.init() // [!code focus]
 ```
 ::::
 
 ## Let's Deploy 🚀
 
 :::info
-The below command will pack your State Machine and send it to Vulcan for deployment and re-execution on the network.
+The below command will package your State Machine and send it to Vulcan for deployment and re-execution on the network.
 :::
 
 :::code-group
@@ -75,8 +75,6 @@ If everything is working fine, you should see the logs in the terminal, like thi
 ```bash [Terminal]
 [Stackr] - 04/02/2024, 5:14:19 PM     LOG [InstanceLoader] ExecutorModule dependencies initialized
 [Stackr] - 04/02/2024, 5:14:19 PM     LOG [InstanceLoader] SequencerModule dependencies initialized
-[Stackr] - 04/02/2024, 5:14:19 PM     LOG [MachineRegistry] Backfilling states for state machine: erc-20
-[Stackr] - 04/02/2024, 5:14:19 PM     LOG [MachineRegistry] Backfilling complete
 [Stackr] - 04/02/2024, 5:14:19 PM     LOG [L1-Syncer] Started L1 syncer
 [Stackr] - 04/02/2024, 5:14:19 PM     LOG [Vulcan-Syncer] Started with slot time: 1000ms
 [Stackr] - 04/02/2024, 5:14:19 PM     LOG [Sequencer] Started with block time: 1000ms
@@ -93,7 +91,9 @@ const inputs = {
 };
 
 const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
+// [!code word:actionFrom]
 const incrementAction = UpdateCounterSchema.actionFrom({
+// [!code word:inputs]
     inputs,
     signature,
     msgSender: wallet.address,
@@ -120,11 +120,11 @@ mru.events.subscribe(ActionEvents.CONFIRMATION_STATUS, (data) => {
 
 You can also query the state of your State Machines anytime using the MRU instance. As below:
 ```ts [index.ts]
-const machine = mru.stateMachines.get<typeof counterMachine>("counter"); // [!code hl]
+const machine = mru.stateMachines.get<typeof counterMachine>("counter"); // [!code focus]
 if (!machine) {
     throw new Error("Machine not found");
 }
-const { state } = machine; // [!code hl]
+const { state } = machine; // [!code focus]
 console.log("Current state:", state);
 ```
 
@@ -135,6 +135,6 @@ In this guide, we learned how to create a micro-rollup using the Stackr SDK, dep
 
 ## Next Steps
 
-You can now start building and customizing your own rollup using the Stackr SDK. Start by modifying the `machine.ts`, `stf.ts` and relevant files to suit your requirements.
+You can now start building and customizing your own rollup using the Stackr SDK. Start by modifying the `machine.ts`, `transitions.ts` and relevant files to suit your requirements.
 
 You can wrap the micro-rollup in a REST API or GraphQL API to interact with it from the frontend.

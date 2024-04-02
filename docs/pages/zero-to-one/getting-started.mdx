@@ -41,9 +41,17 @@ curl -fsSL https://bun.sh/install | bash
 
 More information regarding Bun can be found at https://bun.sh
 
-### Installations
+### Installation
 
-You need to have access to the Stackr packages, if you don't have that refer to the [Getting Access](/zero-to-one/getting-access) section.
+:::warning
+#### Remove previously installed Stackr CLI
+If you have previously installed the Stackr CLI binary from 2023, you need to uninstall it first.
+```bash
+rm -rf ~/.stackr
+```
+:::
+
+You need to have access to the Stackr packages, if you don't have that refer to the [Getting Beta Access](/beta-access) section.
 
 CLI helps you to create, register and deploy your micro-rollups.
 Either you can install it globally using

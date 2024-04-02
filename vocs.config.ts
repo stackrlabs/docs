@@ -60,6 +60,7 @@ export default defineConfig({
   sidebar: [
     {
       text: "Micro-Rollup",
+      collapsed: true,
       items: [
         {
           text: "Introduction",
@@ -116,22 +117,29 @@ export default defineConfig({
       ],
     },
     {
-      text: "Getting Access",
-      link: "/getting-access",
+      text: "Beta Access",
+      link: "/beta-access",
     },
     {
-      text: "Network Information",
-      link: "/network-info",
+      text: "Reference",
+      collapsed: true,
+      items: [
+        {
+          text: "Providers and RPC",
+          link: "/references/providers-and-rpc",
+        },
+      ],
     },
     {
       text: "Zero to One",
+      collapsed: true,
       items: [
         {
           text: "Getting Started",
           link: "/zero-to-one/getting-started",
         },
         {
-          text: "Build your first MRU",
+          text: "Building Micro-rollup",
           link: "/zero-to-one/build-your-first-mru",
         },
         {
@@ -142,6 +150,7 @@ export default defineConfig({
     },
     {
       text: "Framework",
+      collapsed: true,
       items: [
         {
           text: "State Machine",
@@ -192,6 +201,7 @@ export default defineConfig({
     },
     {
       text: "Build",
+      collapsed: true,
       items: [
         {
           text: "Setup",
@@ -241,6 +251,7 @@ export default defineConfig({
     },
     {
       text: "Security",
+      collapsed: true,
       items: [
         {
           text: "Protocol",
@@ -264,10 +275,15 @@ export default defineConfig({
     },
     {
       text: "Guides",
+      collapsed: true,
       items: [
         {
           text: "What to Build?",
           link: "/guides/what-to-build",
+        },
+        {
+          text: "Check your Binaries",
+          link: "/guides/checking-your-binaries",
         },
         {
           text: "Tutorials",
