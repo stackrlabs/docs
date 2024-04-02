@@ -11,7 +11,7 @@ export default defineConfig({
     },
     { text: "Blog", link: "http://mirror.xyz/stackrlabs.eth" },
     {
-      text: "v0.2.11-alpha",
+      text: "v0.2.17-alpha",
       items: [
         {
           text: "Changelog",
@@ -114,6 +114,14 @@ export default defineConfig({
           link: "/micro-rollup/economics",
         },
       ],
+    },
+    {
+      text: "Getting Access",
+      link: "/getting-access",
+    },
+    {
+      text: "Network Information",
+      link: "/network-info",
     },
     {
       text: "Zero to One",

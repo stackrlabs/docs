@@ -1,0 +1,44 @@
+import { ConnectWallet } from "../components/ConnectWallet";
+
+# Getting Access [ Get access to sdk & cli to develop MRUs ]
+
+You can request beta access to the Stackr's SDK and CLI filling up this form and signing up for the beta program. Over Sepolia Network.
+
+<ConnectWallet />
+
+## Getting NPM access token
+
+Make sure you are added to the Stackr's NPM Org before continuing.
+
+```bash [Terminal]
+npm login
+```
+
+This will generate a file called `.npmrc` in your home directory. You can find it at `~/.npmrc`
+
+Copy the generated token from a line which looks like this in the `.npmrc` file
+
+```yaml [.npmrc]
+//registry.npmjs.org/:_authToken=<GENERATED_TOKEN>
+```
+
+## Add package scope to your bun config
+
+:::info
+As of now, Bun doesn't read the `.npmrc` file to get the token. You need to add the token to the bun config file.
+:::
+
+Create `bunfig.toml` in your root
+
+```bash [Terminal]
+touch ~/.bunfig.toml
+```
+
+edit the `.bunfig.toml` file and add the following lines with the generated token
+
+```toml [.bunfig.toml]
+[install.scopes]
+"@stackr" = { token = "<GENERATED_TOKEN>", url = "https://registry.npmjs.com/" }
+```
+
+For Details, you can refer to [Bun's Scopes and Registries](https://bun.sh/docs/install/registries)

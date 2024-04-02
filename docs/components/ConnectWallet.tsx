@@ -59,13 +59,13 @@ export const ConnectWallet = () => {
                 );
               }
               return (
-                <div className="flex gap-2 h-10 rounded-xl bg-grey-elevation-2 p-2 font-jetbrains">
+                <div className="justify-center flex gap-2 h-10 rounded-xl bg-grey-elevation-2 p-2 font-jetbrains">
                   <button
-                    className="primary font-jetbrains"
+                    className="text-black h-9 px-4 rounded-lg primary font-jetbrains"
                     onClick={openAccountModal}
                     type="button"
                   >
-                    {account.displayName}
+                    🔗 {account.displayName}
                   </button>
                 </div>
               );

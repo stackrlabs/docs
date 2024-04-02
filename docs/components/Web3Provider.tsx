@@ -1,17 +1,17 @@
-import "@rainbow-me/rainbowkit/styles.css";
 import {
-  getDefaultConfig,
   RainbowKitProvider,
   darkTheme,
+  getDefaultConfig,
 } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
-import { mainnet } from "wagmi/chains";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { sepolia } from "wagmi/chains";
 
 const config = getDefaultConfig({
   appName: "Stackr Explorer",
   projectId: "YOUR_PROJECT_ID",
-  chains: [mainnet],
+  chains: [sepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
