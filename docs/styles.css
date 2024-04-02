@@ -25,3 +25,13 @@
   color: var(--vocs-color_textAccent);
   background-color: rgba(98, 237, 237, 0.1);
 }
+
+button.primary {
+  background: var(--vocs-color_backgroundAccent);
+  padding-left: var(--vocs-space_16);
+  padding-right: var(--vocs-space_16);
+  border-radius: var(--vocs-space_4);
+  line-height: var(--vocs-space_32);
+  font-weight: var(--vocs-fontWeight_medium);
+  font-size: var(--vocs-fontSize_14);
+}

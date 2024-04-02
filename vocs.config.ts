@@ -3,6 +3,45 @@ import { defineConfig } from "vocs";
 export default defineConfig({
   logoUrl: "/logo/dark.svg",
   iconUrl: "/logo/favicon.svg",
+  topNav: [
+    {
+      text: "Getting Started",
+      link: "/zero-to-one/getting-started",
+      match: "/zero-to-one",
+    },
+    { text: "Blog", link: "http://mirror.xyz/stackrlabs.eth" },
+    {
+      text: "v0.2.11-alpha",
+      items: [
+        {
+          text: "Changelog",
+          link: "https://github.com/stackrlabs/stackr-js/releases",
+        },
+      ],
+    },
+  ],
+  socials: [
+    {
+      icon: "github",
+      link: "https://github.com/stackrlabs/",
+      label: "GitHub",
+    },
+    {
+      icon: "x",
+      link: "https://twitter.com/0xStackr/",
+      label: "Twitter",
+    },
+    {
+      icon: "discord",
+      link: "https://discord.com/invite/PY4nhg7bcc",
+      label: "Community",
+    },
+    {
+      icon: "telegram",
+      link: "https://t.me/StackrCommunity",
+      label: "Community",
+    },
+  ],
   markdown: {},
   theme: {
     accentColor: "#62EDED",
@@ -25,6 +64,14 @@ export default defineConfig({
         {
           text: "Introduction",
           link: "/micro-rollup/introduction",
+        },
+        {
+          text: "Utility Modes",
+          link: "/micro-rollup/utility",
+        },
+        {
+          text: "Settlement Modes",
+          link: "/micro-rollup/settlement",
         },
         {
           text: "Motivation",
@@ -76,8 +123,8 @@ export default defineConfig({
           link: "/zero-to-one/getting-started",
         },
         {
-          text: "Build your first Micro-rollup",
-          link: "/zero-to-one/build-your-first-micro-rollup",
+          text: "Build your first MRU",
+          link: "/zero-to-one/build-your-first-mru",
         },
         {
           text: "Run it",
@@ -89,17 +136,13 @@ export default defineConfig({
       text: "Framework",
       items: [
         {
-          text: "Action",
-          link: "/framework/action",
-        },
-        {
-          text: "Block",
-          link: "/framework/block.mdx",
-        },
-        {
           text: "State Machine",
           collapsed: true,
           items: [
+            {
+              text: "Introduction",
+              link: "/framework/state-machine/introduction",
+            },
             {
               text: "State",
               link: "/framework/state-machine/state",
@@ -109,6 +152,14 @@ export default defineConfig({
               link: "/framework/state-machine/reducers",
             },
           ],
+        },
+        {
+          text: "Action",
+          link: "/framework/action",
+        },
+        {
+          text: "Block",
+          link: "/framework/block.mdx",
         },
         {
           text: "Sequencer",
