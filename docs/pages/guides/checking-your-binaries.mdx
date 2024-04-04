@@ -12,7 +12,10 @@ curl https://wasmtime.dev/install.sh -sSf | bash
 
 ## Run Wasmtime
 
-We give an object to the State Machine and it returns an output. Easiest way to check this is give your machine a `previousState` which is your `initialState` (`0` in case of counter) and see if it returns the `finalState`.
+We give an object consisting of an array of actions and currentState to the Stackr State Machine (SSM) which then applies these actions and returns the next state.
+
+The easiest way to check that the SSM is valid is to give it an array of empty actions and a 'currentState' which could be the state object in your 'genesis-state.json' (`0` in case of counter).
+It should then return the same state as no actions were applied.
 
 ```bash [Terminal]
 echo '{"actions":[],"currentState": 0 }' | wasmtime stackr_build/stf.wasm

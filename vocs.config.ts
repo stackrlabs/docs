@@ -120,16 +120,7 @@ export default defineConfig({
       text: "Beta Access",
       link: "/beta-access",
     },
-    {
-      text: "Reference",
-      collapsed: true,
-      items: [
-        {
-          text: "Providers and RPC",
-          link: "/references/providers-and-rpc",
-        },
-      ],
-    },
+
     {
       text: "Zero to One",
       collapsed: true,
@@ -294,6 +285,16 @@ export default defineConfig({
               link: "/guides/tutorials/token-transfer",
             },
           ],
+        },
+      ],
+    },
+    {
+      text: "References",
+      collapsed: true,
+      items: [
+        {
+          text: "Providers and RPC",
+          link: "/references/providers-and-rpc",
         },
       ],
     },

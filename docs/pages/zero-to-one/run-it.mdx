@@ -128,6 +128,23 @@ const { state } = machine; // [!code focus]
 console.log("Current state:", state);
 ```
 
+### Play with it
+
+Stackr gives a plugin along with their SDK to interact with the micro-rollup. You can attach the plugin to your MRU instance and use it to debug, interact or track the life-cycle of action or block.
+
+```ts [index.ts]
+import { Playground } from "@stackr/sdk/plugins"; // [!code focus]
+
+const mru = new MRU({
+    ...
+});
+
+Playground.init(mru); // [!code focus]
+```
+
+This will spin up a local server on `http://localhost:42069` by default, which will be utilized by our Playground app to interact with your MRU.
+
+You can now visit [playground.stf.xyz](https://playground.stf.xyz) in your browser to interact with your micro-rollup. If prompted give it the URL of your local server started by playground.
 
 ## Conclusion
 
