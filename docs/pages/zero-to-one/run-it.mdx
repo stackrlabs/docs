@@ -1,0 +1,157 @@
+# Running a Micro-rollup
+
+If you are using a template it might already have a micro-rollup setup. But a few things to make sure before running or deploying your micro-rollup are:
+::::steps
+
+### MicroRollup Setup
+You have created an instance of `MicroRollup` and passed the necessary options.
+
+### Action Registration
+You have added all the `ActionSchemas` to the `MicroRollup` constructor like this
+```ts showLineNumbers [index.ts]
+const rollup = new MicroRollup({
+    actionSchemas: [ActionSchema1, ActionSchema2, ...], // [!code focus]
+    ...
+});
+```
+### State Machine Registration
+You have added the State Machine lazily to the micro-rollup, using 
+```ts showLineNumbers [index.ts]
+const rollup = await MicroRollup({
+    actionSchemas: [ActionSchema1, ActionSchema2, ...],
+    ...
+});
+
+rollup.stateMachines.add(machine) // [!code focus]
+```
+
+### Initialization
+You have started the micro-rollup using
+```ts showLineNumbers [index.ts]
+const rollup = await MicroRollup({
+    actionSchemas: [ActionSchema1, ActionSchema2, ...],
+    ...
+});
+
+rollup.stateMachines.add(machine)
+await rollup.init() // [!code focus]
+```
+::::
+
+## Let's Deploy 🚀
+
+:::info
+The below command will package your State Machine and send it to Vulcan for deployment and re-execution on the network.
+:::
+
+:::code-group
+
+```bash [npm]
+npx @stackr/cli@latest deploy
+```
+
+```bash [bun]
+bunx @stackr/cli@latest deploy
+```
+:::
+
+You'll see the following on the terminal, on successful deployment:
+```bash [Terminal]
+✔ 🏗️  State Machine built
+✔ 📝 Registered STF to AppInbox
+✔ 🖖 Deployed to Vulcan
+```
+
+## Let's Run 🏃‍♂ 
+
+To be doubly sure that everything is working fine, let's try to run your application and see if it works as expected.
+
+```bash [Terminal]
+bun run src/index.ts
+```
+
+If everything is working fine, you should see the logs in the terminal, like this:
+
+```bash [Terminal]
+[Stackr] - 04/02/2024, 5:14:19 PM     LOG [InstanceLoader] ExecutorModule dependencies initialized
+[Stackr] - 04/02/2024, 5:14:19 PM     LOG [InstanceLoader] SequencerModule dependencies initialized
+[Stackr] - 04/02/2024, 5:14:19 PM     LOG [L1-Syncer] Started L1 syncer
+[Stackr] - 04/02/2024, 5:14:19 PM     LOG [Vulcan-Syncer] Started with slot time: 1000ms
+[Stackr] - 04/02/2024, 5:14:19 PM     LOG [Sequencer] Started with block time: 1000ms
+```
+
+If you see the above logs, congratulations! Your application is running successfully.
+
+## Interacting with Micro-rollup
+
+If you are using the "Counter" example, the `index.ts` file already contains the code to interact with the micro-rollup.
+```ts [index.ts]
+const inputs = {
+    timestamp: Date.now(),
+};
+
+const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
+// [!code word:actionFrom]
+const incrementAction = UpdateCounterSchema.actionFrom({
+// [!code word:inputs]
+    inputs,
+    signature,
+    msgSender: wallet.address,
+});
+
+const ack = await mru.submitAction("increment", incrementAction); // [!code hl]
+```
+
+The code above is just for reference, mostly you won't be signing the message here on your backend. Rather you'll get the inputs along with signature and msgSender from the frontend and then submit the action to the micro-rollup. Using the `submitAction` method, you can submit the action to the micro-rollup.
+
+Once an action is submitted to the micro-rollup, you get an acknowledgment in the form of a `Promise` which resolves to the `Acknowledgment` object. You can use this object to track the status of the action.
+
+### Event Subscription
+
+Or you can also use the `subscribe` method to subscribe to the action status. This method takes the actionId and a callback function as arguments. The callback function is called whenever the status of the action changes.
+
+```ts [index.ts]
+mru.events.subscribe(ActionEvents.CONFIRMATION_STATUS, (data) => {
+    console.log(data);
+});
+```
+
+### Querying the State
+
+You can also query the state of your State Machines anytime using the MRU instance. As below:
+```ts [index.ts]
+const machine = mru.stateMachines.get<typeof counterMachine>("counter"); // [!code focus]
+if (!machine) {
+    throw new Error("Machine not found");
+}
+const { state } = machine; // [!code focus]
+console.log("Current state:", state);
+```
+
+### Play with it
+
+Stackr gives a plugin along with their SDK to interact with the micro-rollup. You can attach the plugin to your MRU instance and use it to debug, interact or track the life-cycle of action or block.
+
+```ts [index.ts]
+import { Playground } from "@stackr/sdk/plugins"; // [!code focus]
+
+const mru = new MRU({
+    ...
+});
+
+Playground.init(mru); // [!code focus]
+```
+
+This will spin up a local server on `http://localhost:42069` by default, which will be utilized by our Playground app to interact with your MRU.
+
+You can now visit [playground.stf.xyz](https://playground.stf.xyz) in your browser to interact with your micro-rollup. If prompted give it the URL of your local server started by playground.
+
+## Conclusion
+
+In this guide, we learned how to create a micro-rollup using the Stackr SDK, deploy it to the Vulcan network, and interact with it using the SDK.
+
+## Next Steps
+
+You can now start building and customizing your own rollup using the Stackr SDK. Start by modifying the `machine.ts`, `transitions.ts` and relevant files to suit your requirements.
+
+You can wrap the micro-rollup in a REST API or GraphQL API to interact with it from the frontend.

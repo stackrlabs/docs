@@ -1,0 +1,164 @@
+# Building your first Micro-rollup
+
+## Bootstrapping a new project
+
+To create a new project, run the following command:
+
+:::code-group
+
+```bash [npm]
+npx @stackr/cli@latest init
+```
+
+```bash [bun]
+bunx @stackr/cli@latest init
+```
+:::
+
+- Choose a template from the list and follow the instructions.
+
+```bash [Terminal]
+        _             _                        _ _
+    ___| |_ __ _  ___| | ___ __            ___| (_)
+   / __| __/ _` |/ __| |/ / '__|  _____   / __| | |
+   \__ \ || (_| | (__|   <| |    |_____| | (__| | |
+   |___/\__\__,_|\___|_|\_\_|             \___|_|_|
+
+? Pick a template (Use arrow keys)
+❯ Counter (Recommended)
+  Token Transfer
+  Empty
+
+```
+
+For the purpose of this tutorial, we will use the `Counter` template.
+
+- After this you'll be asked to enter a "Project Name", enter a name and press enter.
+- You'll be asked to pick the Database after this, based on the Database you choose, we set up the project for you. For this tutorial, we will use `SQLite`. You can choose any database you want. For any other database, you'll have to manually change the database configuration in the `stackr.config.ts` file.
+
+```bash [Terminal]
+? Database Driver (Use arrow keys)
+❯ SQLite (Recommended)
+  PostgreSQL
+  MySQL
+  MariaDB
+```
+
+- You'll see some green checkmarks at this point and instructions to follow. Follow the instructions and you'll have a new project created.
+
+```bash [Terminal]
+✔ ⚙️  Set up MRU
+✔ 🧹  Set up git
+✔ ⬇️  Installed packages
+
+Get started by running the following commands:
+
+  1. cd uno/
+  2. cp .env.example .env
+  3. Modify values in stackr.config.ts & .env
+  4. npx @stackr/cli@latest register
+  5. Implement your State Machines
+  6. npx @stackr/cli@latest deploy
+
+```
+
+## Setting up your config
+
+- Let's `cd` into the project directory and first copy the `.env.example` file to `.env`.
+- Update the following values in the `.env` file. 
+  - You can get the latest values listed in the [Providers and RPCs](/references/providers-and-rpc) Page.
+
+```bash [.env]
+PRIVATE_KEY=<PRIVATE_KEY>
+VULCAN_RPC=<VULCAN_RPC>
+L1_RPC=<L1_RPC>
+```
+
+:::info
+`PRIVATE_KEY` is the private key of account you signed up for Beta access with.
+
+We don't store your private key anywhere. It's only used to sign the transactions and is stored in your local environment.
+:::
+
+- Now let's dive into the `stackr.config.ts` file.
+
+  :::warning
+  Ignore the warning for `./deployment.json` file not found. We will create this file in the next step.
+  :::
+
+- The `domain` in the config is used to create EIP712 Typed Signature over the inputs of actions. Feel free to tune this as per your requirements.
+
+```ts [stackr.config.ts]
+domain: {
+  name: "<APP_NAME>", // [!code focus]
+  version: "<APP_VERSION>", // [!code focus]
+  chainId: deployment.chainId,
+  verifyingContract: deployment.appInbox,
+  salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" // [!code focus]
+}
+```
+
+## Registering your Micro-rollup
+
+Now that we have set up the config, let's register the Micro-rollup.
+Make sure you are in the project directory and run the following command:
+
+:::code-group
+
+```bash [npm]
+npx @stackr/cli@latest register
+```
+
+```bash [bun]
+bunx @stackr/cli@latest register
+```
+
+:::
+
+:::info
+  This command will register your application on the registry contract. And update the `deployment.json` file with the latest values of `appId`, `appInbox` and `chainId`.
+:::
+
+You'll see a message that the application has been registered on the registry.
+
+```bash [Terminal]
+✔ 📝 Registered application on registry
+✔ 🧰 Updated deployment.json
+```
+
+## Project Structure
+
+- The `src` directory contains the code for your application.
+- The `src/stackr` directory contains the code for the State Machines and State Transition Functions.
+
+We don't enforce any specific restrictions on the naming of the files, but keeping files related to the State Machines and STF in the `src/stackr` directory is recommended.
+
+```bash
+├── src
+│   ├── stackr
+│   │   ├── machine.ts
+│   │   ├── actions.ts
+│   │   └── transitions.ts
+│   ├── index.ts
+│   ├── stackr.config.ts
+│   └── deployment.json
+```
+
+- `machine.ts` contains the `StateMachine` and `State` classes for your application.
+  - Please make sure to make a named export the `StateMachine` class from this file. Like below:
+
+  ```ts [machine.ts]
+  const myMachine = new StateMachine({ ... })
+
+  export { myMachine };
+  ```
+
+- `transitions.ts` contains the `STF` (State Transition Functions) for your application.
+
+:::warning
+  For the time of beta, it is recommended that the `machine.ts` or the file containing the StateMachine, doesn't import anything from `@stackr/sdk` instead uses `@stackr/sdk/machine` for the `StateMachine`, `State`, `Transitions` and other utility classes.
+:::
+
+## Advanced
+
+- [Checking your WASM Binary](/guides/checking-your-binaries)
