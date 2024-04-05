@@ -19,10 +19,9 @@ You have added the State Machine lazily to the micro-rollup, using
 ```ts showLineNumbers [index.ts]
 const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...],
+    stateMachines: [machine], // [!code focus]
     ...
 });
-
-rollup.stateMachines.add(machine) // [!code focus]
 ```
 
 ### Initialization
@@ -30,10 +29,10 @@ You have started the micro-rollup using
 ```ts showLineNumbers [index.ts]
 const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...],
+    stateMachines: [machine],
     ...
 });
 
-rollup.stateMachines.add(machine)
 await rollup.init() // [!code focus]
 ```
 ::::
