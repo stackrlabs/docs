@@ -9,7 +9,7 @@ const hashFormData = (formData: Record<string, any>) => {
   return keccak256(toBytes(JSON.stringify(formData)));
 };
 
-const MRU_API = "http://13.235.166.185:4200";
+const MRU_API = "https://api.beta1.stf.xyz";
 
 const registrationSchema = [
   {
