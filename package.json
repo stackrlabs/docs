@@ -15,6 +15,7 @@
     "mermaid": "^10.9.0",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.51.2",
     "typescript": "latest",
     "viem": "2.x",
     "vocs": "latest",
