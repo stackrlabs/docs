@@ -1,4 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { SignupForm } from "./SignupForm";
 
 export const ConnectWallet = () => {
   return (
@@ -58,17 +59,7 @@ export const ConnectWallet = () => {
                   </div>
                 );
               }
-              return (
-                <div className="justify-center flex gap-2 h-10 rounded-xl bg-grey-elevation-2 p-2 font-jetbrains">
-                  <button
-                    className="text-black h-9 px-4 rounded-lg primary font-jetbrains"
-                    onClick={openAccountModal}
-                    type="button"
-                  >
-                    🔗 {account.displayName}
-                  </button>
-                </div>
-              );
+              return <SignupForm />;
             })()}
           </div>
         );
