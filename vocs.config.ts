@@ -3,6 +3,8 @@ import { defineConfig } from "vocs";
 export default defineConfig({
   logoUrl: "/logo/dark.svg",
   iconUrl: "/logo/favicon.svg",
+  ogImageUrl:
+    "https://vocs.dev/api/og?logo=%logo&title=%title&description=%description",
   topNav: [
     {
       text: "Getting Started",
@@ -87,16 +89,24 @@ export default defineConfig({
           collapsed: true,
           items: [
             {
-              text: "App-specific Rollups",
-              link: "/micro-rollup/motivation/app-specific-rollups",
-            },
-            {
-              text: "Sufficient Decentralization",
-              link: "/micro-rollup/motivation/sufficient-decentralization",
+              text: "Traditional Rollups",
+              link: "/micro-rollup/motivation/traditional-rollups",
             },
             {
               text: "Single App Rollups",
               link: "/micro-rollup/motivation/single-app-rollups",
+            },
+            {
+              text: "Micro Services",
+              link: "/micro-rollup/motivation/micro-services",
+            },
+            {
+              text: "Modularity",
+              link: "/micro-rollup/motivation/modularity",
+            },
+            {
+              text: "Sufficient Decentralization",
+              link: "/micro-rollup/motivation/sufficient-decentralization",
             },
           ],
         },

@@ -22,6 +22,7 @@ export const Input: React.FC<InputProps> = ({
     <div className="flex flex-col gap-2">
       <span className="text-white-44 text-sm">{label}</span>
       <input
+        disabled={label === "Wallet"}
         className="p-2 border text-sm placeholder-white-44 border-grey-elevation-4 text-white bg-grey-elevation-2 focus:border-teal-primary rounded-lg outline-none"
         placeholder={placeholder}
         {...register(formKey, {
@@ -36,8 +37,8 @@ export const Input: React.FC<InputProps> = ({
               ? value === ""
                 ? ""
                 : isNaN(Number(value))
-                ? value
-                : Number(value)
+                  ? value
+                  : Number(value)
               : value,
         })}
       />
