@@ -59,6 +59,14 @@ export default defineConfig({
   title: "Stackr",
   sidebar: [
     {
+      text: "Beta Access",
+      link: "/beta-access",
+    },
+    {
+      text: "What to Build?",
+      link: "/guides/what-to-build",
+    },
+    {
       text: "Micro-Rollup",
       collapsed: true,
       items: [
@@ -117,11 +125,6 @@ export default defineConfig({
       ],
     },
     {
-      text: "Beta Access",
-      link: "/beta-access",
-    },
-
-    {
       text: "Zero to One",
       collapsed: true,
       items: [
@@ -163,7 +166,29 @@ export default defineConfig({
         },
         {
           text: "Action",
-          link: "/framework/action",
+          collapsed: true,
+          items: [
+            {
+              text: "Introduction",
+              link: "/framework/action/introduction",
+            },
+            {
+              text: "Action Schema",
+              link: "/framework/action/action-schema",
+            },
+            {
+              text: "Lifecycle",
+              link: "/framework/action/lifecycle",
+            },
+            {
+              text: "Execution Status",
+              link: "/framework/action/execution-status",
+            },
+            {
+              text: "Confirmation Status",
+              link: "/framework/action/confirmation-status",
+            },
+          ],
         },
         {
           text: "Block",
@@ -268,10 +293,6 @@ export default defineConfig({
       text: "Guides",
       collapsed: true,
       items: [
-        {
-          text: "What to Build?",
-          link: "/guides/what-to-build",
-        },
         {
           text: "Check your Binaries",
           link: "/guides/checking-your-binaries",
