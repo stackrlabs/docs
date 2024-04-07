@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { keccak256, toBytes } from "viem";
-import { Callout } from "vocs/components";
+// import { Callout } from "vocs/components";
 import { useAccount, useSignTypedData } from "wagmi";
 import { Input } from "./Input";
 
@@ -145,11 +145,13 @@ export const SignupForm = () => {
   return (
     <div className="font-geist">
       {hasApplied ? (
-        <Callout className="text-center" type="info">
+        // <Callout className="text-center" type="info">
+        <>
           Thanks for applying, we'll review your application and "drop" access
           in next few days!
-        </Callout>
+        </>
       ) : (
+        // </Callout>
         renderForm()
       )}
     </div>
