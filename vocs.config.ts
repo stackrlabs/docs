@@ -21,7 +21,7 @@ export default defineConfig({
       items: [
         {
           text: "Changelog",
-          link: "https://github.com/stackrlabs/stackr-js/releases",
+          link: "/changelog",
         },
       ],
     },
@@ -343,127 +343,9 @@ export default defineConfig({
         // },
       ],
     },
-<<<<<<< Updated upstream
-=======
-    {
-      text: "Security",
-      collapsed: true,
-      items: [
-        {
-          text: "Assumptions",
-          link: "/security/assumptions",
-        },
-        {
-          text: "Data Settlement",
-          collapsed: true,
-          items: [
-            {
-              text: "Off-chain data",
-              link: "/security/data-settlement/Off-chain-storage",
-            },
-            {
-              text: "On-chain data",
-              link: "/security/data-settlement/On-chain-storage",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      text: "References",
-      collapsed: true,
-      items: [
-        {
-          text: "Providers and RPC",
-          link: "/references/providers-and-rpc",
-        },
-      ],
-    },
     {
       text: "Changelog",
       link: "/changelog",
     },
-    // {
-    //   text: "Stale",
-    //   collapsed: true,
-    //   items: [
-    //     {
-    //       text: "Setup",
-    //       items: [
-    //         {
-    //           text: "Dev Environment",
-    //           link: "/stale/setup/dev-environment",
-    //         },
-    //         {
-    //           text: "SDK Access",
-    //           link: "/stale/setup/SDK-access",
-    //         },
-    //         {
-    //           text: "Stackr Testnet",
-    //           link: "/stale/config/configurations",
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       text: "0-to-1",
-    //       items: [
-    //         {
-    //           text: "Start Here",
-    //           link: "/stale/start/start-here",
-    //         },
-    //         {
-    //           text: "Building First Rollup",
-    //           link: "/stale/start/building-first-rollup",
-    //         },
-    //         {
-    //           text: "Running First Rollup",
-    //           link: "/stale/start/running-first-rollup",
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       text: "Develop",
-    //       items: [
-    //         {
-    //           text: "Before You Begin",
-    //           link: "/stale/develop/before-you-begin",
-    //         },
-    //         {
-    //           text: "State",
-    //           link: "/stale/develop/state",
-    //         },
-    //         {
-    //           text: "Rollup State",
-    //           link: "/stale/develop/rollup-state",
-    //         },
-    //         {
-    //           text: "State Transition Function",
-    //           link: "/stale/develop/state-transition-function",
-    //         },
-    //         {
-    //           text: "Almost Micro Rollup",
-    //           link: "/stale/develop/almost-micro-rollup",
-    //         },
-    //         {
-    //           text: "Stackr Config",
-    //           link: "/stale/develop/stackr-config",
-    //         },
-    //         {
-    //           text: "Builder Sequencer",
-    //           link: "/stale/develop/builder-sequencer",
-    //         },
-    //         {
-    //           text: "Micro Rollup",
-    //           link: "/stale/develop/micro-rollup",
-    //         },
-    //         {
-    //           text: "Micro Rollup Utilities",
-    //           link: "/stale/develop/micro-rollup-utilities",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
->>>>>>> Stashed changes
   ],
 });
