@@ -1,6 +1,10 @@
 import { defineConfig } from "vocs";
+import ClosePlugin from "./close.plugin";
 
 export default defineConfig({
+  vite: {
+    plugins: [ClosePlugin()],
+  },
   logoUrl: "/logo/dark.svg",
   iconUrl: "/logo/favicon.svg",
   ogImageUrl:
