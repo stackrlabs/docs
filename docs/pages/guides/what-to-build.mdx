@@ -1,61 +1,93 @@
 # What to build with Stackr? [Ideas and wishlists]
 
-## Why build your app as a micro-rollup?
+This section assumes basic knowledge of the Stackr's stack & micro-rollups. We highly recommend reading through the [Micro-Rollups](/micro-rollup/introduction) section as to better match the mental models of how the ideas listed in this section can be built as micro-rollups.
 
-You can be on two ends of the spectrum. You’re either building your protocol as smart contracts inside the constraints of a virtual machine or you’re building a centralised app.
+But, first…
 
-Building on a micro-rollup can bring apps on either ends of the spectrum to ✨ sufficient decentralisation ✨
+## Why build micro-rollups?
 
-Think of a micro-rollup as a sufficiently decentralised backend for your app, where you, the builder, can decide where do you wanna stay on the spectrum of decentralisation.
+Micro-Rollups are essentially sufficiently decentralised backends. Building your application or a sidecar to an existing application(read [Utility Modes](/micro-rollup/utility)) on a micro-rollup offers you the following benefits —
 
-On top of that, when building with a micro-rollup, you instantly unlock —
 
-- On-chain composability.
-- Verifiable Compute.
-- Faster finality compared to smart contracts.
+#### Free from the shackles of a Virtual Machine.
+Micro-Rollups enable truly single-app rollups. Your application's business logic is the state transition function of the rollup. This is unlike to other approaches like deploying a permissioned EVM rollup and building your app in Solidity on the rollup for sovereign block space. With Stackr’s micro-rollups, the developers get to design and build their applications in general purpose programming languages, free from the constraints of a specialised VM.  
 
-## Project Ideas
 
-_Micro-rollups are foundational building blocks with which you can build a wide range of applications. Below are a few verticals where we think interesting use-cases are waiting to be discovered._
 
-### Account Abstraction & Intents
+#### Verifiable compute & sturdy security guarantees.
+Micro-Rollups albeit being an off-chain execution environment provide security guarantees through verifiable compute. All the computations of the MRU are verified by Vulcan (Stackr’s Verification Layer) before being settled on the L1. This introduces security guarantees that are superior to sovereign rollups. 
 
-The account abstraction space is nascent and has emerging standards and infrastructures for the stack. A fair bit of the AA world can be built on micro-rollups!
+On top of that, micro-rollup once deployed on-chain can not arbitrarily change to logic of execution. This assures the users that the application can not arbitrarily change the rules of the system.
 
-- Solver Marketplace
-- Decentralised Bundler
-- Micro-Rollup based smart accounts
-- [Unified Mempool](https://notes.ethereum.org/@yoav/unified-erc-4337-mempool)
+#### Efficiency for high-throughput use-cases.
+A micro-rollup for your app is your own sovereign execution environment, with configurable parameters for block time and block size. Developers can decide to set a block time in milliseconds and run the micro-rollup in a beefy server to be able to effectively handle massive throughput, without competing with other applications for the sacred block space. 
 
-### Reputation Systems
+#### On-chain apps, supercharged.
+Micro-Rollups settle the state root of the application on the L1, which makes it compatible with on-chain apps built in Solidity on the L1 and other L2s. The state root can be used to verify state of the rollup on the L1 and other apps can leverage that to build on-chain experiences integrated with the L1. 
 
-Micro-rollups are great at ingesting data and performing compute over them. Why? Because it’s all verifiable on-chain. Building a reputation system of any kind with a micro-rollup can help significantly reduce the amount of trust on the app and make your system sufficiently decentralised.
+Now that the developers are well-versed on the benefits of building a micro-rollup, let’s dive into specific use-cases and ideas that we think are a good fit to be built with Stackr’s SDK.
 
-- Points!
-- Engagement Score on social graphs like Farcaster.
-- Credit Score for DeFi activity.
+## Projects & Ideas
 
-### Embedded Social Apps (/Frames)
+### On-chain Apps
 
-With the introduction of Frames, you can now embed your applications inside a social media feed. The embedded applications still require a backend to power them, and a micro-rollup is a perfect fit for several use-cases.
+1. Payments
+    1. Transfers
+    2. Streaming
+    3. Micro-payments (smol money)
+2. Frames
+    - Games
+    - P2P Swaps
+    - Verifiable Polls
+    - Token Distribution
+    - Prediction Market
+3. Games
+    1. Simulation Engines
+    2. Autonomous worlds
+    3. In-game assets
+4. DeFi protocols
+    1. Lending/Borrowing
+    2. DEX
+    3. LST
+    4. Airdrops
+    5. Prediction Markets
+5. NFT protocols
+6. DAOs and Governance
 
-- Games
-  - YOINK!
-  - Dungeon Wars
-- P2P Swaps
-- Polls
-- NFT mints
-- Token distribution
+### On-chain Infrastructure
 
-### General
+1. Identity Protocols
+2. Programmable VMs — write your own OPCODES and program the micro-rollup to process them.
+3. Oracles
+4. Shared Sequencers
+5. Account Abstraction and Intents
+    - Solver Marketplace
+    - Decentralised Bundler
+    - Unified Mem-pool
+    - Keystore Rollup
+6. Attestations
+    - Reputation Systems
+    - Point Systems
+    - Engagement score on social graphs
+    - Credit score for DeFi
+7. Two sided Marketplaces — use-cases where you need to match a seller and a buyer.
+8. Social Media Protocols
+9. On-chain Agents
+10. AI/ML use-cases
 
-And there’s a whole lot more that can be built with micro-rollups, below are the select picks from the team that we want to see get built!
+### DePIN
 
-- Orderbook-based DEX
-- Dynamic NFTs
-- Privacy apps
-- Prediction Markets
-- Lending Protocol
+1. dRPC
+2. Storage
+3. Compute
+4. IoT
+5. Indexers
+
+Micro-Rollups are such a foundational building block for your applications that the only limit of what can be built with micro-rollups is your imagination.
+
+:::info
+If you’re interested in exploring use-cases listed above or think that your use-case is a good fit to be built on the Stackr’s SDK — open up a support ticket on [Discord](https://discord.com/invite/PY4nhg7bcc).
+:::
 
 ## All set
 
