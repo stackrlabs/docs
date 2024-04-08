@@ -1,0 +1,102 @@
+# Changelog [What's new]
+
+## v0.2.12-alpha to v0.2.17-alpha
+
+#### New Features
+
+1. [SDK] **Playground Plugin**
+   1. Ability to add `custom` endpoints
+   2. Function to interact with Reducers using selected actions.
+   3. Configurable Port for playground & Link in terminal to directly open and connect Playground to your MRU
+2. [CLI] Use App Registration Fee from the Contract for the Operator
+3. [CLI/SDK] Add support for `mariadb` and `mysql`
+4. [CLI] Remove the existing DataStore on `stack register`
+5. [VULCAN] Support new `Beta` contracts
+6. [VULCAN] Interact with Router contract for block submission
+7. [VULCAN] Honouring Operator's configured `preferredDA` before trying fallback DAs.
+8. [VULCAN] Monitoring Setup for Unified MRU Ecosystem View and Metrics.
+
+#### Improvements
+
+1. [VULCAN] Pre-deployment Validation of on-chain hashes for Genesis State and WASM Binary
+2. [SDK] Simplified State structure by dropping `clone` method from requirement and making WrappedState optional for trivial states.
+3. [SDK] Type Safety on inputs in STF by adding `InputType` as optional second param to `STF<A, B>` type.
+4. [CLI] New Templates added for initialising a Micro-rollup.
+5. [CLI ]initialise projects with basic `README.md`
+6. [CLI] Add `chainId` to `deployment.json` making it easier for user to get Chain Information for Signing Domain
+7. [CLI] Clean-up interim build files in process of making State Machine WASM
+8. [SDK] Take `stateMachines` in MRU constructor.
+9. [SDK] Take `preferredDA` in Config.
+10. [SDK] **Utils**
+    1. Solidity-like `REQUIRE` function
+
+#### Fixes
+
+1. [SDK] Fix duplication batch submission to Vulcan incase of high response times.
+2. [CLI] Sanitise URLs and payload before sending deployment requests to Parent Chain and Vulcan.
+3. [CLI] Handle Registration with `falsy` Genesis states.
+4. [SDK] Initialisation of Parent Chain listeners in `sandbox` Mode. [Lazy Initialisation]
+5. [SDK] Serialisation of `bigint` entities to `number` before sending it in batch to Vulcan.
+6. [VULCAN] Compare `primitve` and `non-primitive` Genesis States separately, to avoid serialisation causing validation failures.
+
+## v0.2.4-alpha to v0.2.11-alpha
+
+#### New Features
+
+1. [SDK] **Add Playground plugin**
+2. [SDK] **Emit Playground events**
+3. [CLI] **Brand new CLI**
+4. [SDK] Separate Block Builder and Proposer
+5. [SDK] Add Builder signature in Block to support external Block builders
+6. [SDK] Add MRU shutdown within app
+7. [SDK] Add HTTP and WS server for playground
+8. [SDK] Handle Vulcan rejection - C2X
+9. [SDK] Add executionStatus for actions to block
+10. [SDK] Remove StateInput type from MRU
+
+#### Improvements
+
+1. [SDK] **Clean execution model**
+2. [CLI/SDK] \*\*Allow state machine to gracefully handle error for reverted Action
+3. [VULCAN] Handle incorrect msgSender
+4. [VULCAN] Handle C1 reverted actions gracefully
+5. [SDK] **Allow default block building strategy**
+6. [SDK] Better debug log response from Vulcan
+7. [CLI] Better Errors for config and on-chain contract calls
+
+#### Fixes
+
+1. [SDK] Fix C2 confirmation status receiving
+2. [SDK] Sandbox database cleanup on exit
+3. [SDK] Send BlockData in ProposeBlock
+4. [SDK] Fix MRU re-initialization bug
+5. [CLI] pre-install deps & DB drivers as per user's choice
+6. [CLI] Mute console.logs from compiled binary
+
+## v0.2.1-alpha to v0.2.4-alpha
+
+#### New Features
+
+1. **Allow multiple State Transition Functions**
+2. **Added Plugins framework to build extensions/plugins on top of the SDK**
+3. New Error Framework
+4. Allow Lazy addition of State Machines & Sequencer Strategies.
+5. Store granular state updates per block
+
+#### Improvements
+
+1. **Reduced package bundle size by ~60%**
+2. Give State Transition Function access to `msgSender` and `signature`.
+3. Reduce the number of parameters in MRU constructor, just necessary config to start with.
+4. Allow dynamic store config to be able to connect with PostgreSQL alongside SQLite.
+5. Change MRU interface and expose more utility functions on top level
+
+#### Fixes
+
+1. **Backfill Rollup state machine in case servers crashes or restarts.**
+2. Reduce the number of parameters in MRU constructor just necessary config to start with.
+3. Keep failed actions in `batch`
+4. Better serialization for data like Actions, Acknowledgements & Blocks.
+5. Improve blockhash attributes
+6. Prevent replay attacks.
+7. Separate flags control L1 Syncer, Vulcan Syncer and Block producer

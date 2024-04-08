@@ -1,0 +1,79 @@
+# On-chain Data [Settlement on parent]
+
+Rollups need to settle on the parent chain. The data stored on the parent chain should be enough to reconstruct the state of the rollup in case of a dispute. Moreover the data must also be stored in a way that is efficient and cost-effective.
+
+Stackr splits the data into two parts:
+
+1. Block Headers
+2. Block Data
+
+## Parent Chain
+
+The block header contains these fields
+
+```ts [block.ts]
+interface BlockData {
+  appId: number; // [!code focus]
+  parentHash: string; // [!code focus]
+  height: number; // [!code focus]
+  hash: string; // [!code focus]
+  timestamp: number; // [!code focus]
+  actionRoot: string; // [!code focus]
+  acknowledgementRoot: string; // [!code focus]
+  stateRoot: string; // [!code focus]
+  operatorSignature: SignatureLike; // [!code focus]
+  builderSignature: SignatureLike; // [!code focus]
+  executionStatus: number; // [!code focus]
+  actions: {
+    action: {
+      hash: string;
+      name: string;
+      payload: AllowedInputTypes;
+      msgSender: AddressLike;
+      signature: SignatureLike;
+    };
+    acknowledgement: {
+      hash: string;
+      height: number;
+      timestamp: number;
+      operatorSignature: SignatureLike;
+    };
+  }[];
+}
+```
+
+## DA
+
+The remaining data is stored in the DA. This is used to reconstruct the state of the rollup in case of a dispute.
+
+```ts [block.ts]
+interface BlockData {
+  appId: number;
+  parentHash: string;
+  height: number;
+  hash: string;
+  timestamp: number;
+  actionRoot: string;
+  acknowledgementRoot: string;
+  stateRoot: string;
+  operatorSignature: SignatureLike;
+  builderSignature: SignatureLike;
+  executionStatus: number;
+  // prettier-ignore
+  actions: { // [!code focus]
+    action: { // [!code focus]
+      hash: string; // [!code focus]
+      name: string; // [!code focus]
+      payload: AllowedInputTypes; // [!code focus]
+      msgSender: AddressLike; // [!code focus]
+      signature: SignatureLike; // [!code focus]
+    }; // [!code focus]
+    acknowledgement: { // [!code focus]
+      hash: string; // [!code focus]
+      height: number; // [!code focus]
+      timestamp: number; // [!code focus]
+      operatorSignature: SignatureLike; // [!code focus]
+    }; // [!code focus]
+  }[]; // [!code focus]
+}
+```

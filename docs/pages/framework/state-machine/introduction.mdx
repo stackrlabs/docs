@@ -1,0 +1,21 @@
+import { Mermaid } from "mdx-mermaid/lib/Mermaid";
+
+# State Machine [Modelling a process]
+
+## Definition
+
+A deterministic state machine is a computational framework where each subsequent state and its output are precisely determined by its current state coupled with the incoming input, adhering to specific transition rules. This framework guarantees predictable and unambiguous transitions between states.
+
+## Application
+
+State machines are used to model processes that can be described as a sequence of states, where the system moves from one state to another based on input. They are widely used in software engineering, control systems, and other fields to model complex systems and processes.
+
+In distributed systems and specially blockchains, state machines are used to model the state of a system that can be updated based on a user transaction. This is deterministic and ensures that the system behaves predictably and consistently across all nodes in the network since all the nodes in the network have to update the state and reach the same state after processing the transaction. State machines ensure that all the nodes in the network are following the same rules and are reaching the same state after processing the transaction.
+
+<Mermaid
+  chart={`graph LR
+    A[Start] --> B[State 1]
+    B --> C[State 2]
+    A --> D[State 3]
+`}
+/>

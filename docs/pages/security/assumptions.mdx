@@ -1,0 +1,39 @@
+# Assumptions []
+
+Stackr’s framework is inspired by the pragmatic approach of web2 applications, recognizing that a balance between centralized efficiency and decentralized security can offer the best of both worlds for many applications. This nuanced approach allows for a ”halfway-house” level of security, where critical components are decentralized for integrity and trust, while others may remain centralized for efficiency and user experience. Here’s how Stackr navigates the security landscape:
+
+### Sovereign Application Control
+
+Applications within Stackr maintain centralized control over their operations, including transaction ordering. This ensures efficiency and responsiveness but is balanced with mechanisms like censorship-resistant acknowledgments to enhance trust. This centralization is complemented by the potential for a multi-nodal setup, where applications can operate across multiple nodes to enhance fault tolerance and data redundancy.
+
+### Shared Sequencing and Verification
+
+While applications can independently manage trans- action ordering, Stackr encourages the use of shared sequencers or a consortium of verifiers for enhanced security. This setup promotes transparency and decentralization in the verification process without sacrificing the application’s autonomy.
+
+### Verification Layer Integrity
+
+The Vulcan layer, composed of a committee of auditors, verifies the correctness of batches from applications. Operating under an honest-majority assumption, this layer ensures that data integrity and application behavior adhere to predefined rules. The committee’s role is crucial for maintaining system integrity, with mechanisms in place to mitigate potential liveliness failures.
+
+### Control Over Settlement
+
+Applications retain control over the settlement process, with capa- bilities to invalidate state roots in adversarial scenarios using a delayed settlement mechanism. This control layer adds an additional security measure, ensuring that applications can respond to threats without compromising the overall system integrity.
+
+### Exploring Enhanced Security Architectures
+
+Stackr is actively exploring architectures that exceed the honest-majority assumption, aiming to provide even stronger security guarantees to the verification layer. This ongoing experimentation is part of Stackr’s commitment to pushing the boundaries of what’s possible in decentralized application security.
+
+### Decentralized Verification Expansion
+
+As Stackr evolves, the Vulcan layer will transition from a singular node to a fully decentralized network of validators. This expansion not only dis- tributes the verification process across multiple parties but also introduces a layer of redundancy and resilience against single points of failure, significantly enhancing the security posture of the network.
+
+### Restaking Mechanisms for Bootstrapping Security
+
+Stackr is exploring innovative restak- ing mechanisms that allow it to leverage the economic security of larger, more established blockchains. This approach enables Stackr to bootstrap its security model by aligning with the security guarantees of these networks, providing an additional layer of trust and reliability for its operations.
+
+### Rollup Forced Exit Protocols
+
+In the event of discrepancies or malicious activity, Stackr includes mechanisms for a forced exit from rollups. This safety feature ensures that users can retrieve their assets without relying on the rollup’s normal operation, providing a crucial layer of user protection and trust in the system’s integrity.
+
+### Sub-committee Verification for Tailored Security
+
+Recognizing the diverse security needs of different applications, Stackr plans to implement sub-committees within the Vulcan layer. These sub-committees allow for specialized verification processes that can be customized to match the throughput and security requirements of individual micro-rollups, offering a more nuanced and flexible approach to application security.

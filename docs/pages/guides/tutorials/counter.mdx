@@ -1,0 +1,429 @@
+# Counter Rollup [Tutorial]
+
+This tutorial will show you how to create a Counter Rollup using the Stackr SDK.
+
+::::steps
+
+## Define a State
+
+We define a very basic state that will hold a single number. This state will be used to store the counter value.
+
+### Create State class
+
+We do this by extending the `State` class and passing the type of the state as `number` a generic parameter.
+
+{/* prettier-ignore */}
+```ts [machine.ts]
+// [!code word:State,]
+import { BytesLike, State, StateMachine } from "@stackr/sdk/machine"; // [!code focus]
+
+// [!code word:number]
+export class CounterState extends State<number> { // [!code focus]
+  constructor(state: number) {
+    super(state);
+  }
+
+  getRootHash(): BytesLike {
+    return solidityPackedKeccak256(["uint256"], [this.state]);
+  }
+}
+```
+
+### Define the hashing function
+
+Next we need to define the hashing function that will be used to calculate the root hash of the state. Over here we just use the `solidityPackedKeccak256` function from ethers.js to hash the state as it is a simple number.
+
+{/* prettier-ignore */}
+```ts [machine.ts]
+import { BytesLike, State, StateMachine } from "@stackr/sdk/machine"; 
+
+// [!code word:number]
+export class CounterState extends State<number> {
+  constructor(state: number) {
+    super(state);
+  }
+
+  getRootHash(): BytesLike { // [!code focus]
+    return solidityPackedKeccak256(["uint256"], [this.state]); // [!code focus]
+  } // [!code focus]
+}
+```
+
+:::info
+The hashing function could be any function that takes the state as input and returns a hash determinitically. The hash should be a `BytesLike` type.
+:::
+
+## Define Action Schema
+
+Next we define the actions that can be performed on the state. We do this by defining a schema for the action.
+
+Over here we just use a single schema for updating the counter value. Both increment and decrement actions can be performed using the same schema. It is the responsibility of the state transition function to determine the action based on the input.
+
+We dont really need any input for the action, so we just define a timestamp field to keep the actions unique. It works as a nonce for the action.
+
+```ts [actions.ts]
+import { ActionSchema, SolidityType } from "@stackr/sdk";
+
+export const UpdateCounterSchema = new ActionSchema("update-counter", {
+  timestamp: SolidityType.UINT,
+});
+```
+
+## Define State Transition Functions (STF)
+
+Next we define the state transition functions that will be used to transition the state based on the action. We define two functions, one for incrementing the counter and one for decrementing the counter.
+
+### Increment
+
+We define a state transition function that increments the counter value by 1. It reads the state from the input and returns an updated state.
+
+{/* prettier-ignore */}
+```ts [transitions.ts]
+import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
+import { CounterState } from "./machine"; // [!code focus]
+
+const increment: STF<CounterState> = { // [!code focus]
+  handler: ({ state }) => { // [!code focus]
+    state += 1; // [!code focus]
+    return state; // [!code focus]
+  }, // [!code focus]
+}; // [!code focus]
+
+const decrement: STF<CounterState> = {
+  handler: ({ state }) => {
+    state -= 1;
+    REQUIRE(state > 0, "Cannot decrement below 0");
+    return state;
+  },
+};
+
+export const transitions: Transitions<CounterState> = {
+  increment,
+  decrement,
+};
+```
+
+### Decrement
+
+Next we define a state transition function that decrements the counter value by 1. It reads the state from the input and returns an updated state.
+
+{/* prettier-ignore */}
+```ts [transitions.ts]
+import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
+import { CounterState } from "./machine"; // [!code focus]
+
+const increment: STF<CounterState> = { 
+  handler: ({ state }) => { 
+    state += 1; 
+    return state; 
+  }, 
+}; 
+
+const decrement: STF<CounterState> = { // [!code focus]
+  handler: ({ state }) => { // [!code focus]
+    state -= 1; // [!code focus]
+    REQUIRE(state > 0, "Cannot decrement below 0"); // [!code focus]
+    return state; // [!code focus]
+  }, // [!code focus]
+}; // [!code focus]
+
+export const transitions: Transitions<CounterState> = {
+  increment,
+  decrement,
+};
+```
+
+Note that we also add a check to ensure that the counter value does not go below 0. it is done using the `REQUIRE` function from the SDK. It works similarly to the `require` function in Solidity.
+
+### Export the transitions
+
+Finally we export the transitions so that they can be used in the state machine.
+
+{/* prettier-ignore */}
+```ts [transitions.ts]
+import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine";
+import { CounterState } from "./machine";
+
+const increment: STF<CounterState> = { 
+  handler: ({ state }) => { 
+    state += 1; 
+    return state; 
+  }, 
+}; 
+
+const decrement: STF<CounterState> = {
+  handler: ({ state }) => {
+    state -= 1;
+    REQUIRE(state > 0, "Cannot decrement below 0");
+    return state;
+  },
+};
+
+export const transitions: Transitions<CounterState> = { // [!code focus]
+  increment, // [!code focus]
+  decrement, // [!code focus]
+}; // [!code focus]
+```
+
+## Define `genesis state`
+
+Next we define the initial state of the state machine. This is the state that will be used to initialize the state machine. We just set the counter value to 0.
+
+```json [genesis-state.json]
+{
+  "state": 0
+}
+```
+
+## Creating the State Machine
+
+Next we create the state machine using the state, action schema and transitions.
+
+We need to import the `genesis-state.json` file and the `transitions` object that we defined earlier.
+
+Then we can instantiate the state machine using the `StateMachine` class from the SDK.
+
+The machine takes 4 parameters:
+
+1. `id`: A unique identifier for the state machine.
+2. `stateClass`: The class of the state that the machine will use. This is the same class that we defined earlier.
+3. `initialState`: The initial state of the state machine. This is the state that we defined in the `genesis-state.json` file.
+4. `on`: The transitions that the state machine can perform. This is the transitions object that we defined earlier.
+
+```ts [machine.ts]
+// [!code word:StateMachine]
+import { BytesLike, State, StateMachine } from "@stackr/sdk/machine";
+
+import * as genesis from "../../genesis-state.json";
+import { transitions } from "./transitions";
+
+const machine = new StateMachine({
+  id: "counter",
+  stateClass: CounterState,
+  initialState: genesis.state,
+  on: transitions,
+});
+
+export { machine };
+```
+
+:::warning
+Please note that the machine must always be a named export. This is because the SDK uses the name of the export to identify the machine.
+
+```ts [machine.ts]
+// [!code word:StateMachine]
+import { BytesLike, State, StateMachine } from "@stackr/sdk/machine";
+
+import * as genesis from "../../genesis-state.json";
+import { transitions } from "./transitions";
+
+const machine = new StateMachine({
+  id: "counter",
+  stateClass: CounterState,
+  initialState: genesis.state,
+  on: transitions,
+});
+
+export { machine }; // [!code focus]
+```
+
+Hence exporting the machine as a `export machine` would not work.
+
+:::
+
+## Set the config
+
+Next we define the configuration object for the rollup. This is used to tell the rollup how to connect to connect to the parent chain, block time, sync time etc.
+
+This file is autogenerated if the `@stackr/cli` is used to setup the project.
+
+```ts [stackr.config.ts]
+import { KeyPurpose, SignatureScheme, StackrConfig } from "@stackr/sdk";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// this file is generated by the deployment script
+import * as deployment from "./deployment.json";
+const REGISTRY_CONTRACT = "<REGISTRY_CONTRACT_ADDRESS>";
+
+const stackrConfig: StackrConfig = {
+  stackrApp: {
+    appId: deployment.appId,
+    appInbox: deployment.appInbox,
+  },
+  sequencer: {
+    batchSize: 16,
+    batchTime: 1000,
+  },
+  syncer: {
+    slotTime: 1000,
+    vulcanRPC: process.env.VULCAN_RPC as string,
+    L1RPC: process.env.L1_RPC as string,
+  },
+  operator: {
+    accounts: [
+      {
+        privateKey: process.env.PRIVATE_KEY as string,
+        purpose: KeyPurpose.BATCH,
+        scheme: SignatureScheme.ECDSA,
+      },
+    ],
+  },
+  domain: {
+    name: "Stackr MVP v0",
+    version: "1",
+    chainId: deployment.chainId,
+    verifyingContract: deployment.appInbox,
+    salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  },
+  datastore: {
+    uri: "./db.sqlite",
+  },
+  registryContract: REGISTRY_CONTRACT,
+  logLevel: "log",
+};
+
+export { stackrConfig };
+```
+
+## Define the Rollup
+
+Once we are done with the state machine, we can define the rollup using the `Rollup` class from the SDK. Rollup includes all the neccessary components to run the state machine.
+
+The rollup takes 3 parameters:
+
+1. `config`: The configuration object for the rollup.
+2. `actionSchemas`: The action schemas that the rollup will use. This is an array of action schemas that we defined earlier.
+3. `stateMachines`: The state machines that the rollup will use.
+
+```ts [rollup.ts]
+import { MicroRollup } from "@stackr/sdk";
+import { stackrConfig } from "../stackr.config";
+
+const mru = await MicroRollup({
+  config: stackrConfig,
+  actionSchemas: [UpdateCounterSchema],
+  stateMachines: [machine],
+});
+
+await mru.init();
+```
+
+## All Set!
+
+We have now successfully created a Counter Rollup using the Stackr SDK. We have defined the state, action schema, state transition functions, genesis state, state machine, configuration and the rollup.
+
+## Interacting with the Rollup
+
+Now that we have the rollup setup, we can interact with it by sending it actions. We can use the `submitAction` method to send actions to the rollup.
+
+### Create an Input
+
+We define the inputs for the action. In this case we just need a timestamp as defined in the action schema.
+
+{/* prettier-ignore */}
+```ts [index.ts]
+const inputs = { // [!code focus]
+  timestamp: Date.now(), // [!code focus]
+}; // [!code focus]
+
+const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
+const incrementAction = UpdateCounterSchema.actionFrom({
+  inputs,
+  signature,
+  msgSender: wallet.address,
+});
+
+const ack = await mru.submitAction("increment", incrementAction);
+console.log(ack);
+```
+
+### Sign the input to create a signature
+
+Next we sign the inputs using the `signMessage` function. This function takes the wallet, action schema and inputs as parameters and returns a signature. This uses `EIP-712` to sign the message.
+
+{/* prettier-ignore */}
+```ts [index.ts]
+const inputs = {
+  timestamp: Date.now(),
+};
+
+const signMessage = async ( // [!code focus]
+  wallet: HDNodeWallet, // [!code focus]
+  schema: ActionSchema, // [!code focus]
+  payload: AllowedInputTypes // [!code focus]
+) => { // [!code focus]
+  const signature = await wallet.signTypedData( // [!code focus]
+    schema.domain, // [!code focus] 
+    schema.EIP712TypedData.types,   // [!code focus]
+    payload // [!code focus]
+  ); // [!code focus]
+  return signature; // [!code focus]
+}; // [!code focus]
+
+const signature = await signMessage(wallet, UpdateCounterSchema, inputs); // [!code focus]
+
+const incrementAction = UpdateCounterSchema.actionFrom({
+  inputs,
+  signature,
+  msgSender: wallet.address,
+});
+
+const ack = await mru.submitAction("increment", incrementAction);
+console.log(ack);
+```
+
+### Create an action from the inputs
+
+Next we create an action from the inputs, signature and the sender address. We do this using the `actionFrom` method of the action schema.
+
+{/* prettier-ignore */}
+```ts [index.ts]
+const inputs = {
+  timestamp: Date.now(),
+};
+
+const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
+
+const incrementAction = UpdateCounterSchema.actionFrom({ // [!code focus]
+  inputs, // [!code focus]
+  signature, // [!code focus]
+  msgSender: wallet.address, // [!code focus]
+}); // [!code focus]
+
+const ack = await mru.submitAction("increment", incrementAction);
+console.log(ack)
+```
+
+### Submit the action to the rollup
+
+Finally we submit the action to the rollup using the `submitAction` method. This method takes the action type and the action as parameters and returns an acknowledgement.
+
+{/* prettier-ignore */}
+```ts [index.ts]
+const inputs = {
+  timestamp: Date.now(),
+};
+
+const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
+
+const incrementAction = UpdateCounterSchema.actionFrom({
+  inputs,
+  signature,
+  msgSender: wallet.address,
+});
+
+const ack = await mru.submitAction("increment", incrementAction); // [!code focus]
+console.log(ack) // [!code focus]
+```
+
+## Complete
+
+We have now successfully created a Counter Rollup using the Stackr SDK and interacted with it by sending actions.
+
+:::info
+The complete code can be found in the [Stackr SDK Examples](https://github.com/stackrlabs/micro-rollup-examples) repository.
+:::
+
+::::
