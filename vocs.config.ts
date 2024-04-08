@@ -13,6 +13,10 @@ export default defineConfig({
     },
     { text: "Blog", link: "http://mirror.xyz/stackrlabs.eth" },
     {
+      text: "Litepaper",
+      link: "https://litepaper.stf.xyz",
+    },
+    {
       text: "v0.2.17-alpha",
       items: [
         {
@@ -97,8 +101,8 @@ export default defineConfig({
               link: "/micro-rollup/motivation/single-app-rollups",
             },
             {
-              text: "Micro Services",
-              link: "/micro-rollup/motivation/micro-services",
+              text: "Microservices",
+              link: "/micro-rollup/motivation/microservices",
             },
             {
               text: "Modularity",
@@ -172,6 +176,40 @@ export default defineConfig({
         },
       ],
     },
+    {
+      text: "Security",
+      collapsed: true,
+      items: [
+        {
+          text: "Assumptions",
+          link: "/security/assumptions",
+        },
+        {
+          text: "Data Settlement",
+          collapsed: true,
+          items: [
+            {
+              text: "Off-chain data",
+              link: "/security/data-settlement/Off-chain-storage",
+            },
+            {
+              text: "On-chain data",
+              link: "/security/data-settlement/On-chain-storage",
+            },
+          ],
+        },
+      ],
+    },
+    // {
+    //   text: "References",
+    //   collapsed: true,
+    //   items: [
+    //     {
+    //       text: "Providers and RPC",
+    //       link: "/references/providers-and-rpc",
+    //     },
+    //   ],
+    // },
     {
       text: "Framework",
       collapsed: true,
@@ -305,120 +343,5 @@ export default defineConfig({
         // },
       ],
     },
-    {
-      text: "Security",
-      collapsed: true,
-      items: [
-        {
-          text: "Assumptions",
-          link: "/security/assumptions",
-        },
-        {
-          text: "Data Settlement",
-          collapsed: true,
-          items: [
-            {
-              text: "Off-chain data",
-              link: "/security/data-settlement/Off-chain-storage",
-            },
-            {
-              text: "On-chain data",
-              link: "/security/data-settlement/On-chain-storage",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      text: "References",
-      collapsed: true,
-      items: [
-        {
-          text: "Providers and RPC",
-          link: "/references/providers-and-rpc",
-        },
-      ],
-    },
-    // {
-    //   text: "Stale",
-    //   collapsed: true,
-    //   items: [
-    //     {
-    //       text: "Setup",
-    //       items: [
-    //         {
-    //           text: "Dev Environment",
-    //           link: "/stale/setup/dev-environment",
-    //         },
-    //         {
-    //           text: "SDK Access",
-    //           link: "/stale/setup/SDK-access",
-    //         },
-    //         {
-    //           text: "Stackr Testnet",
-    //           link: "/stale/config/configurations",
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       text: "0-to-1",
-    //       items: [
-    //         {
-    //           text: "Start Here",
-    //           link: "/stale/start/start-here",
-    //         },
-    //         {
-    //           text: "Building First Rollup",
-    //           link: "/stale/start/building-first-rollup",
-    //         },
-    //         {
-    //           text: "Running First Rollup",
-    //           link: "/stale/start/running-first-rollup",
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       text: "Develop",
-    //       items: [
-    //         {
-    //           text: "Before You Begin",
-    //           link: "/stale/develop/before-you-begin",
-    //         },
-    //         {
-    //           text: "State",
-    //           link: "/stale/develop/state",
-    //         },
-    //         {
-    //           text: "Rollup State",
-    //           link: "/stale/develop/rollup-state",
-    //         },
-    //         {
-    //           text: "State Transition Function",
-    //           link: "/stale/develop/state-transition-function",
-    //         },
-    //         {
-    //           text: "Almost Micro Rollup",
-    //           link: "/stale/develop/almost-micro-rollup",
-    //         },
-    //         {
-    //           text: "Stackr Config",
-    //           link: "/stale/develop/stackr-config",
-    //         },
-    //         {
-    //           text: "Builder Sequencer",
-    //           link: "/stale/develop/builder-sequencer",
-    //         },
-    //         {
-    //           text: "Micro Rollup",
-    //           link: "/stale/develop/micro-rollup",
-    //         },
-    //         {
-    //           text: "Micro Rollup Utilities",
-    //           link: "/stale/develop/micro-rollup-utilities",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   ],
 });
