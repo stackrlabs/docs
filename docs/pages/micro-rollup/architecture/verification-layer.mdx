@@ -1,0 +1,25 @@
+# Verification Layer [aka Vulcan]
+
+The Stackr verification layer, affectionately referred to as ‘Vulcan` operates as a decentralized and permissionless network, composed of autonomous nodes dedicated to establishing a layer tailored specifically for checking correctness of state updates of micro-rollups.
+
+Vulcan seamlessly operates as an intermediary, bridging the gap between applications and the parent chain.
+
+## Verification Model
+
+<img src="/assets/deploy.png" alt="Verification Model" />
+
+The developer deploys the application on the execution layer. The application is then registered on the verification layer by extracting the state machine of the micro-rollup and sending it to Vulcan in form of a WASM binary.
+
+## Pessimistic re-execution
+
+Vulcan employs a pessimistic re-execution model to verify the incoming blocks from micro-rollups. The blocks from the execution layer is sent to Vulcan periodically. Vulcan uses the application’s WASM binary and applies the actions inside the block one-by-one on the genesis to generate the new state.
+
+It then matches the generated state roots with the state root inside the block. If it succeeds the generated state becomes the current state so the next block will be applied on this state. Once the block passes the verification step, it takes the block and submits it on the desired L1 chain.
+
+## zkWASM Integration
+
+Stackr is exploring the potential of a zkWASM-based system, enabling Vulcan to execute applications’ WASM binaries within a zkVM. This will improve the verification mechanism by creating a proof of re-execution, which is then recorded on the parent chain. This not only enhances the trust model of Vulcan but also optimizes the volume of data recorded on-chain, streamlining the overall process of verification.
+
+## Fast Finality
+
+Since the Vulcan layer is responsible for checking the correctness of actions, it can also provide a confirmation before the data hits the parent chain. As mentioned previously, Stackr’s Micro-rollups provide multiple levels of confirmations, which can be used for building different user experiences. Vulcan behaves like a fast finality settlement layer, providing soft confirmations, orders of magnitude faster than the underlying parent chain and DA layer.
