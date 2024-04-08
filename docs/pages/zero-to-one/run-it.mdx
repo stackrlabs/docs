@@ -4,18 +4,24 @@ If you are using a template it might already have a micro-rollup setup. But a fe
 ::::steps
 
 ### MicroRollup Setup
+
 You have created an instance of `MicroRollup` and passed the necessary options.
 
 ### Action Registration
+
 You have added all the `ActionSchemas` to the `MicroRollup` constructor like this
+
 ```ts showLineNumbers [index.ts]
 const rollup = new MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...], // [!code focus]
     ...
 });
 ```
+
 ### State Machine Registration
-You have added the State Machine lazily to the micro-rollup, using 
+
+You have added the State Machine lazily to the micro-rollup, using
+
 ```ts showLineNumbers [index.ts]
 const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...],
@@ -25,7 +31,9 @@ const rollup = await MicroRollup({
 ```
 
 ### Initialization
+
 You have started the micro-rollup using
+
 ```ts showLineNumbers [index.ts]
 const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...],
@@ -35,6 +43,7 @@ const rollup = await MicroRollup({
 
 await rollup.init() // [!code focus]
 ```
+
 ::::
 
 ## Let's Deploy 🚀
@@ -52,16 +61,18 @@ npx @stackr/cli@latest deploy
 ```bash [bun]
 bunx @stackr/cli@latest deploy
 ```
+
 :::
 
 You'll see the following on the terminal, on successful deployment:
+
 ```bash [Terminal]
 ✔ 🏗️  State Machine built
 ✔ 📝 Registered STF to AppInbox
 ✔ 🖖 Deployed to Vulcan
 ```
 
-## Let's Run 🏃‍♂ 
+## Let's Run 🏃‍♂
 
 To be doubly sure that everything is working fine, let's try to run your application and see if it works as expected.
 
@@ -84,18 +95,19 @@ If you see the above logs, congratulations! Your application is running successf
 ## Interacting with Micro-rollup
 
 If you are using the "Counter" example, the `index.ts` file already contains the code to interact with the micro-rollup.
+
 ```ts [index.ts]
 const inputs = {
-    timestamp: Date.now(),
+  timestamp: Date.now(),
 };
 
 const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
 // [!code word:actionFrom]
 const incrementAction = UpdateCounterSchema.actionFrom({
-// [!code word:inputs]
-    inputs,
-    signature,
-    msgSender: wallet.address,
+  // [!code word:inputs]
+  inputs,
+  signature,
+  msgSender: wallet.address,
 });
 
 const ack = await mru.submitAction("increment", incrementAction); // [!code hl]
@@ -111,17 +123,18 @@ Or you can also use the `subscribe` method to subscribe to the action status. Th
 
 ```ts [index.ts]
 mru.events.subscribe(ActionEvents.CONFIRMATION_STATUS, (data) => {
-    console.log(data);
+  console.log(data);
 });
 ```
 
 ### Querying the State
 
 You can also query the state of your State Machines anytime using the MRU instance. As below:
+
 ```ts [index.ts]
 const machine = mru.stateMachines.get<typeof counterMachine>("counter"); // [!code focus]
 if (!machine) {
-    throw new Error("Machine not found");
+  throw new Error("Machine not found");
 }
 const { state } = machine; // [!code focus]
 console.log("Current state:", state);
@@ -148,6 +161,10 @@ You can now visit [playground.stf.xyz](https://playground.stf.xyz) in your brows
 ## Conclusion
 
 In this guide, we learned how to create a micro-rollup using the Stackr SDK, deploy it to the Vulcan network, and interact with it using the SDK.
+
+:::info
+You can find the full breakdown of this app in the [Counter Rollup Tutorial](/guides/tutorials/counter) guide.
+:::
 
 ## Next Steps
 
