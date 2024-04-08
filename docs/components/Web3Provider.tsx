@@ -9,7 +9,7 @@ import { WagmiProvider } from "wagmi";
 import { sepolia } from "wagmi/chains";
 
 const config = getDefaultConfig({
-  appName: "Stackr Explorer",
+  appName: "Stackr Docs",
   projectId: "YOUR_PROJECT_ID",
   chains: [sepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)

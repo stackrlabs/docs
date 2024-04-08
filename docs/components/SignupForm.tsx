@@ -4,6 +4,8 @@ import { keccak256, toBytes } from "viem";
 // import { Callout } from "vocs/components";
 import { useAccount, useSignTypedData } from "wagmi";
 import { Input } from "./Input";
+import { ConnectWallet } from "./ConnectWallet";
+import { sepolia } from "viem/chains";
 
 const hashFormData = (formData: Record<string, any>) => {
   return keccak256(toBytes(JSON.stringify(formData)));
@@ -61,7 +63,7 @@ const registrationSchema = [
 
 export const SignupForm = () => {
   const { signTypedDataAsync } = useSignTypedData();
-  const { address } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
   const { register, handleSubmit, reset, watch, formState } = useForm<any>();
   const watcher = watch();
   const [isAnyFieldEmpty, setIsAnyFieldEmpty] = useState(false);
@@ -110,36 +112,38 @@ export const SignupForm = () => {
       setIsAnyFieldEmpty(anyFieldEmpty);
     }, [watcher, errors]);
 
-    return (
-      <form
-        className="flex flex-col gap-6 w-full overflow-scroll"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {registrationSchema.map(({ key, type, name }) => (
-          <Input
-            key={key}
-            formKey={key}
-            register={register}
-            placeholder={type}
-            defaultValue={key === "wallet" ? address : ""}
-            label={name}
-            paramType={type}
-          />
-        ))}
+    if (!isConnected || chainId !== sepolia.id) {
+      return <ConnectWallet />;
+    } else {
+      return (
+        <form
+          className="flex flex-col gap-6 w-full overflow-scroll p-1"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {registrationSchema.map(({ key, type, name }) => (
+            <Input
+              key={key}
+              formKey={key}
+              register={register}
+              placeholder={type}
+              defaultValue={key === "wallet" ? address : ""}
+              label={name}
+              paramType={type}
+            />
+          ))}
 
-        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            disabled={isDisabled}
-            className="primary bg-teal-connect w-44 h-9 px-4 rounded-lg absolute text-black font-jetbrains font-bold"
-          >
-            {isSubmitting ? "Applying..." : "Sign & Apply"}
-          </button>
-        </div>
-        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
-      </form>
-    );
+          <div className="flex items-center justify-center">
+            <button
+              type="submit"
+              disabled={isDisabled}
+              className=" bg-teal-primary w-44 h-9 px-4 ring-2 ring-teal-primary/25 rounded-lg text-black font-jetbrains font-bold"
+            >
+              {isSubmitting ? "Applying..." : "Sign & Apply"}
+            </button>
+          </div>
+        </form>
+      );
+    }
   };
 
   return (

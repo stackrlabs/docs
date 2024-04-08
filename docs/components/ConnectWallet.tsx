@@ -1,5 +1,4 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { SignupForm } from "./SignupForm";
 
 export const ConnectWallet = () => {
   return (
@@ -34,11 +33,10 @@ export const ConnectWallet = () => {
               if (!connected) {
                 return (
                   <div className="flex items-center justify-center">
-                    <div className="bg-teal-connect opacity-25 w-[180px] h-10 rounded-lg" />
                     <button
                       onClick={openConnectModal}
                       type="button"
-                      className="primary bg-teal-connect w-44 h-9 px-4 rounded-lg absolute text-black font-jetbrains font-bold"
+                      className="bg-teal-primary w-44 h-9 px-4 rounded-lg ring-2 ring-teal-primary/25 text-black font-jetbrains font-bold"
                     >
                       Connect Wallet
                     </button>
@@ -48,18 +46,16 @@ export const ConnectWallet = () => {
               if (chain.unsupported) {
                 return (
                   <div className="flex items-center justify-center">
-                    <div className="bg-error-med opacity-25 w-[180px] h-10 rounded-lg" />
                     <button
                       onClick={openChainModal}
                       type="button"
-                      className="primary bg-error-med w-44 h-9 px-4 rounded-lg absolute text-black font-jetbrains font-bold"
+                      className="bg-error-med w-44 h-9 px-4 rounded-lg ring-2 ring-error-med/25 text-black font-jetbrains font-bold"
                     >
                       Wrong network
                     </button>
                   </div>
                 );
               }
-              return <SignupForm />;
             })()}
           </div>
         );
