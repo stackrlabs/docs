@@ -1,3 +1,3 @@
-# Stackr Docs Stackrhouse 2023 (ETH India)
+# Stackr Docs
 
-## Updates for beta Q1 2024 [WIP]
+Read the docs [here](https://docs.stf.xyz)
