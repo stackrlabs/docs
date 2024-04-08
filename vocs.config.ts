@@ -7,6 +7,31 @@ export default defineConfig({
   },
   logoUrl: "/logo/dark.svg",
   iconUrl: "/logo/favicon.svg",
+  sponsors: [
+    {
+      name: "Join Beta",
+      height: 150,
+      items: [
+        [
+          {
+            name: "Beta",
+            link: "/beta-access",
+            image: "/assets/icons/beta.svg",
+          },
+          {
+            name: "Concepts",
+            link: "/micro-rollup/introduction",
+            image: "/assets/icons/concepts.svg",
+          },
+          {
+            name: "Tutorial",
+            link: "/zero-to-one/getting-started",
+            image: "/assets/icons/tutorial.svg",
+          },
+        ],
+      ],
+    },
+  ],
   ogImageUrl:
     "https://vocs.dev/api/og?logo=%logo&title=%title&description=%description",
   topNav: [
@@ -63,6 +88,9 @@ export default defineConfig({
         backgroundDark: "#0A1010",
         background: "#0A1010",
         codeBlockBackground: "#0A0C0C",
+        background5: "rgba(98, 237, 237, 0.1)",
+        background3: "rgba(98, 237, 237, 0.1)",
+        white: "#62eded",
       },
     },
   },
