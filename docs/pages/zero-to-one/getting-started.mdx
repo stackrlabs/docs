@@ -25,11 +25,12 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 # Install NodeJS
 choco install nodejs --version="lts"
 ```
+
 :::
 
 ### Bun
 
-We have been utilizing some of the capabilities of Bun, so it is a required dependency for now.
+We utilize some of the capabilities of Bun.
 
 :::info
 Make sure you have the latest version of Bun installed (i.e >= `1.0.15`)
@@ -44,11 +45,15 @@ More information regarding Bun can be found at https://bun.sh
 ### Installation
 
 :::warning
+
 #### Remove previously installed Stackr CLI
+
 If you have previously installed the Stackr CLI binary from 2023, you need to uninstall it first.
+
 ```bash
 rm -rf ~/.stackr
 ```
+
 :::
 
 You need to have access to the Stackr packages, if you don't have that refer to the [Getting Beta Access](/beta-access) section.
@@ -57,27 +62,29 @@ CLI helps you to create, register and deploy your micro-rollups.
 Either you can install it globally using
 
 :::code-group
- 
+
 ```bash [npm]
 npm i -g @stackr/cli
 ```
- 
+
 ```bash [bun]
 bun i -g @stackr/cli
 ```
+
 :::
 
-OR 
+OR
 
 you can run the commands without installing
 
 :::code-group
- 
+
 ```bash [npm]
 npx @stackr/cli
 ```
- 
+
 ```bash [bun]
 bunx @stackr/cli
 ```
+
 :::

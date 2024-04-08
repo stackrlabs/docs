@@ -280,8 +280,8 @@ export default defineConfig({
       collapsed: true,
       items: [
         {
-          text: "Protocol",
-          link: "/security/protocol",
+          text: "Assumptions",
+          link: "/security/assumptions",
         },
         {
           text: "Data Settlement",
