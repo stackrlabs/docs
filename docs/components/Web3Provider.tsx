@@ -8,14 +8,23 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { sepolia } from "wagmi/chains";
 
+const sepoliaWithNewRpc = {
+  ...sepolia,
+  rpcUrls: {
+    default: {
+      http: ["https://rpc2.sepolia.org/"],
+    },
+  },
+};
+
 const config = getDefaultConfig({
   appName: "Stackr Docs",
   projectId: "YOUR_PROJECT_ID",
-  chains: [sepolia],
-  ssr: true, // If your dApp uses server side rendering (SSR)
+  chains: [sepoliaWithNewRpc],
+  ssr: true,
 });
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({
   children,
