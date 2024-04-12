@@ -47,7 +47,7 @@ export const AccessPassFlow = () => {
     if (!isConnected || chainId !== sepolia.id) {
       return <ConnectWallet />;
     } else if (canMint === null || isMinted === null) {
-      return <div>Loading...</div>;
+      return <div>Fetching permissions...</div>;
     } else if (!canMint) {
       return (
         <div className="flex flex-col gap-6">

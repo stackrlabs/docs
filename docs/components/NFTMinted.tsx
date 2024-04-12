@@ -33,16 +33,16 @@ export const NFTMinted = () => {
       <span>Congrats, you have access to our SDK and own our NFT. 🥳</span>
       <br />
       <span>
-        Reach out to use on our{" "}
+        Reach out to us on our{" "}
         <a
           className="underline"
           href={"https://discord.com/invite/PY4nhg7bcc"}
           target="_blank"
           rel="noreferrer"
         >
-          Discord Channel
+          Discord
         </a>{" "}
-        to get started with deploying
+        to get started with building micro-rollups.
       </span>
       <br />
       <br />

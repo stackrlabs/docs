@@ -4,6 +4,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { keccak256, toBytes } from "viem";
 import { sepolia } from "viem/chains";
 import { useAccount, useSignTypedData } from "wagmi";
+import { getLocalStorageItem, updateLocalStorageItem } from "../utils";
 import { ConnectWallet } from "./ConnectWallet";
 import { Field } from "./Field";
 
@@ -113,7 +114,7 @@ export const SignupForm = () => {
       wallet: address,
     },
   });
-  const hasSignedUp = localStorage.getItem("hasSignedUp");
+  const hasSignedUp = getLocalStorageItem("hasSignedUp");
   const watcher = watch();
   const [isAnyFieldEmpty, setIsAnyFieldEmpty] = useState(false);
 
@@ -148,7 +149,7 @@ export const SignupForm = () => {
       toast.error(`Failed to submit application.\nError: ${json.error}`);
       throw new Error("Failed to submit application 😭");
     }
-    localStorage.setItem("hasSignedUp", "true");
+    updateLocalStorageItem("hasSignedUp", "true");
     toast.success("Application submitted successfully! 🚀");
   };
 
