@@ -8,6 +8,13 @@
   font-family: "JetBrains Mono", monospace;
 }
 
+.vocs_Sponsors_title {
+  height: 0;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+
 .vocs_Sidebar_sectionTitle {
   padding: 0 0.5rem;
 }

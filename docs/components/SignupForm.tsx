@@ -1,73 +1,121 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Toaster, toast } from "react-hot-toast";
 import { keccak256, toBytes } from "viem";
-// import { Callout } from "vocs/components";
-import { useAccount, useSignTypedData } from "wagmi";
-import { Input } from "./Input";
-import { ConnectWallet } from "./ConnectWallet";
 import { sepolia } from "viem/chains";
+import { useAccount, useSignTypedData } from "wagmi";
+import { ConnectWallet } from "./ConnectWallet";
+import { Field } from "./Field";
 
 const hashFormData = (formData: Record<string, any>) => {
   return keccak256(toBytes(JSON.stringify(formData)));
 };
 
-const MRU_API = "https://api.beta1.stf.xyz";
+const MRU_API = "https://api.beta1-form.stf.xyz";
 
 const registrationSchema = [
   {
     name: "Name",
     key: "name",
     type: "string",
+    placeholder: "Satoshi Buterin",
   },
   {
-    name: "Wallet",
+    name: "Wallet Address",
     key: "wallet",
     type: "address",
+    isDisabled: true,
   },
   {
-    name: "Discord Username",
+    name: "Discord",
     key: "discord",
     type: "string",
+    placeholder: "satoshi#1234",
   },
   {
     name: "GitHub Username",
     key: "github",
     type: "string",
+    placeholder: "microZk",
   },
   {
     name: "NPM Username",
     key: "npm",
     type: "string",
+    placeholder: "microZk",
   },
   {
     name: "What vertical are you in?",
     key: "vertical",
     type: "string",
+    fieldType: "select",
+    placeholder: "Select a vertical",
+    options: [
+      "DeFi",
+      "Consumer",
+      "Auth",
+      "AI/ML",
+      "Privacy",
+      "Intents",
+      "Reputation",
+      "Identity",
+      "Other",
+    ],
   },
   {
-    name: "What do you plan to build?",
+    name: "What do you plan to build with the Stackr SDK?",
     key: "planToBuild",
     type: "string",
+    fieldType: "textarea",
+    placeholder: "A decentralized Twitter",
   },
   {
-    name: "How does Stackr fit into your project?",
+    name: "How does Stackr fit into your architectrue?",
     key: "stackrFit",
     type: "string",
+    fieldType: "textarea",
+    placeholder: "I plan to use Stackr for user authentication",
   },
   {
-    name: "What is your aspirational idea?",
+    name: "What is the most aspirational thing you want to build in Web3?",
     key: "aspirationalIdea",
     type: "string",
+    fieldType: "textarea",
+    placeholder: "A decentralized internet",
   },
 ];
+
+const SuccessBox = () => (
+  <div
+    id="on-submit"
+    className="font-geist rounded-lg bg-emerald-200 text-center w-full h-full p-4"
+  >
+    <p className="text-emerald-800 font-bold">
+      Thanks for applying to the Stackr Beta!
+      <br />
+      We'll "drop" the invite in your wallets soon 🖖🏻
+      <br />
+      <br />
+      You can track your access at{" "}
+      <a className="underline" target="_blank" href={MRU_API}>
+        MRU API
+      </a>
+    </p>
+  </div>
+);
 
 export const SignupForm = () => {
   const { signTypedDataAsync } = useSignTypedData();
   const { address, isConnected, chainId } = useAccount();
-  const { register, handleSubmit, reset, watch, formState } = useForm<any>();
+  const { register, handleSubmit, watch, formState } = useForm({
+    mode: "onChange",
+    values: {
+      wallet: address,
+    },
+  });
+  const hasSignedUp = localStorage.getItem("hasSignedUp");
   const watcher = watch();
   const [isAnyFieldEmpty, setIsAnyFieldEmpty] = useState(false);
-  const [hasApplied, setHasApplied] = useState(false);
 
   const onSubmit = async (details: any) => {
     const hash = hashFormData(details);
@@ -95,69 +143,110 @@ export const SignupForm = () => {
       body: JSON.stringify(payload),
     });
 
-    if (res.status === 201) {
-      setHasApplied(true);
-      reset();
+    if (res.status !== 201) {
+      const json = await res.json();
+      toast.error(`Failed to submit application.\nError: ${json.error}`);
+      throw new Error("Failed to submit application 😭");
     }
+    localStorage.setItem("hasSignedUp", "true");
+    toast.success("Application submitted successfully! 🚀");
   };
 
   const renderForm = () => {
-    const { isSubmitting, errors, isValid } = formState;
+    const { isSubmitting, errors, isValid, isSubmitSuccessful } = formState;
+
     const isDisabled = isSubmitting || !isValid || isAnyFieldEmpty;
 
     useEffect(() => {
       const anyFieldEmpty = Object.values(watcher).some(
-        (field) => field === ""
+        (field) => !field || field.length === 0
       );
       setIsAnyFieldEmpty(anyFieldEmpty);
     }, [watcher, errors]);
 
     if (!isConnected || chainId !== sepolia.id) {
       return <ConnectWallet />;
-    } else {
-      return (
-        <form
-          className="flex flex-col gap-6 w-full overflow-scroll p-1"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          {registrationSchema.map(({ key, type, name }) => (
-            <Input
-              key={key}
+    }
+
+    if (isSubmitSuccessful || hasSignedUp) {
+      document.getElementById("on-submit")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+
+      return <SuccessBox />;
+    }
+
+    return (
+      <form
+        className="font-geist flex flex-col gap-6 w-full overflow-scroll"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {registrationSchema.map(
+          (
+            { key, type, name, fieldType, isDisabled, placeholder, options },
+            idx
+          ) => (
+            <Field
+              key={`${key}-${idx}`}
               formKey={key}
               register={register}
-              placeholder={type}
+              fieldType={fieldType as any}
+              isDisabled={isDisabled}
+              placeholder={placeholder || type}
               defaultValue={key === "wallet" ? address : ""}
+              options={options}
               label={name}
               paramType={type}
             />
-          ))}
-
-          <div className="flex items-center justify-center">
-            <button
-              type="submit"
-              disabled={isDisabled}
-              className=" bg-teal-primary w-44 h-9 px-4 ring-2 ring-teal-primary/25 rounded-lg text-black font-jetbrains font-bold"
-            >
-              {isSubmitting ? "Applying..." : "Sign & Apply"}
-            </button>
-          </div>
-        </form>
-      );
-    }
+          )
+        )}
+        <div className="overflow-x-auto p-4 rounded-lg bg-slate-700 text-white ">
+          Form Data 👇
+          <br />
+          <pre className="font-jetbrains">
+            {JSON.stringify(watcher, null, 2)}
+          </pre>
+          <hr className="my-4" />
+          Hash 👇
+          <br />
+          <code className="font-jetbrains">{hashFormData(watcher)}</code>
+        </div>
+        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            disabled={isDisabled}
+            className={`primary bg-teal-connect w-44 h-9 px-4 rounded-lg absolute text-black font-jetbrains font-bold ${
+              isDisabled ? "disabled:opacity-40 cursor-not-allowed" : ""
+            }`}
+          >
+            {isSubmitting ? "Applying..." : "Sign & Apply"}
+          </button>
+        </div>
+        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
+      </form>
+    );
   };
 
   return (
-    <div className="font-geist">
-      {hasApplied ? (
-        // <Callout className="text-center" type="info">
-        <>
-          Thanks for applying, we'll review your application and "drop" access
-          in next few days!
-        </>
-      ) : (
-        // </Callout>
-        renderForm()
-      )}
+    <div>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 5000,
+          success: {
+            style: {
+              background: "#62ededfb",
+              color: "#051A21",
+              fontWeight: "bold",
+              minWidth: "360px",
+              backdropFilter: "blur(10px)",
+            },
+          },
+        }}
+      />
+      {renderForm()}
     </div>
   );
 };

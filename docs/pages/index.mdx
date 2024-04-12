@@ -3,16 +3,12 @@ layout: landing
 ---
 
 import { HomePage } from "vocs/components";
+import { Sponsors } from "vocs/components";
 
 <HomePage.Root>
   <HomePage.Logo />
-  <HomePage.InstallPackage name="@stackr/sdk" type="install" />
-  <HomePage.Buttons>
-    <HomePage.Button href="/beta-access" variant="accent">
-      Get started
-    </HomePage.Button>
-    <HomePage.Button href="https://github.com/wevm/vocs">
-      GitHub
-    </HomePage.Button>
-  </HomePage.Buttons>
+  <h1 className="text-3xl">Build Micro-rollups in TypeScript</h1>
+  <br />
+  <br />
+  <Sponsors />
 </HomePage.Root>
