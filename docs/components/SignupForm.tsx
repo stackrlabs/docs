@@ -212,8 +212,7 @@ export const SignupForm = () => {
           <br />
           <code className="font-jetbrains">{hashFormData(watcher)}</code>
         </div>
-        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
-        <div className="flex items-center justify-center">
+        <div className="my-6 flex items-center justify-center">
           <button
             type="submit"
             disabled={isDisabled}
@@ -224,7 +223,6 @@ export const SignupForm = () => {
             {isSubmitting ? "Applying..." : "Sign & Apply"}
           </button>
         </div>
-        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
       </form>
     );
   };
