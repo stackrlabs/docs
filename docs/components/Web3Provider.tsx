@@ -7,11 +7,22 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { sepolia } from "wagmi/chains";
+import { walletConnectProjectId } from "../constants";
+
+// This is faster than using the default RPC
+const sepoliaEuRPC = {
+  ...sepolia,
+  rpcUrls: {
+    default: {
+      http: ["https://rpc2.sepolia.org/"],
+    },
+  },
+};
 
 const config = getDefaultConfig({
   appName: "Stackr Docs",
-  projectId: "YOUR_PROJECT_ID",
-  chains: [sepolia],
+  projectId: walletConnectProjectId,
+  chains: [sepoliaEuRPC],
   ssr: true,
 });
 
