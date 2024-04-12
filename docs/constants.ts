@@ -925,12 +925,14 @@ interface Contract {
   abi: any[];
 }
 
-export const registryContract: Contract = {
-  address: "0x4513F25F9E70fA5796DEf5B071E12eF4eD346684",
+export const nftRegistryContract: Contract = {
+  address: "0xd977a042511b596daebc9171603D5d829476DD25",
   abi: registryAbi,
 };
 
-export const phase1Contract: Contract = {
-  address: "0xa5f197e3fc52d76d292cc7863bdc53ebdd5ab588",
+export const nftContract: Contract = {
+  address: "0x732F57877058B1bC923D8889D0594d2D19402A0D",
   abi: NFTAbi,
 };
+
+export const walletConnectProjectId = "YOUR_PROJECT_ID";

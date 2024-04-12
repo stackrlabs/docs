@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
-import { phase1Contract } from "../constants";
+import { nftContract } from "../constants";
 
 interface NFTMetadata {
   name: string;
@@ -13,7 +13,7 @@ export const NFTMinted = () => {
   const { address } = useAccount();
 
   const { data: nftMetaUrl } = useReadContract({
-    ...phase1Contract,
+    ...nftContract,
     functionName: "tokenURI",
     args: [],
   });
@@ -33,8 +33,19 @@ export const NFTMinted = () => {
       <span>Congrats, you have access to our SDK and own our NFT. 🥳</span>
       <br />
       <span>
-        Reach out to use on our discord channel to get started with deploying
+        Reach out to use on our{" "}
+        <a
+          className="underline"
+          href={"https://discord.com/invite/PY4nhg7bcc"}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Discord Channel
+        </a>{" "}
+        to get started with deploying
       </span>
+      <br />
+      <br />
 
       <div className="flex justify-center">
         {nftMeta ? (

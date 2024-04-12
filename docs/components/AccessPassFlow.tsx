@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { sepolia } from "viem/chains";
 import { useAccount, useReadContracts } from "wagmi";
-import { registryContract } from "../constants";
+import { nftRegistryContract } from "../constants";
 import { ConnectWallet } from "./ConnectWallet";
 import { MintNFT } from "./MintNFT";
 import { NFTMinted } from "./NFTMinted";
@@ -16,12 +16,12 @@ export const AccessPassFlow = () => {
   const { data: result, queryKey: accessQuery } = useReadContracts({
     contracts: [
       {
-        ...registryContract,
+        ...nftRegistryContract,
         functionName: "allowlist",
         args: [address as `0x${string}`],
       },
       {
-        ...registryContract,
+        ...nftRegistryContract,
         functionName: "isAllowed",
         args: [address as `0x${string}`],
       },
@@ -51,7 +51,9 @@ export const AccessPassFlow = () => {
     } else if (!canMint) {
       return (
         <div className="flex flex-col gap-6">
-          <span>Connected Address: {address}</span>
+          <span>
+            <p className="font-bold">Connected Account</p> <pre>{address}</pre>
+          </span>
           <NotApprovedToMint />
         </div>
       );

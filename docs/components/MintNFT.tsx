@@ -1,7 +1,7 @@
 import type { QueryKey } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { phase1Contract } from "../constants";
+import { nftContract } from "../constants";
 import { queryClient } from "./Web3Provider";
 
 interface WhitelistedNotOwnerProps {
@@ -34,7 +34,7 @@ export const MintNFT = ({ accessQuery }: WhitelistedNotOwnerProps) => {
         className={`bg-teal-primary w-44 h-9 px-4 rounded-lg ring-2 ring-teal-primary/25 text-black font-jetbrains font-bold ${buttonClass}`}
         onClick={() => {
           writeContract({
-            ...phase1Contract,
+            ...nftContract,
             functionName: "mint",
             args: [],
           });
