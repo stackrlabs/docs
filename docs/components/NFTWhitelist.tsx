@@ -29,6 +29,10 @@ export const NFTWhitelist = () => {
   });
 
   useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: accessQuery });
+  }, [isConnected, address]);
+
+  useEffect(() => {
     if (
       result &&
       result[0].status === "success" &&
@@ -38,10 +42,6 @@ export const NFTWhitelist = () => {
       setIsAllowed(Number(result[1].result) > 0);
     }
   }, [result]);
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: accessQuery });
-  }, [isConnected, address]);
 
   const renderForm = () => {
     if (!isConnected || chainId !== sepolia.id) {
