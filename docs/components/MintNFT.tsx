@@ -1,16 +1,14 @@
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { phase1Contract } from "../constants";
-import { useEffect } from "react";
 import type { QueryKey } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { phase1Contract } from "../constants";
 import { queryClient } from "./Web3Provider";
 
 interface WhitelistedNotOwnerProps {
   accessQuery: QueryKey;
 }
 
-export const WhitelistedNotOwner = ({
-  accessQuery,
-}: WhitelistedNotOwnerProps) => {
+export const MintNFT = ({ accessQuery }: WhitelistedNotOwnerProps) => {
   const { data: hash, writeContract, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({

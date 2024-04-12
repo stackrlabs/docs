@@ -9,7 +9,7 @@ interface NFTMetadata {
   description: string;
 }
 
-export const WhiteListedOwner = () => {
+export const NFTMinted = () => {
   const { address } = useAccount();
 
   const { data: nftMetaUrl } = useReadContract({

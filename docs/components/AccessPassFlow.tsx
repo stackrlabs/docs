@@ -1,17 +1,17 @@
-import { useAccount, useReadContracts } from "wagmi";
-import { ConnectWallet } from "./ConnectWallet";
-import { registryContract } from "../constants";
 import { useEffect, useState } from "react";
 import { sepolia } from "viem/chains";
-import { NotWhitelisted } from "./NotWhitelisted";
-import { WhitelistedNotOwner } from "./WhitelistedNotOwner";
-import { WhiteListedOwner } from "./WhiteListedOwner";
+import { useAccount, useReadContracts } from "wagmi";
+import { registryContract } from "../constants";
+import { ConnectWallet } from "./ConnectWallet";
+import { MintNFT } from "./MintNFT";
+import { NFTMinted } from "./NFTMinted";
+import { NotApprovedToMint } from "./NotApprovedToMint";
 import { queryClient } from "./Web3Provider";
 
-export const NFTWhitelist = () => {
+export const AccessPassFlow = () => {
   const { address, isConnected, chainId } = useAccount();
-  const [isWhiteListed, setIsWhiteListed] = useState<boolean | null>(null);
-  const [isAllowed, setIsAllowed] = useState<boolean | null>(null);
+  const [canMint, setCanMint] = useState<boolean | null>(null);
+  const [isMinted, setIsMinted] = useState<boolean | null>(null);
 
   const { data: result, queryKey: accessQuery } = useReadContracts({
     contracts: [
@@ -38,27 +38,27 @@ export const NFTWhitelist = () => {
       result[0].status === "success" &&
       result[1].status === "success"
     ) {
-      setIsWhiteListed(Boolean(result[0].result));
-      setIsAllowed(Number(result[1].result) > 0);
+      setCanMint(Boolean(result[0].result));
+      setIsMinted(Number(result[1].result) > 0);
     }
   }, [result]);
 
   const renderForm = () => {
     if (!isConnected || chainId !== sepolia.id) {
       return <ConnectWallet />;
-    } else if (isWhiteListed === null || isAllowed === null) {
+    } else if (canMint === null || isMinted === null) {
       return <div>Loading...</div>;
-    } else if (isWhiteListed === false) {
+    } else if (!canMint) {
       return (
         <div className="flex flex-col gap-6">
           <span>Connected Address: {address}</span>
-          <NotWhitelisted />
+          <NotApprovedToMint />
         </div>
       );
-    } else if (isWhiteListed && isAllowed === false) {
-      return <WhitelistedNotOwner accessQuery={accessQuery} />;
-    } else if (isAllowed) {
-      return <WhiteListedOwner />;
+    } else if (!isMinted) {
+      return <MintNFT accessQuery={accessQuery} />;
+    } else if (isMinted) {
+      return <NFTMinted />;
     }
   };
 

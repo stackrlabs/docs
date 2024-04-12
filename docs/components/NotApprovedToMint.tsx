@@ -1,4 +1,4 @@
-export const NotWhitelisted = () => {
+export const NotApprovedToMint = () => {
   return (
     <div>
       <span>Uh oh, looks like you are not whitelisted.</span>
