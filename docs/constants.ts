@@ -926,11 +926,11 @@ interface Contract {
 }
 
 export const registryContract: Contract = {
-  address: "0x048c8A0C284DD3B13A5fbEd227845624290ea592",
+  address: "0x4513F25F9E70fA5796DEf5B071E12eF4eD346684",
   abi: registryAbi,
 };
 
 export const phase1Contract: Contract = {
-  address: "0x4dba5150d5455559fE883D2A51B7bB5Cf3cB617e",
+  address: "0xa5f197e3fc52d76d292cc7863bdc53ebdd5ab588",
   abi: NFTAbi,
 };

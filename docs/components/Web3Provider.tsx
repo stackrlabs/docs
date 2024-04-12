@@ -8,19 +8,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { sepolia } from "wagmi/chains";
 
-const sepoliaWithNewRpc = {
-  ...sepolia,
-  rpcUrls: {
-    default: {
-      http: ["https://rpc2.sepolia.org/"],
-    },
-  },
-};
-
 const config = getDefaultConfig({
   appName: "Stackr Docs",
   projectId: "YOUR_PROJECT_ID",
-  chains: [sepoliaWithNewRpc],
+  chains: [sepolia],
   ssr: true,
 });
 

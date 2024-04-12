@@ -69,8 +69,8 @@ export default defineConfig({
       link: "/beta-access",
     },
     {
-      text: "Whitelist",
-      link: "/access-whitelist",
+      text: "Mint Access",
+      link: "/mint-access",
     },
     {
       text: "What to Build?",

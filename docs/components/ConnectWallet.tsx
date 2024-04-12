@@ -51,7 +51,7 @@ export const ConnectWallet = () => {
                       type="button"
                       className="bg-error-med w-44 h-9 px-4 rounded-lg ring-2 ring-error-med/25 text-black font-jetbrains font-bold"
                     >
-                      Wrong network
+                      Switch Network
                     </button>
                   </div>
                 );
