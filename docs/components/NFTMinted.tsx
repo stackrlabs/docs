@@ -49,7 +49,7 @@ export const NFTMinted = () => {
 
       <div className="flex justify-center">
         {nftMeta ? (
-          <div className="flex-col text-center items-center">
+          <div className="flex flex-col text-center items-center gap-4">
             <img src={nftMeta.image} alt={nftMeta.name} />
             <a
               className="underline"
