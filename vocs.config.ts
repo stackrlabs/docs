@@ -97,6 +97,10 @@ export default defineConfig({
       link: "/beta-access",
     },
     {
+      text: "Mint Access",
+      link: "/mint-access",
+    },
+    {
       text: "What to Build?",
       link: "/guides/what-to-build",
     },

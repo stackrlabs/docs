@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { keccak256, toBytes } from "viem";
+import { sepolia } from "viem/chains";
 import { useAccount, useSignTypedData } from "wagmi";
+import { getLocalStorageItem, updateLocalStorageItem } from "../utils";
+import { ConnectWallet } from "./ConnectWallet";
 import { Field } from "./Field";
 
 const hashFormData = (formData: Record<string, any>) => {
@@ -104,14 +107,14 @@ const SuccessBox = () => (
 
 export const SignupForm = () => {
   const { signTypedDataAsync } = useSignTypedData();
-  const { address } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
   const { register, handleSubmit, watch, formState } = useForm({
     mode: "onChange",
     values: {
       wallet: address,
     },
   });
-  const hasSignedUp = localStorage.getItem("hasSignedUp");
+  const hasSignedUp = getLocalStorageItem("hasSignedUp");
   const watcher = watch();
   const [isAnyFieldEmpty, setIsAnyFieldEmpty] = useState(false);
 
@@ -146,7 +149,7 @@ export const SignupForm = () => {
       toast.error(`Failed to submit application.\nError: ${json.error}`);
       throw new Error("Failed to submit application 😭");
     }
-    localStorage.setItem("hasSignedUp", "true");
+    updateLocalStorageItem("hasSignedUp", "true");
     toast.success("Application submitted successfully! 🚀");
   };
 
@@ -161,6 +164,10 @@ export const SignupForm = () => {
       );
       setIsAnyFieldEmpty(anyFieldEmpty);
     }, [watcher, errors]);
+
+    if (!isConnected || chainId !== sepolia.id) {
+      return <ConnectWallet />;
+    }
 
     if (isSubmitSuccessful || hasSignedUp) {
       document.getElementById("on-submit")?.scrollIntoView({
@@ -206,8 +213,7 @@ export const SignupForm = () => {
           <br />
           <code className="font-jetbrains">{hashFormData(watcher)}</code>
         </div>
-        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
-        <div className="flex items-center justify-center">
+        <div className="my-6 flex items-center justify-center">
           <button
             type="submit"
             disabled={isDisabled}
@@ -218,7 +224,6 @@ export const SignupForm = () => {
             {isSubmitting ? "Applying..." : "Sign & Apply"}
           </button>
         </div>
-        <div className="bg-teal-connect opacity-25 w-[180px] h-6 rounded-lg" />
       </form>
     );
   };

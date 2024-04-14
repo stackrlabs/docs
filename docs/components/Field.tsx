@@ -27,8 +27,7 @@ interface FieldProps {
   fieldType?: "textarea" | "select" | "input";
 }
 
-const inputClasses =
-  "p-2 border text-sm placeholder-white-44 border-grey-elevation-4 text-white bg-grey-elevation-2 focus:border-teal-primary rounded-lg outline-none";
+const inputClasses = "p-2 border text-sm text-white rounded-lg outline-none";
 
 export const Field: React.FC<FieldProps> = ({
   formKey,
