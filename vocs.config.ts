@@ -97,7 +97,7 @@ export default defineConfig({
       link: "/beta-access",
     },
     {
-      text: "Mint Access",
+      text: "Mint Access Pass",
       link: "/mint-access",
     },
     {
@@ -378,6 +378,10 @@ export default defineConfig({
     {
       text: "Changelog",
       link: "/changelog",
+    },
+    {
+      text: "Global Variables",
+      link: "/global-variables",
     },
   ],
 });
