@@ -1,25 +1,70 @@
+import { Callout } from "vocs/components";
+
 # Verification Layer [aka Vulcan]
 
-The Stackr verification layer, affectionately referred to as "Vulcan" operates as a decentralized and permissionless network, composed of autonomous nodes dedicated to establishing a layer tailored specifically for checking correctness of state updates of micro-rollups.
+The Stackr verification layer, also known as "Vulcan" is responsible for
+- **Verification**: Check correctness of state transitions
+- **Fast finality**: Provide soft confirmations to microrollups (also known as C2 confirmation)
+- **Settlement**: Provide data availability and hard confirmations to microrollups (also known as C3 confirmation)
+- **Bridging** (Coming soon): Provide fast and secure message passing between microrollups
 
-Vulcan seamlessly operates as an intermediary, bridging the gap between applications and the parent chain.
+Therefore, Vulcan provides a flexible range of settlement-as-a-service options for micro-rollups and lets developers focus on their core business logic.
 
-## Verification Model
+## Verification
 
-<img src="/assets/deploy.png" alt="Verification Model" />
+### Deployment
+<img src="/assets/deploy.png" alt="Deployment flow" />
 
-The developer deploys the application on the execution layer. The application is then registered on the verification layer by extracting the state machine of the micro-rollup and sending it to Vulcan in form of a WASM binary.
+Before Vulcan can start verifying batches, the developer must first build out their Stackr State machine (SSM) and deploy it as a microrollup (execution layer).
+The SSM is then compiled down to a WASM binary and sent to Vulcan, alongwith an initial genesis state. This all happens when executing the `deploy` CLI command.
 
-## Pessimistic re-execution
+<Callout type="info">
+  In the future, Vulcan will post the binary and genesis state to a DA layer to ensure full availability. 
+</Callout>
 
-Vulcan employs a pessimistic re-execution model to verify the incoming blocks from micro-rollups. The blocks from the execution layer is sent to Vulcan periodically. Vulcan uses the application’s WASM binary and applies the actions inside the block one-by-one on the genesis to generate the new state.
+After deployment, MRUs will be able to send batches at a developer-set cadence to Vulcan which then verifies the state transitions in each of the batches while ensuring consecutive block height ordering. 
 
-It then matches the generated state roots with the state root inside the block. If it succeeds the generated state becomes the current state so the next block will be applied on this state. Once the block passes the verification step, it takes the block and submits it on the desired L1 chain.
+Now we will delve into the key features of verification:
 
-## zkWASM Integration
+### Pessimistic re-execution with WASM
 
-Stackr is exploring the potential of a zkWASM-based system, enabling Vulcan to execute applications WASM binaries within a zkVM. This will improve the verification mechanism by creating a proof of re-execution, which is then recorded on the parent chain. This not only enhances the trust model of Vulcan but also optimizes the volume of data recorded on-chain, streamlining the overall process of verification.
+<img src="/assets/pessimium-mode.png" alt="Pessimium mode" />
 
-## Fast Finality
+Vulcan employs a pessimistic re-execution model to verify the incoming blocks from micro-rollups. 
+This means that Vulcan will use the application’s deployed WASM binary and apply the actions inside a block one-by-one on the current state to generate a new state.
+It then matches the generated state roots with the state root provided in the block. If this succeeds, the newly generated state becomes the current state for the next block to be verified.
 
-Since the Vulcan layer is responsible for checking the correctness of actions, it can also provide a confirmation before the data hits the parent chain. As mentioned previously, Stackr’s Micro-rollups provide multiple levels of confirmations, which can be used for building different user experiences. Vulcan behaves like a fast finality settlement layer, providing soft confirmations, orders of magnitude faster than the underlying parent chain and DA layer.
+WebAssembly (WASM) is a binary instruction format. It is designed as a portable target for high-level languages like Go, C, Python, and Rust. 
+WASM ensures a secure and sandboxed environment to execute the application logic. It also keeps the verification layer agnostic to the language and framework used to build out a microrollup. 
+Developers can build microrollups in any language that compiles down to WASM and it will work seamlessly with Vulcan.
+
+<Callout type="info">  
+  While WASM is almost fully deterministic, floating point operations can lead to discrepancies in the generated state.
+  
+  We advise developers to refrain from using floating point operations in their SSMs for the time being until we gain full determinism. 
+</Callout>
+
+### zkWASM Integration
+
+<img src="/assets/vulcan-zero.png" alt="Vulcan Zero" />
+
+Stackr is also exploring the potential of zkWASM-based verification, enabling Vulcan to execute application WASM binaries within a zkVM and generate STARK proofs.
+These proofs can be aggregated into a single STARK proof and wrapped in a groth16 SNARK wrapper for final verification on the parent chain.
+Proof aggregation will amortize the cost of verifying multiple blocks in a single proof, leading to cheaper and more scalable verification. 
+It will also enable highly secure settlement of blocks onchain.
+
+## Fast finality
+
+Since the Vulcan layer is responsible for checking the correctness of actions, it can also provide a confirmation before the data hits the parent chain.
+Once a block passes the verification step, Vulcan will emit a `C2` confirmation event to the corresponding MRU and approve the block for settlement.
+
+As mentioned previously, Stackr’s Micro-rollups provide multiple levels of confirmations, which can be used for building different user experiences. 
+Vulcan behaves like a fast finality settlement layer, providing soft confirmations orders of magnitude faster than the underlying parent chain and DA layer.
+
+## Settlement
+
+Once an incoming batch is verified, Vulcan will first ensure its availability by posting it to a DA layer of the developer's choice. This can be Avail, Celestia or EigenDA.
+After finalizing proof of data publication, Vulcan will emit a `C3A` confirmation event to denote guaranteed data availability and then proceed to submit the batch to the corresponding MRU's `AppInbox` smart contract on the parent chain. 
+On successful submission, the batch will be appended to the canonical chain on L1 and Vulcan will emit a `C3B` confirmation event denoting succesful settlement of the batch onchain. 
+
+
