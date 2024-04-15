@@ -4,15 +4,34 @@ Stackr provides a really powerful events framework that allows developers to get
 
 ## Subscribing to events
 
-You can subscribe to specific events by using the `events` utility returned by the rollup instance
+You can subscribe to specific events by using the `events` utility returned by the rollup instance like this
+
+{/* prettier-ignore */}
+```ts [index.ts]
+import { ConfirmationEvents } from "@stackr/sdk";
+
+const rollup = await MicroRollup({
+  config: stackrConfig,
+  actionSchemas: [UpdateCounterSchema],
+  stateMachines: [machine],
+});
+
+await rollup.init();
+
+// subscribe to Confirmation event
+rollup.events.subscribe(ConfirmationEvents.C0, (args) => { // [!code focus]
+  // take any action here with args // [!code focus]
+  console.log("C0 event fired", args); // [!code focus]
+}); // [!code focus]
+```
 
 ## Event Types and Arguments
 
 This framework supports a variety of events that cover different aspects of the Micro-Rollup's operation, from action submission to block acknowledgment by the Vulcan system.
 
-### Action Events
+## Action Events
 
-#### `ActionEvents.SUBMIT`
+### `ActionEvents.SUBMIT`
 
 Triggered when an action is submitted.
 
@@ -24,7 +43,7 @@ Triggered when an action is submitted.
 - `signature`: Signature of the action.
 - `payload`: Input types allowed for the action.
 
-#### `ActionEvents.REJECT`
+### `ActionEvents.REJECT`
 
 Occurs when an action is rejected.
 
@@ -32,7 +51,7 @@ Occurs when an action is rejected.
 
 - Follows the same structure as `ActionEvents.SUBMIT`.
 
-#### `ActionEvents.EXECUTION_STATUS`
+### `ActionEvents.EXECUTION_STATUS`
 
 Fires when there is a status update on the execution of an action.
 
@@ -42,7 +61,7 @@ Fires when there is a status update on the execution of an action.
 - `actionHash`: Hash of the action.
 - `status`: Execution status of the action.
 
-#### `ActionEvents.CONFIRMATION_STATUS`
+### `ActionEvents.CONFIRMATION_STATUS`
 
 Triggered when the confirmation status of an action is updated.
 
@@ -52,9 +71,9 @@ Triggered when the confirmation status of an action is updated.
 - `actionHash`: Hash of the action.
 - `status`: Confirmation status of the action.
 
-### Action Pool Events
+## Action Pool Events
 
-#### `ActionPoolEvents.ENQUEUE`
+### `ActionPoolEvents.ENQUEUE`
 
 Occurs when an action is enqueued.
 
@@ -62,7 +81,7 @@ Occurs when an action is enqueued.
 
 - `actionHash`: Hash of the action enqueued.
 
-#### `ActionPoolEvents.PAUSED`
+### `ActionPoolEvents.PAUSED`
 
 Triggered when the action pool is paused.
 
@@ -70,7 +89,7 @@ Triggered when the action pool is paused.
 
 - `reason`: Reason for the pause.
 
-#### `ActionPoolEvents.RESUMED`
+### `ActionPoolEvents.RESUMED`
 
 Fires when the action pool is resumed.
 
@@ -78,9 +97,9 @@ Fires when the action pool is resumed.
 
 - `reason`: Reason for the resumption (similar structure as the paused event).
 
-### Sequencer Events
+## Sequencer Events
 
-#### `SequencerEvents.ACTION_PICK`
+### `SequencerEvents.ACTION_PICK`
 
 Occurs when an action is picked by the sequencer.
 
@@ -88,7 +107,7 @@ Occurs when an action is picked by the sequencer.
 
 - `actionHash`: Hash of the action picked.
 
-#### `SequencerEvents.ORDER_ACTIONS`
+### `SequencerEvents.ORDER_ACTIONS`
 
 Triggered when actions are ordered by the sequencer.
 
@@ -98,7 +117,7 @@ Triggered when actions are ordered by the sequencer.
 - `actionRootHash`: Root hash of the ordered actions.
 - `signature`: Signature verifying the order.
 
-#### `SequencerEvents.PROPOSE_BLOCK`
+### `SequencerEvents.PROPOSE_BLOCK`
 
 Occurs when a block is proposed by the sequencer.
 
@@ -106,19 +125,74 @@ Occurs when a block is proposed by the sequencer.
 
 - `block`: Data of the block proposed.
 
-### Confirmation Events
+## Confirmation Events
 
-Detailed events tracking the various stages of action confirmation.
+Detailed events tracking the various stages of action confirmation, providing insights into each phase of the confirmation process within the Micro-Rollup.
 
-#### `ConfirmationEvents.C0` to `ConfirmationEvents.C3B`
+### `ConfirmationEvents.C0`
 
-**Event Arguments:**
+Triggered when action receives and acknowledgement from the rollup operator
 
-- `C0EventArgs`, `C1EventArgs`, `C2EventArgs`, `C3EventArgs` (with slight variations based on the stage).
+**Event Arguments:** `C0EventArgs`
 
-### Executor Events
+- `actionName`: Name of the action being confirmed.
+- `actionHash`: Hash of the action.
+- `msgSender`: Address of the sender.
+- `signature`: Signature of the action.
+- `payload`: Input types allowed for the action.
+- `actionNumber`: Sequential number of the action in the batch.
+- `acknowledgement`: Data confirming the preliminary acknowledgment.
 
-#### `ExecutorEvents.EXECUTE_BATCH`
+### `ConfirmationEvents.C1`
+
+Occurs when an action has been successfully applied to the state of the rollup
+
+**Event Arguments:** `C1EventArgs`
+
+- `actionName`: Name of the action being confirmed.
+- `actionHash`: Hash of the action.
+- `msgSender`: Address of the sender.
+- `signature`: Signature of the action.
+- `payload`: Input types allowed for the action.
+- `state`: Current state or relevant state information pertaining to the action.
+
+### `ConfirmationEvents.C2`
+
+Fires when the block is verified by Vulcan
+
+**Event Arguments:** `C2EventArgs`
+
+- `block`: Data of the block that includes the confirmed action.
+
+### `ConfirmationEvents.C2X`
+
+Triggered when the block was sent to Vulcan but it found the block to be invalid.
+
+**Event Arguments:** `C2EventArgs`
+
+- Similar to `ConfirmationEvents.C2`, focusing on exceptional or adjusted block data.
+
+### `ConfirmationEvents.C3A`
+
+Triggered when the block body data is settled on DA layer
+
+**Event Arguments:** `C3EventArgs`
+
+- `block`: Data of the block awaiting final confirmation.
+- `vulcanResponse`: Optional response from Vulcan, if applicable, that may influence the final confirmation status.
+
+### `ConfirmationEvents.C3B`
+
+Triggered when an action's block receives final confirmation from ethereum. This event marks the completion of the confirmation process and finalizes the block within the chain.
+
+**Event Arguments:** `C3EventArgs`
+
+- `block`: Data of the confirmed block.
+- `vulcanResponse`: Optional response from Vulcan that confirms or details the final status of the block.
+
+## Executor Events
+
+### `ExecutorEvents.EXECUTE_BATCH`
 
 Triggered when a batch of actions is executed.
 
@@ -128,7 +202,7 @@ Triggered when a batch of actions is executed.
 - `stateRoot`: Root hash of the state.
 - `actionHashes`: List of hashes of executed actions.
 
-#### `ExecutorEvents.ADVANCE_STATE`
+### `ExecutorEvents.ADVANCE_STATE`
 
 Occurs when the state is advanced following action execution.
 
@@ -139,9 +213,9 @@ Occurs when the state is advanced following action execution.
 - `payload`: Inputs of the action.
 - `updateResults`: Results of the state update.
 
-### Vulcan Events
+## Vulcan Events
 
-#### `VulcanEvents.POST_BLOCK`
+### `VulcanEvents.POST_BLOCK`
 
 Triggered when a block is posted to Vulcan.
 
@@ -149,7 +223,7 @@ Triggered when a block is posted to Vulcan.
 
 - `block`: Data of the block posted.
 
-#### `VulcanEvents.BLOCK_ACK`
+### `VulcanEvents.BLOCK_ACK`
 
 Occurs when a block is acknowledged by Vulcan.
 
@@ -158,7 +232,7 @@ Occurs when a block is acknowledged by Vulcan.
 - `blockHash`: Hash of the acknowledged block.
 - `status`: Status of the acknowledgment.
 
-#### `VulcanEvents.BLOCK_NACK`
+### `VulcanEvents.BLOCK_NACK`
 
 Triggered when a block is not acknowledged (NACK) by Vulcan.
 
