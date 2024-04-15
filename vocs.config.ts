@@ -346,23 +346,23 @@ export default defineConfig({
         collapsed: true,
         items: [
           {
-            text: "introduction",
+            text: "Introduction",
             link: "/build/cli/introduction",
           },
           {
-            text: "init",
+            text: "Initialize",
             link: "/build/cli/init",
           },
           {
-            text: "register",
+            text: "Register",
             link: "/build/cli/register",
           },
           {
-            text: "deploy",
+            text: "Deploy",
             link: "/build/cli/deploy",
           },
           {
-            text: "add-bridge",
+            text: "Add Bridge",
             link: "/build/cli/add-bridge",
           },
         ],
