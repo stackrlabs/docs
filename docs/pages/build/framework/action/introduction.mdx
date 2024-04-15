@@ -20,12 +20,13 @@ Actions are similar to transactions in a blockchain system. The key difference i
 
 ## Action Cost
 
-Stackr does not enforce a cost for an action in this version. 
+Stackr does not enforce a cost for an action in this version.
 However, Micro-Rollup developers are free to design their actions to include a cost component to charge users.
 
 ## Action Format
 
 In a gist, an action has the following properties to be able to mutate a state machine:
+
 ```typescript
 export interface IAction {
   identifier: string;
@@ -34,6 +35,7 @@ export interface IAction {
   payload: AllowedInputTypes;
 }
 ```
+
 - `identifier`: A unique identifier for the action. This allows the state machine to redirect it to the correct state transition function.
 - `msgSender`: The address of the user who sent the action.
 - `signature`: The signature of the action. This is used to authenticate the user who signed the action.
@@ -54,34 +56,44 @@ const action = NewSchema.actionFrom({
   msgSender: wallet.address,
 });
 ```
+
 - The `inputs` are of whatever type you defined in your schema.
-- The `signature` is an EIP712 signature over the action's `inputs`. This is used to authenticate the user who signed the action. 
-It can be created using your action schema like this:
+- The `signature` is an EIP712 signature over the action's `inputs`. This is used to authenticate the user who signed the action.
+  It can be created using your action schema like this:
+
 ```typescript
 const signature = await wallet.signTypedData(
-    schema.domain,
-    schema.EIP712TypedData.types,
-    payload,
-  );
+  schema.domain,
+  schema.EIP712TypedData.types,
+  payload
+);
 ```
+
 - The `msgSender` is the address of the user who sent the action.
 
 Your action is now ready for submission!
 
 ## Action Submission
+
 Your action can now be submitted to the Micro-Rollup's State Machine.
 All this requires calling the `submitAction` function on your Micro-Rollup.
+
 ```typescript
 let ack = await rollup.submitAction("<REDUCER-NAME>", action);
 ```
-We also pass in the name of the reducer that will be handling your action. 
+
+We also pass in the name of the reducer that will be handling your action.
 These are state transition functions that you will be defining in the `src/stackr/transitions.ts` file.
 On succesful submission, you will recieve an `Acknowledment` object that acts like a transaction receipt and is also considered a `C0` confirmation.
 This is proof of the action being successfully submitted to the state machine.
 
-## Action Execution
-
 ## EIP-712 Signing
+
 EIP 712 is a standard for signing structured data. It is used to sign actions in this version of Stackr.
 This also makes Stackr Actions compatible with existing browser wallet extensions and other EVM-friendly wallet implementations.
 
+## Action Execution
+
+Once the action is submitted, it goes in the rollup's action pool, similar to a traditional mempool. The action stays in the pool until picked up by a sequencer.
+
+The sequencer picks up the action, creates a block and sends that block to the executor. The executor then executes the block and updates the state of the rollup.
