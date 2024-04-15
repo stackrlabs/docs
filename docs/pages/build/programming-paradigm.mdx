@@ -1,0 +1,25 @@
+# Programming Paradigm [Embedding Apps inside blockchains]
+
+## New Paradigm for building apps
+
+Stackr is a blockchain development framework that provides a fresh perspective on decentralized app development. It takes away from the regular smart contract development paradigm and provides tooling that enables developers to <u>inject their application logic directly into the blockchain</u>.
+
+In a way it is similar to Polkadot's [Substrate framework](https://substrate.io/), but with a focus on Ethereum L2s, specially single-app rollups which we call "Micro-Rollups".
+
+#### Build blockchains like apps
+
+With Stackr, Developers dont write smart contracts, they build _state machines_.
+
+They can define their state, actions, and state transition functions and the Stackr framework converts that into a blockchain. Stackr does not provide a VM that can run a smart contract. Instead, it provides a way to write state transition functions that contain the application logic.
+
+#### Rollups are the new web servers
+
+Traditional chains are hosted standalone and developers have to deploy their apps on top of them. With Stackr the app and the blockchain are one.
+
+Micro-rollups builds, feels and behaves like a regular web2 backend server. They can be thought of as a _on-chain verifiable computation_ module embedded inside a regular web2 backend server that can talk to ethereum.
+
+## State and State Transition Functions
+
+The core of a Stackr app is the state and the state transition functions. The state is a data structure that holds the current state of the app. The state transition functions are functions that take the current state and an action as input and return the new state.
+
+Developers can define their state and state transition functions in a simple way using the Stackr framework. The framework then converts this into a blockchain that can roll blocks to ethereum

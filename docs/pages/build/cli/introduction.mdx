@@ -1,0 +1,34 @@
+# CLI [The entry point to Stackr SDK]
+
+Stackr SDK comes with a CLI that allows you to interact with the SDK from the command line. The CLI is the entry point to the SDK and provides a set of commands to help you manage your projects.
+
+It is written in TypeScript and can be installed globally using npm or yarn.
+
+```bash
+npm install -g @stackr/sdk
+```
+
+Although we recommend using CLI using `npx` so that you always have the latest version of the CLI.
+
+```bash
+npx @stackr/sdk@latest
+```
+
+running this should display the help message for the CLI like this -
+
+```bash
+Stackr CLI
+
+VERSION
+  @stackr/cli/0.0.11 darwin-arm64 node-v20.11.1
+
+USAGE
+  $ stackr [COMMAND]
+
+COMMANDS
+  compile   Compile yours Stackr State Machines to portable WASM modules.
+  deploy    Deploy your MRU to Vulcan
+  help      Display help for stackr.
+  init      Init an MRU from templates
+  register  Register your MicroRollup with Stackr
+```

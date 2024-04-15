@@ -1,0 +1,27 @@
+# `deploy` [Send the app to Vulcan]
+
+The `deploy` command is used to deploy your Micro-Rollup to the Vulcan network as well as set the initial genesis conditions on-chain.
+
+It does 3 things
+
+1. Extracts and compiles the State Machine into WASM
+2. Creates a commitment to the State Machine and genesis state, signs it using the operator private key and sends it to the `AppInbox` contract to initialize the application
+3. Uploads the WASM binary to Vulcan
+
+## Usage
+
+```bash
+npx @stackr/sdk@latest deploy
+```
+
+## Output
+
+If all goes well, you will see the following output
+
+```bash
+✔ 🏗️ State Machine built
+✔ 📝 Registered STF to AppInbox
+✔ 🖖 Deployed to Vulcan
+```
+
+Now the application is ready to be run and send blocks to the Vulcan network for verification.
