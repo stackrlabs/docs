@@ -1,0 +1,41 @@
+import { Mermaid } from "mdx-mermaid/lib/Mermaid";
+
+# Action Lifecycle
+
+## Features
+
+Any action submitted to the Micro-Rollup goes through a series of stages in its lifecycle. The action lifecycle is broadly classified into 2 groups
+
+### Execution Lifecycle
+
+The execution lifecycle of an action directly relates to the updation of state within the Micro-Rollup.
+
+It consists of the following stages:
+
+1. User creates an action
+2. User submits the action
+3. Action is acknowledged
+4. Action is included in a block
+5. Action is executed
+
+The execution of the action can be successful or can be reverted based on the state transition function.
+
+### Confirmation Lifecycle
+
+The confirmation lifecycle of an action relates to the finality of the action. It means if the action has been successfully received, executed, verified and stored on-chain.
+
+It consists of the following stages:
+
+1. Action is acknowledged
+2. Action is executed
+3. Action is verified
+4. Action is finalized
+
+Action finalization are split into 2 parts
+
+- finalized and published on DA
+- finalized and stored on Ethereum
+
+## Acccessing the Action Lifecycle
+
+The action's lifecycle update can be accessed through micro-rollup's `events` framework. More about this can be found in the [Events](/build/framework/events) section.

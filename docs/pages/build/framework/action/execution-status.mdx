@@ -1,0 +1,17 @@
+# Action Execution Status
+
+<img src="/assets/action-lifecycle.png" alt="Action Lifecycle" />
+
+The action goes through multiple steps in it's lifecycle as follows -
+
+1. **Created** - The action reaches the MRU.
+
+2. **Acknowledged/Received** - The MRU validates the action with it's schema and generates a proof of receipt and adds it to the mempool.
+
+3. **Included** - The MRU sequencers picks the action, orders it and puts it inside a block.
+
+4. **Executed** - (Inside a block) If the action conforms to the state transition requirements, it causes a mutation in the state. Otherwise the action moves to a 'Reverted' state
+
+After all the actions within the block have been executed, whether they lead to a state mutation or are moved to a 'Reverted' state due to non-conformity with the state transition requirements, the block reaches its final stage of the lifecycle and is considered finalized on the execution layer.
+
+This finalization process marks the completion of the action's journey through the MRU, ensuring that each action has been appropriately processed and its outcome recorded, thereby maintaining the integrity and consistency of the state within the MRU.
