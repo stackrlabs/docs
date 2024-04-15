@@ -1,1 +1,130 @@
 # Bridging [Getting data from L1]
+
+The Stackr SDK offers L1 to L2 bridging out of the box through the `Bridge` Plugin. 
+
+{/* prettier-ignore */}
+```ts [index.ts]
+// [!code word:Bridge]
+import { Bridge } from "@stackr/sdk/plugins";
+
+Bridge.init(rollup, {
+    handlers: {
+        // Define the bridging handler here. 
+    }
+})
+
+```
+
+## How it works? 
+1. You can set a `bridge` contract in your micro-rollup's `AppInbox`.
+2. The `AppInbox` has a `createTicket` function which can only be invoked by the bridge. 
+3. When a ticket is created on the L1, the micro-rollup receives the event and processes the ticket. 
+
+## Building your bridge
+
+### 1. Write the Bridge contract
+Developers can write their custom logic in the `Bridge` contract and interact with the `AppInbox` to create the `ticket` that'll be procsessed on the MRU.
+```solidity [TokenBridge.sol]
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.24;
+
+interface ITicketFactory {
+    function createTicket(
+        bytes32 _identifier,
+        address _msgSender,
+        bytes memory _message
+    ) external;
+}
+
+contract TokenBridge {
+    address ticketFactory;
+
+    constructor(address _ticketFactory) {
+        ticketFactory = _ticketFactory;
+    }
+
+    function bridgeETH(address _to) external payable { // [!code focus]
+        require(_to != address(0), "bridgeTokens/zero-address");
+        require(msg.value > 0, "bridgeTokens/zero-amount");
+
+        bytes memory message = abi.encode(_to, msg.value); // [!code focus]
+        bytes32 identifier = keccak256("BRIDGE_ETH"); // [!code focus]
+
+        ITicketFactory(ticketFactory).createTicket( // [!code focus]
+            identifier, // [!code focus]
+            msg.sender, // [!code focus]
+            message // [!code focus]
+        ); // [!code focus]
+    }
+}
+
+```
+The `bridgeETH` function —
+1. Encodes the data to be sent to the micro-rollup. 
+2. Computes an identifier for the ticket. This is important as this **identifier is used on the micro-rollup to match the ticket to a handler**. 
+3. Creates the ticket by calling the `AppInbox` with the ticket `identifier`, `msg.sender`, and the `message` to be attached to the ticket.
+
+### 2. Set the `Bridge` on the `AppInbox`.
+Next up, you need to update the `AppInbox` to know which `Bridge` contract to accept ticket creation requests from. 
+
+Run the CLI command:
+```bash [terminal]
+npx @stackr/cli add-bridge
+```
+
+You'll be prompted with the bridge address:
+```bash [terminal]
+? Bridge Contract Address
+```
+
+Enter your bridge contract address above and you're set! The CLI will update the `Bridge` contract address inside the `AppInbox`.
+
+
+### 3. Write the handler to process tickets
+You can define a handler to process each different type of ticket. 
+
+In our Bridge contract, we created a ticket with the identifier of `BRIDGE_ETH`. So, we need to write a handler to process the tickets with that specific identifier.
+
+The function defined as a handler has to return —
+1. `transitionName` - Name of the transition to trigger.
+2. `action` - Action object that has the `inputs` to pass to the transition, `signature` of the MRU's operator on the inputs, and the `msgSender`. 
+
+{/* prettier-ignore */}
+```ts [index.ts]
+Bridge.init(rollup, {
+    handlers: {
+        // [!code word: 'BRIDGE_ETH']
+        'BRIDGE_ETH': async (args) => {
+            const [_to, _amount] = abiCoder.decode(['address', 'uint'], args.data);
+            const inputs = {
+                address: _to,
+                amount: Number(_amount)
+            }
+            const signature = await signMessage(operator, MintTokenSchema, inputs);
+            
+            const action = MintTokenSchema.actionFrom({ 
+                inputs,
+                signature,
+                msgSender: operator.address
+            })
+
+            return {
+                transitionName: 'mintToken',
+                action: action
+            }
+        }
+    }
+})
+```
+The function to handle `BRIDGE_ETH` tickets —
+1. First, decodes the data sent with the ticket. 
+2. Generates the operator's signature on the data.
+3. Creates an action to be submitted to the rollup.
+4. Returns the `transitionName` and the `action`.
+
+The micro-rollup then takes over and submits the returned action to the correct transition.
+
+---
+
+That's it! You've successfuly implemented bridging in your micro-rollup. You can extend this example to do arbitrary message passing. From arbitrary ERC-20 tokens to simply sending data to the rollup. 
+For better understanding, we recommend going through the full codebase of the [bridge example](https://github.com/stackrlabs/micro-rollup-examples/tree/main/bridge).
