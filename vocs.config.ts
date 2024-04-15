@@ -275,6 +275,10 @@ export default defineConfig({
         collapsed: true,
         items: [
           {
+            text: "Stackr Config",
+            link: "/build/framework/config",
+          },
+          {
             text: "State Machine",
             collapsed: true,
             items: [
@@ -326,11 +330,15 @@ export default defineConfig({
               },
             ],
           },
-          { text: "Events", link: "/build/framework/events" },
           {
             text: "Block",
             link: "/build/framework/block",
           },
+          {
+            text: "Micro-Rollup",
+            link: "/build/framework/micro-rollup",
+          },
+          { text: "Events", link: "/build/framework/events" },
           {
             text: "Sequencer",
             link: "/build/framework/sequencer",
