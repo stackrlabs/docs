@@ -55,11 +55,8 @@ For the purpose of this tutorial, we will use the `Counter` template.
 Get started by running the following commands:
 
   1. cd uno/
-  2. cp .env.example .env
-  3. Modify values in stackr.config.ts & .env
-  4. npx @stackr/cli@latest register
-  5. Implement your State Machines
-  6. npx @stackr/cli@latest deploy
+  2. cp .env.example .env & modify values
+  3. Register your rollup using npx @stackr/cli@latest register
 
 ```
 
@@ -67,10 +64,11 @@ Get started by running the following commands:
 
 - Let's `cd` into the project directory and first copy the `.env.example` file to `.env`.
 - Update the following values in the `.env` file.
-  {/* - You can get the latest values listed in the [Providers and RPCs](/references/providers-and-rpc) Page. */}
+  - You can get the latest values listed in the [Providers and RPCs](/build/references/providers-and-rpc) Page.
 
 ```bash [.env]
 PRIVATE_KEY=<PRIVATE_KEY>
+REGISTRY_CONTRACT=<REGISTRY_CONTRACT>
 VULCAN_RPC=<VULCAN_RPC>
 L1_RPC=<L1_RPC>
 ```
