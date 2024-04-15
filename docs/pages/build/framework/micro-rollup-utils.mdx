@@ -1,0 +1,199 @@
+# Micro-Rollup Utilities
+
+The Micro-Rollup object exposes a few utility functions that can be used for various purposes -
+
+## Initialization and Configuration
+
+### `init()`
+
+Initializes the Micro-Rollup instance. Sets up all necessary configurations, action schemas, and state machines required for the rollup to operate.
+
+**Returns:** `Promise<void>`
+
+### `shutdown()`
+
+Gracefully shuts down the Micro-Rollup instance, ensuring all pending operations are completed and resources are properly released.
+
+**Returns:** `Promise<void>`
+
+## Action Handling
+
+### `submitAction(reducerName: string, action: Action)`
+
+Submits an action to be processed by the rollup, routed based on the specified reducer.
+
+**Parameters:**
+
+- `reducerName`: Name of the reducer handling the action.
+- `action`: Action object to be processed.
+
+**Returns:** `Promise<SerializedAcknowledgement>`
+
+### `actions.getSchema(identifier: string)`
+
+Fetches a specific action schema by its identifier.
+
+**Parameters:**
+
+- `identifier`: Unique identifier of the schema.
+
+**Returns:** `ActionSchema | undefined`
+
+### `actions.getByHash(actionHash: string)`
+
+Retrieves a serialized action from the rollup using its hash.
+
+**Parameters:**
+
+- `actionHash`: Hash of the action.
+
+**Returns:** `Promise<SerializedAction | null>`
+
+### `actions.getAllSchemas()`
+
+Returns all action schemas available in the Micro-Rollup.
+
+**Returns:** `SchemaObject[]`
+
+### `actions.getByInputsAndSender(inputs: AllowedInputTypes, sender: string)`
+
+Retrieves an action based on inputs provided and sender's address.
+
+**Parameters:**
+
+- `inputs`: Inputs to the action.
+- `sender`: Sender's address.
+
+**Returns:** `Promise<SerializedAction | null>`
+
+## Sequencer Functions
+
+### `sequencer.setStrategy(strategy)`
+
+Sets the strategy for the sequencer.
+
+**Parameters:**
+
+- `strategy`: Strategy object conforming to `BaseStrategy`.
+
+**Returns:** `void`
+
+### `sequencer.start()`
+
+Starts the sequencer to process actions.
+
+**Returns:** `void`
+
+### `sequencer.stop()`
+
+Stops the sequencer.
+
+**Returns:** `void`
+
+### `sequencer.tick()`
+
+Processes the next set of actions in one sequencer tick.
+
+**Returns:** `Promise<void>`
+
+## State Machine Operations
+
+### `stateMachines.get(id)`
+
+Retrieves a specific state machine by its identifier.
+
+**Parameters:**
+
+- `id`: Identifier of the state machine.
+
+**Returns:** `T | undefined`
+
+### `stateMachines.getFirst()`
+
+Retrieves the first state machine in the rollup.
+
+**Returns:** `T`
+
+### `stateMachines.getAllTransitions()`
+
+Lists all transitions available within the state machines.
+
+**Returns:** `string[]`
+
+## Syncer Functions
+
+### `syncer.start(batchTime)`
+
+Starts the syncer with a specified batch time.
+
+**Parameters:**
+
+- `batchTime`: Time interval in milliseconds between each batch.
+
+**Returns:** `void`
+
+### `syncer.stop()`
+
+Stops the syncer.
+
+**Returns:** `void`
+
+### `syncer.sendBatch()`
+
+Sends the current batch of actions for processing.
+
+**Returns:** `Promise<void>`
+
+## Chain Interaction
+
+### `chain.getCurrentHeight()`
+
+Retrieves the current blockchain height.
+
+**Returns:** `Promise<number>`
+
+### `chain.getBlockByHeight(height)`
+
+Retrieves a block by its height.
+
+**Parameters:**
+
+- `height`: Height of the block.
+
+**Returns:** `Promise<BlockData | null>`
+
+### `chain.getBlockByActionHash(actionHash)`
+
+Retrieves a block containing a specific action by its hash.
+
+**Parameters:**
+
+- `actionHash`: Hash of the action.
+
+**Returns:** `Promise<BlockData | null>`
+
+### `chain.getBlockHashByActionHash(actionHash)`
+
+Retrieves the block hash for a block containing a specific action.
+
+**Parameters:**
+
+- `actionHash`: Hash of the action.
+
+**Returns:** `Promise<Keccak256 | null>`
+
+### `chain.getBlockByHash(hash)`
+
+Retrieves a block by its hash.
+
+**Parameters:**
+
+- `hash`: Hash of the block.
+
+**Returns:** `Promise<BlockData | null>`
+
+## Event Handling
+
+### `events`
+
+Handles events within the Micro-Rollup framework. Specific methods and operations depend on the implementation of `EventHandler`. More about these in the next section.

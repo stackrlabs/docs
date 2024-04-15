@@ -1,3 +1,167 @@
 # Events Framework [Get granular insights into the Micro-Rollup]
 
 Stackr provides a really powerful events framework that allows developers to get granular insights into the Micro-Rollup's working. This framework is designed to provide a detailed view of the state transitions that are happening within the Micro-Rollup.
+
+## Subscribing to events
+
+You can subscribe to specific events by using the `events` utility returned by the rollup instance
+
+## Event Types and Arguments
+
+This framework supports a variety of events that cover different aspects of the Micro-Rollup's operation, from action submission to block acknowledgment by the Vulcan system.
+
+### Action Events
+
+#### `ActionEvents.SUBMIT`
+
+Triggered when an action is submitted.
+
+**Event Arguments:** `ActionSubmitEventArgs`
+
+- `actionName`: Name of the action submitted.
+- `actionHash`: Hash of the action.
+- `msgSender`: Address of the sender.
+- `signature`: Signature of the action.
+- `payload`: Input types allowed for the action.
+
+#### `ActionEvents.REJECT`
+
+Occurs when an action is rejected.
+
+**Event Arguments:** `ActionSubmitEventArgs`
+
+- Follows the same structure as `ActionEvents.SUBMIT`.
+
+#### `ActionEvents.EXECUTION_STATUS`
+
+Fires when there is a status update on the execution of an action.
+
+**Event Arguments:** `ActionExecutionStatusEventArgs`
+
+- `actionName`: Name of the action.
+- `actionHash`: Hash of the action.
+- `status`: Execution status of the action.
+
+#### `ActionEvents.CONFIRMATION_STATUS`
+
+Triggered when the confirmation status of an action is updated.
+
+**Event Arguments:** `ActionConfirmationStatusEventArgs`
+
+- `actionName`: Name of the action.
+- `actionHash`: Hash of the action.
+- `status`: Confirmation status of the action.
+
+### Action Pool Events
+
+#### `ActionPoolEvents.ENQUEUE`
+
+Occurs when an action is enqueued.
+
+**Event Arguments:** `ActionPoolEnqueueEventArgs`
+
+- `actionHash`: Hash of the action enqueued.
+
+#### `ActionPoolEvents.PAUSED`
+
+Triggered when the action pool is paused.
+
+**Event Arguments:** `ActionPoolPausedEventArgs`
+
+- `reason`: Reason for the pause.
+
+#### `ActionPoolEvents.RESUMED`
+
+Fires when the action pool is resumed.
+
+**Event Arguments:** `ActionPoolPausedEventArgs`
+
+- `reason`: Reason for the resumption (similar structure as the paused event).
+
+### Sequencer Events
+
+#### `SequencerEvents.ACTION_PICK`
+
+Occurs when an action is picked by the sequencer.
+
+**Event Arguments:** `SequencerPickActionEventArgs`
+
+- `actionHash`: Hash of the action picked.
+
+#### `SequencerEvents.ORDER_ACTIONS`
+
+Triggered when actions are ordered by the sequencer.
+
+**Event Arguments:** `SequencerOrderActionEventArgs`
+
+- `actionHashes`: List of action hashes ordered.
+- `actionRootHash`: Root hash of the ordered actions.
+- `signature`: Signature verifying the order.
+
+#### `SequencerEvents.PROPOSE_BLOCK`
+
+Occurs when a block is proposed by the sequencer.
+
+**Event Arguments:** `SequencerBatchOrderEventArgs`
+
+- `block`: Data of the block proposed.
+
+### Confirmation Events
+
+Detailed events tracking the various stages of action confirmation.
+
+#### `ConfirmationEvents.C0` to `ConfirmationEvents.C3B`
+
+**Event Arguments:**
+
+- `C0EventArgs`, `C1EventArgs`, `C2EventArgs`, `C3EventArgs` (with slight variations based on the stage).
+
+### Executor Events
+
+#### `ExecutorEvents.EXECUTE_BATCH`
+
+Triggered when a batch of actions is executed.
+
+**Event Arguments:** `ExecuteBatchEventArgs`
+
+- `state`: Current state after execution.
+- `stateRoot`: Root hash of the state.
+- `actionHashes`: List of hashes of executed actions.
+
+#### `ExecutorEvents.ADVANCE_STATE`
+
+Occurs when the state is advanced following action execution.
+
+**Event Arguments:** `ExecuteAdvanceStateEventArgs`
+
+- `actionHash`: Hash of the action causing the state change.
+- `actionName`: Name of the action.
+- `payload`: Inputs of the action.
+- `updateResults`: Results of the state update.
+
+### Vulcan Events
+
+#### `VulcanEvents.POST_BLOCK`
+
+Triggered when a block is posted to Vulcan.
+
+**Event Arguments:** `VulcanPostBatchEventArgs`
+
+- `block`: Data of the block posted.
+
+#### `VulcanEvents.BLOCK_ACK`
+
+Occurs when a block is acknowledged by Vulcan.
+
+**Event Arguments:** `VulcanAckEventArgs`
+
+- `blockHash`: Hash of the acknowledged block.
+- `status`: Status of the acknowledgment.
+
+#### `VulcanEvents.BLOCK_NACK`
+
+Triggered when a block is not acknowledged (NACK) by Vulcan.
+
+**Event Arguments:** `VulcanAckEventArgs`
+
+- Follows the same structure as `VulcanEvents.BLOCK_ACK`.

@@ -338,15 +338,19 @@ export default defineConfig({
             text: "Micro-Rollup",
             link: "/build/framework/micro-rollup",
           },
+          {
+            text: "Micro-Rollup Utils",
+            link: "/build/framework/micro-rollup-utils",
+          },
           { text: "Events", link: "/build/framework/events" },
           {
             text: "Sequencer",
             link: "/build/framework/sequencer",
           },
-          {
-            text: "Executor",
-            link: "/build/framework/executor",
-          },
+          // {
+          //   text: "Executor",
+          //   link: "/build/framework/executor",
+          // },
         ],
       },
       {
