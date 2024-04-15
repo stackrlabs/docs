@@ -13,6 +13,7 @@ npx @stackr/cli@latest init
 ```bash [bun]
 bunx @stackr/cli@latest init
 ```
+
 :::
 
 - Choose a template from the list and follow the instructions.
@@ -65,7 +66,7 @@ Get started by running the following commands:
 ## Setting up your config
 
 - Let's `cd` into the project directory and first copy the `.env.example` file to `.env`.
-- Update the following values in the `.env` file. 
+- Update the following values in the `.env` file.
   {/* - You can get the latest values listed in the [Providers and RPCs](/references/providers-and-rpc) Page. */}
 
 ```bash [.env]
@@ -116,7 +117,7 @@ bunx @stackr/cli@latest register
 :::
 
 :::info
-  This command will register your application on the registry contract. And update the `deployment.json` file with the latest values of `appId`, `appInbox` and `chainId`.
+This command will register your application on the registry contract. And update the `deployment.json` file with the latest values of `appId`, `appInbox` and `chainId`.
 :::
 
 You'll see a message that the application has been registered on the registry.
@@ -145,6 +146,7 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
 ```
 
 - `machine.ts` contains the `StateMachine` and `State` classes for your application.
+
   - Please make sure to make a named export the `StateMachine` class from this file. Like below:
 
   ```ts [machine.ts]
@@ -156,9 +158,9 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
 - `transitions.ts` contains the `STF` (State Transition Functions) for your application.
 
 :::warning
-  For the time of beta, it is recommended that the `machine.ts` or the file containing the StateMachine, doesn't import anything from `@stackr/sdk` instead uses `@stackr/sdk/machine` for the `StateMachine`, `State`, `Transitions` and other utility classes.
+For the time of beta, it is recommended that the `machine.ts` or the file containing the StateMachine, doesn't import anything from `@stackr/sdk` instead uses `@stackr/sdk/machine` for the `StateMachine`, `State`, `Transitions` and other utility classes.
 :::
 
 ## Advanced
 
-- [Checking your WASM Binary](/guides/checking-your-binaries)
+- [Checking your WASM Binary](/build/guides/checking-your-binaries)

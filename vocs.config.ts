@@ -238,8 +238,12 @@ export default defineConfig({
             ],
           },
           {
-            text: "New Development Paradigm",
-            link: "/build/programming-paradigm",
+            text: "New Dev Paradigm",
+            link: "/build/development-paradigm",
+          },
+          {
+            text: "Configuration",
+            link: "/build/references/providers-and-rpc",
           },
           {
             text: "Frequently Asked Questions",
@@ -250,10 +254,6 @@ export default defineConfig({
       {
         text: "Guides",
         items: [
-          {
-            text: "Check your Binaries",
-            link: "/build/guides/checking-your-binaries",
-          },
           {
             text: "Community Examples",
             link: "/build/guides/community-examples",
@@ -270,94 +270,76 @@ export default defineConfig({
           },
         ],
       },
-      // {
-      //   text: "References",
-      //   collapsed: true,
-      //   items: [
-      //     {
-      //       text: "Providers and RPC",
-      //       link: "/build/references/providers-and-rpc",
-      //     },
-      //   ],
-      // },
       {
         text: "Framework",
         collapsed: true,
         items: [
           {
-            text: "Global Variables",
-            link: "/build/framework/global-variables",
+            text: "State Machine",
+            collapsed: true,
+            items: [
+              {
+                text: "Introduction",
+                link: "/build/framework/state-machine/introduction",
+              },
+              {
+                text: "State",
+                link: "/build/framework/state-machine/state",
+              },
+              {
+                text: "Genesis State",
+                link: "/build/framework/state-machine/genesis-state",
+              },
+              {
+                text: "State Transitions",
+                link: "/build/framework/state-machine/state-transitions",
+              },
+              {
+                text: "Global Variables",
+                link: "/build/framework/global-variables",
+              },
+            ],
+          },
+          {
+            text: "Action",
+            collapsed: true,
+            items: [
+              {
+                text: "Introduction",
+                link: "/build/framework/action/introduction",
+              },
+              {
+                text: "Action Schema",
+                link: "/build/framework/action/action-schema",
+              },
+              {
+                text: "Lifecycle",
+                link: "/build/framework/action/lifecycle",
+              },
+              {
+                text: "Execution Status",
+                link: "/build/framework/action/execution-status",
+              },
+              {
+                text: "Confirmation Status",
+                link: "/build/framework/action/confirmation-status",
+              },
+            ],
+          },
+          { text: "Events", link: "/build/framework/events" },
+          {
+            text: "Block",
+            link: "/build/framework/block",
+          },
+          {
+            text: "Sequencer",
+            link: "/build/framework/sequencer",
+          },
+          {
+            text: "Executor",
+            link: "/build/framework/executor",
           },
         ],
-        // items: [
-        //   {
-        //     text: "State Machine",
-        //     collapsed: true,
-        //     items: [
-        //       {
-        //         text: "Introduction",
-        //         link: "/framework/state-machine/introduction",
-        //       },
-        //       {
-        //         text: "State",
-        //         link: "/framework/state-machine/state",
-        //       },
-        //       {
-        //         text: "Reducers",
-        //         link: "/framework/state-machine/reducers",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     text: "Action",
-        //     collapsed: true,
-        //     items: [
-        //       {
-        //         text: "Introduction",
-        //         link: "/framework/action/introduction",
-        //       },
-        //       {
-        //         text: "Action Schema",
-        //         link: "/framework/action/action-schema",
-        //       },
-        //       {
-        //         text: "Lifecycle",
-        //         link: "/framework/action/lifecycle",
-        //       },
-        //       {
-        //         text: "Execution Status",
-        //         link: "/framework/action/execution-status",
-        //       },
-        //       {
-        //         text: "Confirmation Status",
-        //         link: "/framework/action/confirmation-status",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     text: "Block",
-        //     link: "/framework/block.mdx",
-        //   },
-        //   {
-        //     text: "Sequencer",
-        //     collapsed: true,
-        //     items: [
-        //       {
-        //         text: "Builder",
-        //         link: "/framework/sequencer/builder",
-        //       },
-        //       {
-        //         text: "Proposer",
-        //         link: "/framework/sequencer/proposer",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     text: "Executor",
-        //     link: "/framework/executor",
-        //   },
-        //   { text: "Events", link: "/framework/events" },
-        // ],
       },
       {
         text: "CLI",
@@ -396,6 +378,16 @@ export default defineConfig({
           {
             text: "Bridging",
             link: "/build/plugins/bridging",
+          },
+        ],
+      },
+      {
+        text: "Advanced",
+        collapsed: true,
+        items: [
+          {
+            text: "Check your Binaries",
+            link: "/build/guides/checking-your-binaries",
           },
         ],
       },
