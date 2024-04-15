@@ -1,3 +1,22 @@
 # `add-bridge` [Deploy a bridge and register with AppInbox]
 
-## Coming soon
+The `add-bridge` command is used to set the Bridge contract in your AppInbox on-chain. This is helpful as the AppInbox only accepts ticket requests for L1 to L2 bridging from the known Bridge contract. 
+
+## Usage
+
+```bash
+npx @stackr/cli@latest add-bridge
+```
+
+## Output
+
+You'll be prompted to enter your bridge address.
+```bash [terminal]
+? Bridge Contract Address
+```
+Enter the address and hit enter. 
+
+If it passes all the checks 
+```bash [terminal]
+✔ 🌉 Succesfully added bridge contract to AppInbox
+```
