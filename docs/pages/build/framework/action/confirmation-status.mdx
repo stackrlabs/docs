@@ -1,0 +1,34 @@
+# Action Confirmation Status
+
+The framework provides four distinct levels of confirmation or finality for each user-initiated action, each successive level increments in time to completion but concurrently enhances the security guarantee. This granularity provides developers the opportunity to craft user experiences around throughput-security trade-offs.
+
+<img
+  src="/assets/confirmation-levels.png"
+  alt="Action Lifecycle - Confirmation"
+/>
+
+#### C0 : Acknowledged (instant)
+
+The rollup operator generates and returns a signature on the user action. This signature serves as a formal acknowledgment denoting the successful reception of the user action and serves as a rudimentary mechanism for censorship resistance, particularly important considering the central hosting of micro-rollups.
+
+#### C1 : Executed (milliseconds)
+
+The application undertakes the execution of the user action, thereby affecting a change in the application’s internal state. This confirmation guarantees that the executed action is incorporated into a block.
+
+#### C2 : Verified (seconds to minutes)
+
+The third level of confirmation involves the transmission of the action batch to the verification layer, which, pessimistically re-executes the state transition for correctness, thus cementing the assurance that the application has properly executed the state transitions.
+
+#### C3 : Finalized (minutes to hours)
+
+The verification layer posts a commitment to this data, either as raw state data or ZKPs, on-chain and provides a guarantee that the batch has successfully traversed to the L1 layer
+
+Stackr splits C3 even further between DA and L1
+
+- **C3a: DA Finality (seconds to a minute)**
+
+This confirmation level involves the posting of the action batch data as a blob to a data availability layer. This ensures that the data can be trustlessly retrieved to derive the rollup’s state.
+
+- **C3b: L1 Finality (minutes to hours)**
+
+The verification layer posts a commitment to the action batch data on-chain to verify and guarantee that the batch has been appended to the rollup’s canonical chain and is impervious to subsequent tampering or alterations

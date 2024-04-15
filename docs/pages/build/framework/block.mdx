@@ -1,0 +1,56 @@
+# Block [Heart of the blockchain]
+
+Blocks are the basic entity of a blockchain. It encodes a set of actions that are executed in a single atomic operation. It also includes the commitment to the state of the application that was changed by the actions included in that block.
+
+## Blocks on Stackr
+
+A block in Stackr framework looks like this
+
+```ts [block.ts]
+interface BlockData {
+  appId: number;
+  parentHash: string;
+  height: number;
+  hash: string;
+  timestamp: number;
+  actionRoot: string;
+  acknowledgementRoot: string;
+  stateRoot: string;
+  operatorSignature: SignatureLike;
+  builderSignature: SignatureLike;
+  executionStatus: number;
+  actions: {
+    action: {
+      hash: string;
+      name: string;
+      payload: AllowedInputTypes;
+      msgSender: AddressLike;
+      signature: SignatureLike;
+    };
+    acknowledgement: {
+      hash: string;
+      height: number;
+      timestamp: number;
+      operatorSignature: SignatureLike;
+    };
+  }[];
+}
+```
+
+### Header
+
+- `appId`: The application id to which this block belongs to.
+- `parentHash`: The hash of the parent block.
+- `height`: The height of the block in the chain.
+- `hash`: The hash of the block.
+- `timestamp`: The timestamp at which the block was created.
+- `actionRoot`: The root hash of the actions included in the block.
+- `acknowledgementRoot`: The root hash of the acknowledgements of the actions included in the block.
+- `stateRoot`: The root hash of the state after applying the actions in the block.
+- `operatorSignature`: The signature of the operator on the block.
+- `builderSignature`: The signature of the builder on the block.
+- `executionStatus`: The status of the block execution. It is an encoded value that represents which action succeeded and which failed.
+
+### Body
+
+- `actions`: The list of actions included in the block along with their acknowledgements.

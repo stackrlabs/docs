@@ -1,0 +1,61 @@
+# State Transition Functions [Transitioning between states]
+
+State transitions are the functions that move the state machine from one state to another. These contain the logic of the application and determine how the state machine will move from one state to another based on the inputs.
+
+## Transition Functions in Stackr
+
+Stackr provides a toolkit to create state transition functions.
+
+A basic transition function in Stackr looks like this:
+
+```typescript
+import { STF, Transitions } from "@stackr/sdk/machine";
+import { CounterState } from "./machine";
+
+const increment: STF<CounterState> = {
+  handler: ({ state }) => {
+    state += 1;
+    return state;
+  },
+};
+
+const decrement: STF<CounterState> = {
+  handler: ({ state }) => {
+    state -= 1;
+    return state;
+  },
+};
+
+export const transitions: Transitions<CounterState> = {
+  increment,
+  decrement,
+};
+```
+
+In the above example, we have two transition functions `increment` and `decrement`. These functions take the current state as input and return the new state after applying the logic.
+
+## Transition Functions in Detail
+
+The most important part of the transition function is the `handler` function. This function takes the current state and any other input as arguments and returns the new state. There are several inputs that handler receives which are discussed in the next section. However the most important thing to note here is that the handler function should be a pure function. It should not have any side effects and should only depend on the inputs.
+
+## Mutating the State
+
+The state is passed as a reference to the handler function. This means that you can directly mutate the state inside the handler function. Once the operations on the state are complete, you must return the new state otherwise the state machine will not apply the changes to the state
+
+## STF is a pure function
+
+The transition function is a pure function. This means that it should not have any side effects and should only depend on the inputs. This is important because the state is verified by Vulcan after the block is sent to it. Vulcan can only run the STF inside a sandboxed environment and cannot run any async operations or access the network or perform any side effects.
+
+## Passing Inputs to the Transition Function
+
+The state transition functions accept inputs, which is available through the `inputs` argumaent on the handler. These inputs are derived through which `ActionSchema` was used to trigger the STF.
+
+```tsx [transitions.ts]
+const increment: STF<CounterState> = {
+  // [!code word:inputs]
+  handler: ({ state, inputs }) => {
+    state += inputs.amount;
+    return state;
+  },
+};
+```

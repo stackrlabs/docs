@@ -1,0 +1,172 @@
+# State [Application state]
+
+The application state is a snapshot of the current state of the application. The application state is managed by the state machine and is updated based on the user's interactions with the application.
+
+## Application state in Stackr
+
+Stackr provides a very simple and intuitive way to manage the application state. It can be a simple value, an object, or a complex data structure. It is completely up to the developer to decide how to structure the application state.
+
+## State Definition
+
+The application state is defined as a class that extends the `State` class provided by Stackr.
+
+```ts [machines.ts]
+import { State } from "@stackr/sdk/machine";
+
+// provide the type of the state
+// [!code word:StateType]
+export class MicroRollupState extends State<StateType> {
+  constructor(state: StateType) {
+    super(state);
+  }
+
+  getRootHash() {
+    // implement the logic to get the root hash
+  }
+}
+```
+
+### 1. State Type
+
+You need to provide the type of the state when defining the state class. The type of the state is defined by the developer and can be any valid TypeScript type.
+
+### 2. Root Hash
+
+The other thing to note is that the state class should implement the `getRootHash` method. There are no restriction on how this method should be implemented. It is up to the developer to decide how to calculate the root hash of the state. The only requirement is that the method should create a single hash/commitment that represents the entire state.
+
+## Wrapped and Unwrapped State
+
+Sometimes it maybe required that the Raw representation of the state is too slim to be able to operate on it. In such cases, the raw state can be wrapped into an object that can create a richer representation of the state. The optional `transformer` method can be used to define how the state should be wrapped and unwrapped.
+
+{/* prettier-ignore */}
+```ts [machines.ts]
+import { State } from "@stackr/sdk/machine";
+
+export class CounterState extends State<number> {
+  constructor(state: number) {
+    super(state);
+  }
+
+  transformer(): {// [!code focus]
+    wrap: () => number; // [!code focus]
+    unwrap: (wrappedState: number) => number; // [!code focus]
+  } {
+    // [!code focus]
+    return { // [!code focus]
+      wrap: () => this.state, // [!code focus]
+      unwrap: (wrappedState: number) => wrappedState, // [!code focus]
+    }; // [!code focus]
+  } // [!code focus]
+
+  getRootHash() {
+    return solidityPackedKeccak256(["uint256"], [this.state]);
+  }
+}
+```
+
+### Example 1 - Merkle Tree
+
+An example of this could be an array of objects that represent an account. The raw state could be an array of account ids, but the wrapped state could be a merkle tree of the accounts like this :
+
+{/* prettier-ignore */}
+```ts
+import { State } from "@stackr/sdk/machine";
+import { BytesLike, ZeroHash, solidityPackedKeccak256 } from "ethers";
+import { MerkleTree } from "merkletreejs"; // [!code focus]
+
+// Raw State
+export type Leaves = {
+  address: string;
+  balance: number;
+  nonce: number;
+  allowances: {
+    address: string;
+    amount: number;
+  }[];
+}[];
+
+// Wrapped State
+export class MerkleTreeWrapper { // [!code focus]
+  public merkleTree: MerkleTree; // [!code focus]
+  public leaves: Leaves; // [!code focus]
+
+  constructor(leaves: Leaves) { // [!code focus]
+    this.merkleTree = this.createTree(leaves); // [!code focus]
+    this.leaves = leaves; // [!code focus]
+  } // [!code focus]
+
+  createTree(leaves: Leaves) { // [!code focus]
+    const hashedLeaves = leaves.map((leaf) => { // [!code focus]
+      return solidityPackedKeccak256( // [!code focus]
+        ["address", "uint256", "uint256"], // [!code focus]
+        [leaf.address, leaf.balance, leaf.nonce] // [!code focus]
+      ); // [!code focus]
+    }); // [!code focus]
+    return new MerkleTree(hashedLeaves); // [!code focus]
+  } // [!code focus]
+} // [!code focus]
+
+export class ERC20 extends State<Leaves, MerkleTreeWrapper> {
+  constructor(state: Leaves) {
+    super(state);
+  }
+
+  transformer() { // [!code focus]
+    return {// [!code focus]
+      wrap: () => {// [!code focus]
+        return new MerkleTreeWrapper(this.state); // [!code focus]
+      },// [!code focus]
+      unwrap: (wrappedState: MerkleTreeWrapper) => {// [!code focus]
+        return wrappedState.leaves;// [!code focus]
+      },// [!code focus]
+    };// [!code focus]
+  }// [!code focus]
+
+  getRootHash(): BytesLike {
+    if (this.state.length === 0) {
+      return ZeroHash;
+    }
+    return this.transformer().wrap().merkleTree.getRoot();
+  }
+}
+```
+
+### Example 2 - Chess Game
+
+Another example of this could be a game of chess. The raw state could be FEN notation of the board, but the wrapped state could be an object that wraps the FEN and gives a richer representation of the board.
+
+{/* prettier-ignore */}
+```ts
+import { State } from "@stackr/sdk/machine";
+import { Chess } from "chess.js"; // [!code focus]
+import { BytesLike, hexlify, solidityPackedKeccak256 } from "ethers";
+
+// raw state // [!code focus]
+// "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" // [!code focus]
+
+export class ChessState extends State<string, Chess> {
+  constructor(state: string) {
+    super(state);
+  }
+
+  transformer() { // [!code focus]
+    return {// [!code focus]
+      wrap: () => {// [!code focus]
+        const chessBoard = new Chess(this.state);// [!code focus]
+        return chessBoard;// [!code focus]
+      },// [!code focus]
+      unwrap: (wrappedState: Chess) => {// [!code focus]
+        return wrappedState.fen();// [!code focus]
+      },// [!code focus]
+    };// [!code focus]
+  }// [!code focus]
+
+  getRootHash(): BytesLike {
+    return hexlify(solidityPackedKeccak256(["string"], [this.state]));
+  }
+}
+```
+
+:::info
+Note that the state that needs to be stored on-chain should be serializable. The wrapped state is what is used on the Micro-rollup for operations and the raw state is what is stored on-chain.
+:::

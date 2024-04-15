@@ -1,0 +1,39 @@
+# Sequencer [Actions ordering]
+
+Every Micro-Rollup has a built in sequencing module that picks up the transactions from the actions pool and creates an ordered list of actions to be included in the next block. The sequencer also ensures that the actions are ordered in a way that they are executed in a deterministic manner across all the nodes in the network.
+
+## Private Sequencing
+
+Currently each micro-rollup handles its own sequencer, it means its a centralized sequencer. We deliberately kept it this way to allow for different and interesting design patterns. We have a censorship resistance mechanism in place to prevent the sequencer from censoring actions in form of C0. More on this in the [Confirmation Status](/build/framework/action/confirmation-status) section.
+
+## Parameters
+
+The sequencer module has the following parameters that are set in the `stackr.config.ts` file
+
+```ts [stackr.config.ts]
+ sequencer: {
+    batchSize: 16,
+    batchTime: 1000,
+  },
+```
+
+- `batchSize`: The number of actions that the sequencer picks up in a single batch.
+- `batchTime`: The time interval after which the sequencer picks up the actions in a batch.
+
+## Lazy blocks
+
+In the above example it means that the sequencer picks upto 16 actions every second and orders them in a batch. If there are no actions in the pool then the sequencer does not create a block.
+
+If there are less than 16 actions in the pool when the timer expires then the sequencer picks up any remaining number of actions and creates a block.
+
+## Ordering
+
+Currently the sequencer only supports FIFO (First In First Out) ordering of the actions. This means that the actions are ordered in the same order as they are received in the pool.
+
+## Custom Ordering Strategy (soon)
+
+In the future we plan to add support for custom ordering strategies that can be set. More details on this soon.
+
+## Shared Sequencing (soon)
+
+In the future, Stackr also aims to integrate third-party sequencers that can be used to sequence the actions. This will allow for more flexibility in the ordering of the actions and also allow micro-rollups to compose with other chains in the system

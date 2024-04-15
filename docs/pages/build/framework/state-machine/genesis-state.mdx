@@ -1,0 +1,13 @@
+# Genesis State [The state at which the state machine starts]
+
+The genesis state is the initial state of the state machine. This state is serialized and stored as the begininng of the rollup inside the `AppInbox` contract.
+
+The genesis state is stored in a `genesis-state.json` file in the root of the project. This file is used to initialize the state machine with the initial state. The CLI also uses this file to register the rollup with the `AppInbox` contract.
+
+```json [genesis-state.json]
+{
+  "state": <ANY_FORMAT>
+}
+```
+
+The JSON object must have a `state` key that contains the initial state of the state machine. The state can be in any format.

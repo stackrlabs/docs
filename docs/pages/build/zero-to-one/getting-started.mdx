@@ -1,0 +1,90 @@
+# Getting Started [Prepare your development environment]
+
+The first step to start developing Micro-Rollups with Stackr is to prepare your development environment and making sure that all the system requirements are upto date and matches the required versions.
+
+## Prerequisites
+
+### Git
+
+Incase you don't already have it, you can follow the instructions at [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+### NodeJS LTS or above
+
+:::code-group
+
+```bash [Linux / MacOS]
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash nvm install lts
+```
+
+```bash [Windows]
+# Install Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
+
+# Install NodeJS
+choco install nodejs --version="lts"
+```
+
+:::
+
+### Bun
+
+We utilize some of the capabilities of Bun.
+
+:::info
+Make sure you have the latest version of Bun installed (i.e >= `1.0.15`)
+:::
+
+```sh copy
+curl -fsSL https://bun.sh/install | bash
+```
+
+More information regarding Bun can be found at https://bun.sh
+
+### Installation
+
+:::warning
+
+#### Remove previously installed Stackr CLI
+
+If you have previously installed the Stackr CLI binary from 2023, you need to uninstall it first.
+
+```bash
+rm -rf ~/.stackr
+```
+
+:::
+
+You need to have access to the Stackr packages, if you don't have that refer to the [Getting Beta Access](/beta/beta-access) section.
+
+CLI helps you to create, register and deploy your micro-rollups.
+Either you can install it globally using
+
+:::code-group
+
+```bash [npm]
+npm i -g @stackr/cli
+```
+
+```bash [bun]
+bun i -g @stackr/cli
+```
+
+:::
+
+OR
+
+you can run the commands without installing
+
+:::code-group
+
+```bash [npm]
+npx @stackr/cli
+```
+
+```bash [bun]
+bunx @stackr/cli
+```
+
+:::

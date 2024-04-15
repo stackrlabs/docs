@@ -1,0 +1,99 @@
+import { Mermaid } from "mdx-mermaid/lib/Mermaid";
+
+# Action [Basic interaction unit in an MRU]
+
+Actions are the fundamental unit of interaction. They are the building block of a state machine that captures the user's input. These are analogous to transactions in a regular blockchain system with the difference that these are just signed messages that the users send to the micro-rollup.
+
+Actions are used to trigger a state mutation in the MRU which is handled by the state transition function.
+
+<Mermaid
+  chart={`graph LR
+    A[User] --> B(Action)
+    B --> C(State Transition Function)
+    C --> D[New State]
+`}
+/>
+
+## Actions vs transactions
+
+Actions are similar to transactions in a blockchain system. The key difference is that actions are not broadcasted to any network. They are just signed messages that the users send to the micro-rollup.
+
+## Action Cost
+
+Stackr does not enforce a cost for an action in this version.
+However, Micro-Rollup developers are free to design their actions to include a cost component to charge users.
+
+## Action Format
+
+In a gist, an action has the following properties to be able to mutate a state machine:
+
+```typescript
+export interface IAction {
+  identifier: string;
+  msgSender: AddressLike;
+  signature: SignatureLike;
+  payload: AllowedInputTypes;
+}
+```
+
+- `identifier`: A unique identifier for the action. This allows the state machine to redirect it to the correct state transition function.
+- `msgSender`: The address of the user who sent the action.
+- `signature`: The signature of the action. This is used to authenticate the user who signed the action.
+- `payload`: The data of the action. This is the actual data that the action is supposed to mutate the state with.
+
+## Action Creation
+
+Actions are constructed via `ActionSchema`s. More on this [here](/build/framework/action/action-schema).
+
+Once you've generated the schema for your action, you can use the `actionFrom` function on your schema to create a new action.
+The schema ensures that your action is well-formed and adheres to the schema's rules while also being EIP 712 'signable'.
+Here's an example of how you can create an action from a schema:
+
+```typescript
+const action = NewSchema.actionFrom({
+  inputs,
+  signature,
+  msgSender: wallet.address,
+});
+```
+
+- The `inputs` are of whatever type you defined in your schema.
+- The `signature` is an EIP712 signature over the action's `inputs`. This is used to authenticate the user who signed the action.
+  It can be created using your action schema like this:
+
+```typescript
+const signature = await wallet.signTypedData(
+  schema.domain,
+  schema.EIP712TypedData.types,
+  payload
+);
+```
+
+- The `msgSender` is the address of the user who sent the action.
+
+Your action is now ready for submission!
+
+## Action Submission
+
+Your action can now be submitted to the Micro-Rollup's State Machine.
+All this requires calling the `submitAction` function on your Micro-Rollup.
+
+```typescript
+let ack = await rollup.submitAction("<REDUCER-NAME>", action);
+```
+
+We also pass in the name of the reducer that will be handling your action.
+These are state transition functions that you will be defining in the `src/stackr/transitions.ts` file.
+On succesful submission, you will recieve an `Acknowledment` object that acts like a transaction receipt and is also considered a `C0` confirmation.
+This is proof of the action being successfully submitted to the state machine.
+
+## EIP-712 Signing
+
+EIP 712 is a standard for signing structured data. It is used to sign actions in this version of Stackr.
+This also makes Stackr Actions compatible with existing browser wallet extensions and other EVM-friendly wallet implementations.
+
+## Action Execution
+
+Once the action is submitted, it goes in the rollup's action pool, similar to a traditional mempool. The action stays in the pool until picked up by a sequencer.
+
+The sequencer picks up the action, creates a block and sends that block to the executor. The executor then executes the block and updates the state of the rollup.
