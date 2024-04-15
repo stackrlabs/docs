@@ -69,9 +69,18 @@ The `bridgeETH` function —
 ### 2. Set the `Bridge` on the `AppInbox`.
 Next up, you need to update the `AppInbox` to know which `Bridge` contract to accept ticket creation requests from. 
 
-<Callout type="danger">
-NEED TO UPDATE THIS SECTION AFTER CLI IS RELEASD.
-</Callout>
+Run the CLI command:
+```bash [terminal]
+npx @stackr/cli add-bridge
+```
+
+You'll be prompted with the bridge address:
+```bash [terminal]
+? Bridge Contract Address
+```
+
+Enter your bridge contract address above and you're set! The CLI will update the `Bridge` contract address inside the `AppInbox`.
+
 
 ### 3. Write the handler to process tickets
 You can define a handler to process each different type of ticket. 
