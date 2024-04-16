@@ -5,7 +5,7 @@ export const NotApprovedToMint = () => {
       <br />
       <span>
         If you haven't filled out the Beta Access form, fill it out{" "}
-        <a href="/beta-access" className="underline font-bold">
+        <a href="/beta/beta-access" className="underline font-bold">
           here
         </a>{" "}
         and we will get back to you. 🫡
