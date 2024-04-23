@@ -12,7 +12,7 @@ You have created an instance of `MicroRollup` and passed the necessary options.
 You have added all the `ActionSchemas` to the `MicroRollup` constructor like this
 
 ```ts showLineNumbers [index.ts]
-const rollup = new MicroRollup({
+const rollup = await MicroRollup({
     actionSchemas: [ActionSchema1, ActionSchema2, ...], // [!code focus]
     ...
 });
