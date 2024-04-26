@@ -145,7 +145,7 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
 
 - `machine.ts` contains the `StateMachine` and `State` classes for your application.
 
-  - Please make sure to make a named export the `StateMachine` class from this file. Like below:
+  - Please make sure to export the `StateMachine` object from this file.
 
   ```ts [machine.ts]
   const myMachine = new StateMachine({ ... })

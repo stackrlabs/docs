@@ -207,9 +207,6 @@ const machine = new StateMachine({
 export { machine };
 ```
 
-:::warning
-Please note that the machine must always be a named export. This is because the SDK uses the name of the export to identify the machine.
-
 ```ts [machine.ts]
 // [!code word:StateMachine]
 import { BytesLike, State, StateMachine } from "@stackr/sdk/machine";
