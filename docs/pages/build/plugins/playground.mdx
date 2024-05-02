@@ -56,5 +56,36 @@ If you're having problem with the Playground website not being able to load your
 
 <img src="/assets/playground-action.png" alt="Stackr Playground | Actions" />
 
+### Custom Endpoints ⚙️
+
+While developing playground, we realized that you might need more endpoints to interact with MRU other than Transition functions. We added support to add custom `GET` endpoints to the Playground Plugin. 
+
+You can add custom `GET` endpoints to the Playground Plugin. The only condition being it should start with `/custom/`.
+
+
+```ts [index.ts]
+const playground = Playground.init(rollup);
+
+// [!code word:addGetMethod]
+playground.addGetMethod('/custom/state', (_req, res) => { // [!code focus]
+  return res.send({ state: pointsMachine?.state }); // [!code focus]
+}); // [!code focus]
+```
+
+When you add this, you'll see a new Handler in the Playground's Interact Tab.
+
+<center>
+    <img src="/assets/get-handler.png" width={320} alt="Stackr Playground | Custom Get Handler" />
+</center>
+
+You can click on it and in the tab press "Execute" to see the response from the endpoint.
+This way you can add as many custom endpoints as you want to interact with your MRU.
+
+<center>
+    <img src="/assets/get-response.png" width={512} alt="Stackr Playground | Get State Response" />
+</center>
+
+This is a powerful feature that can help you debug your MRU's state and actions in real-time.
+
 ## Play around 🪀
 The Playground is a powerful developer tool. When used right, it can help developers accelerate the development process! Use it to test the business logic of your app by interacting with the rollups, look if the blocks are being constructed correctly, check if the transitions are being applied correctly through state rewind, and whatever else that aids you in the process 🤝
