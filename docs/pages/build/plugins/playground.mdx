@@ -5,19 +5,18 @@ import { Callout } from "vocs/components";
 The Playground Plugin powers a full featured interface in the browser for developers to interact with their micro-rollup, detailed look at the actions processed by the rollup, inspect the blocks produced.
 
 It has nifty features like:
-- Clearly view the tiered confirmation levels for each action. 
-- State rewind to check the state of the micro-rollup, action-by-action. 
-- Visibility in the mempool to look at actions to be batched. 
 
+- Clearly view the tiered confirmation levels for each action.
+- State rewind to check the state of the micro-rollup, action-by-action.
+- Visibility in the mempool to look at actions to be batched.
 
 <img src="/assets/playground-interact.png" alt="Stackr Playground | Interact" />
 
-
 ## Setting up the Playground
 
-
 ### Initialising the plugin.
-Once you're initialised your micro-rollup, you can activate the Playground Plugin. 
+
+Once you're initialised your micro-rollup, you can activate the Playground Plugin.
 
 ```ts [index.ts]
 // [!code word:Playground]
@@ -35,7 +34,8 @@ Playground.init(rollup); // [!code focus]
 ```
 
 Voila! Now when you run the `index.ts` file and the rollup starts up, you should also see -
-```bash 
+
+```bash
 --------------------------------------------------
 🛝  Access MRU Playground using the link ⬇️
         https://playground.stf.xyz
@@ -46,15 +46,62 @@ This means a server has been spun up for you with helpful end points and a strea
 
 ### Accessing the Playground website
 
-Now, click the link that showed up in your terminal and the Playground will open up in your browser. 
+Now, click the link that showed up in your terminal and the Playground will open up in your browser.
 
 Otherwise, head to [playground.stf.xyz](https://playground.stf.xyz) and manually enter the URL of your playground server. If you haven't made any changes, it should be `http://localhost:42069`.
 
 <Callout type="info">
-If you're having problem with the Playground website not being able to load your micro-rollups data, try turning off the Brave Shield if you're on Brave Browser, and similar settings if this problem is encountered in other browsers.
+  If you're having problem with the Playground website not being able to load
+  your micro-rollups data, try turning off the Brave Shield if you're on Brave
+  Browser, and similar settings if this problem is encountered in other
+  browsers.
 </Callout>
 
 <img src="/assets/playground-action.png" alt="Stackr Playground | Actions" />
 
+### Custom Endpoints ⚙️
+
+While developing playground, we realized that you might need more endpoints to interact with MRU other than Transition functions. We added support to add custom `GET` endpoints to the Playground Plugin.
+
+You can add custom `GET` endpoints to the Playground Plugin. The only condition being it should start with `/custom/`.
+
+```ts [index.ts]
+const playground = Playground.init(rollup);
+
+// [!code word:addGetMethod]
+playground.addGetMethod("/custom/state", (_req, res) => {
+  // [!code focus]
+  return res.json({ state: pointsMachine?.state }); // [!code focus]
+}); // [!code focus]
+```
+
+:::warning
+Make sure to only pass JSON data in the response.
+:::
+
+When you add this, you'll see a new Handler in the Playground's Interact Tab.
+
+<center>
+  <img
+    src="/assets/get-handler.png"
+    width={320}
+    alt="Stackr Playground | Custom Get Handler"
+  />
+</center>
+
+You can click on it and in the tab press "Execute" to see the response from the endpoint.
+This way you can add as many custom endpoints as you want to interact with your MRU.
+
+<center>
+  <img
+    src="/assets/get-response.png"
+    width={512}
+    alt="Stackr Playground | Get State Response"
+  />
+</center>
+
+This is a powerful feature that can help you debug your MRU's state and actions in real-time.
+
 ## Play around 🪀
+
 The Playground is a powerful developer tool. When used right, it can help developers accelerate the development process! Use it to test the business logic of your app by interacting with the rollups, look if the blocks are being constructed correctly, check if the transitions are being applied correctly through state rewind, and whatever else that aids you in the process 🤝
