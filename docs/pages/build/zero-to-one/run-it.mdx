@@ -86,32 +86,35 @@ npm start
 
 - Build the image using the following command: (make sure you replace `<NPM_TOKEN>` with the actual value)
 
-```bash [Terminal]
-# For Linux
+:::code-group
+
+```bash [Linux]
 docker build -t app_name:latest . \
   --build-arg NPM_TOKEN=<NPM_TOKEN>
-
-# For Mac with Apple Silicon chips
+```
+```bash [Mac w/ Apple Silicon]
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t app_name:latest . \
   --build-arg NPM_TOKEN=<NPM_TOKEN>
 ```
+:::
 
 - Run the Docker container using the following command:
 
-```bash [Terminal]
-# If using SQLite as the datastore
+:::code-group
+```bash [File-based DB]
 docker run \
   -v ./db.sqlite:/app/db.sqlite \
   -p <HOST_PORT>:<CONTAINER_PORT> \
   --name=app_name -it app_name:latest
-
-# If using other URI based datastores
+```
+```bash [URI-based DB]
 docker run \
   -p <HOST_PORT>:<CONTAINER_PORT> \
   --name=app_name -it app_name:latest
 ```
+:::
 
 If everything is working fine, you should see the logs in the terminal, like this:
 
