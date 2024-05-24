@@ -46,7 +46,7 @@ export default defineConfig({
       items: [
         {
           text: "Changelog",
-          link: "/changelog",
+          link: "/build/changelog",
         },
       ],
     },
