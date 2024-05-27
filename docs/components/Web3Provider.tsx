@@ -32,13 +32,6 @@ const config = createConfig({
 createWeb3Modal({
   wagmiConfig: config,
   projectId,
-  themeMode: "dark",
-  themeVariables: {
-    "--w3m-accent": "#00CECE",
-    "--w3m-z-index": 50,
-    "--w3m-border-radius-master": "1px",
-    "--w3m-font-family": "JetBrains Mono, monospace",
-  },
 });
 
 export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({
