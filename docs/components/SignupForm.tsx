@@ -166,7 +166,7 @@ export const SignupForm = () => {
     }, [watcher, errors]);
 
     if (!isConnected || chainId !== sepolia.id) {
-      return <w3m-button />;
+      return <ConnectWallet />;
     }
 
     if (isSubmitSuccessful || hasSignedUp) {
