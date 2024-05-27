@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { sepolia } from "viem/chains";
 import { useAccount, useReadContracts } from "wagmi";
 import { nftRegistryContract } from "../constants";
-import { ConnectWallet } from "./ConnectWallet";
 import { MintNFT } from "./MintNFT";
 import { NFTMinted } from "./NFTMinted";
 import { NotApprovedToMint } from "./NotApprovedToMint";
-import { queryClient } from "./Web3Provider";
+import { queryClient } from "./Web3ModalProvider";
 
 export const AccessPassFlow = () => {
   const { address, isConnected, chainId } = useAccount();
@@ -45,7 +44,7 @@ export const AccessPassFlow = () => {
 
   const renderForm = () => {
     if (!isConnected || chainId !== sepolia.id) {
-      return <ConnectWallet />;
+      return <w3m-button />;
     } else if (canMint === null || isMinted === null) {
       return <div>Fetching permissions...</div>;
     } else if (!canMint) {

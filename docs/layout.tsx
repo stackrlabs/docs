@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Web3Provider } from "./components/Web3Provider";
+import { Web3Provider } from "./components/Web3ModalProvider";
 
 interface LayoutProps {
   children: ReactNode;
