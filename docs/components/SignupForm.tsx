@@ -6,6 +6,7 @@ import { sepolia } from "viem/chains";
 import { useAccount, useSignTypedData } from "wagmi";
 import { getLocalStorageItem, updateLocalStorageItem } from "../utils";
 import { Field } from "./Field";
+import { ConnectWallet } from "./ConnectWallet";
 
 const hashFormData = (formData: Record<string, any>) => {
   return keccak256(toBytes(JSON.stringify(formData)));
@@ -165,7 +166,7 @@ export const SignupForm = () => {
     }, [watcher, errors]);
 
     if (!isConnected || chainId !== sepolia.id) {
-      return <w3m-button />;
+      return <ConnectWallet />;
     }
 
     if (isSubmitSuccessful || hasSignedUp) {

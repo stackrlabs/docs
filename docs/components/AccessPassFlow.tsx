@@ -6,6 +6,7 @@ import { MintNFT } from "./MintNFT";
 import { NFTMinted } from "./NFTMinted";
 import { NotApprovedToMint } from "./NotApprovedToMint";
 import { queryClient } from "./Web3Provider";
+import { ConnectWallet } from "./ConnectWallet";
 
 export const AccessPassFlow = () => {
   const { address, isConnected, chainId } = useAccount();
@@ -44,7 +45,7 @@ export const AccessPassFlow = () => {
 
   const renderForm = () => {
     if (!isConnected || chainId !== sepolia.id) {
-      return <w3m-button />;
+      return <ConnectWallet />;
     } else if (canMint === null || isMinted === null) {
       return <div>Fetching permissions...</div>;
     } else if (!canMint) {
