@@ -2,7 +2,7 @@ import type { QueryKey } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { nftContract } from "../constants";
-import { queryClient } from "./Web3ModalProvider";
+import { queryClient } from "./Web3Provider";
 
 interface WhitelistedNotOwnerProps {
   accessQuery: QueryKey;
