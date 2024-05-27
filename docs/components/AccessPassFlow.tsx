@@ -5,7 +5,7 @@ import { nftRegistryContract } from "../constants";
 import { MintNFT } from "./MintNFT";
 import { NFTMinted } from "./NFTMinted";
 import { NotApprovedToMint } from "./NotApprovedToMint";
-import { queryClient } from "./Web3ModalProvider";
+import { queryClient } from "./Web3Provider";
 
 export const AccessPassFlow = () => {
   const { address, isConnected, chainId } = useAccount();
