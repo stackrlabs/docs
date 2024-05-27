@@ -4,13 +4,12 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { WagmiProvider } from "wagmi";
 import { sepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { walletConnectProjectId } from "../constants";
 
 // 0. Setup queryClient
 export const queryClient = new QueryClient();
 
-export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
-
-if (!projectId) throw new Error("Project ID is not defined");
+export const projectId = walletConnectProjectId;
 
 const metadata = {
   name: "Stackr Docs",
@@ -34,13 +33,14 @@ const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
+  ssr: true,
 });
 
 createWeb3Modal({
   wagmiConfig: config,
   projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  enableOnramp: true, // Optional - false as default
+  enableAnalytics: true,
+  enableOnramp: true,
 });
 
 export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({
