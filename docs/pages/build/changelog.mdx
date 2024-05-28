@@ -1,5 +1,77 @@
 # Changelog [What's new]
 
+## v0.2.18-alpha to `v0.4.1`, CLI v0.0.19 and more
+
+### SDK
+
+#### Breaking Changes
+
+- refactor: consolidate BlockEntity boolean fields into status
+- Merged the boolean fields `isAcknowledgedByVulcan`, `isFinalized`, `isRejected`, `isSubmitting` into `BlockStatus` itself.
+- Added `Proposed`, `Submitting` and `Rejected` to `BlockStatus`.
+- Change `BlockStatus.Unknown` -> `BlockStatus.Proposed`.
+
+#### Features
+
+- feat: `C3B` confirmation now comes on Consensus Layer finalization
+- feat: Prune `state_updates` for old finalized blocks
+    - Remove all the state updates for actions in the finalized block once it receives C3B. This makes the datastore lighter.
+- Store `fuelConsumed` in DB along with BlockData
+- feat: store `l1BlockNumber` and use it for query while doing C3B finalization
+
+#### Other changes
+
+- fix: [PLAYGROUND] remove 404 handler
+- chore: add Bytes32 to Solidity type
+- fix: Respect logLevel for playground plugins logs
+- fix: use `ZeroHash` as parentHash of first block
+- new [PLUGIN]: Bridge plugin in SDK
+- perf: optimizations for fetch actions & acks
+- fix: use `stfSchemaMap` to validate actions as per schema based on defined Transition functions
+- feat: store & send `l1Metadata` with block
+- refactor: getBlockByActionHash
+- chore: add local server link in playground logs
+- fix: remove `l1RPC` from playground config
+- feat: add `Block` object (*containing height, timestamp and parentHash*) in STF
+- fix: create partial block in DB & create one block at a time.
+- feat: `positionInBlock` for actions
+- feat: emit `ChainEvents.REORG` event
+- fix: backfill pending actions from DB to pool on bootup
+- fix: execute & sequence unfinalized blocks on bootup
+- fix: sync missed BlockSubmitted L1 events on bootup
+- feat: Support new Block Status Response
+- feat: check `minSupportedSDKVersion` from Vulcan Healthcheck
+- feat: expose `actions.query` in MicroRollupResponse
+- fix: State revert to Genesis in case of first action getting rejected [BUG]
+- fix: validate genesis state and getRootHash at MRU init
+- fix: await for `advanceActionExecution` and then enqueue [BUG]
+- refactor: Remove internal Datastore
+- chore: add lint rule for no-floating-promises and all occurrences of no-floating-promises
+- test: `BlockService.updateBlockState` and few more
+
+### CLI
+
+- fix: handle quote in `.env` values
+- feat: Support default export and declaration export
+- fix: handle errors globally
+- feat: Update datastore in config & fixes in query config
+- fix: use `process.env.DB_URI` as default
+- docs: Add docker instructions in README
+- fix: don't ask if when no database
+- feat: add `--privateKey` support for  for `register` and `deploy`
+- [COMMAND] `add <entity> <address>`
+- Changing `add-bridge` to `add bridge`
+- [COMMAND] `transfer-ownership` along with `--privateKey` support 
+
+### go-daash
+
+- `go-daash` New `v0.2.0` release!
+- BlobstreamX integration by [@0xRampey](https://github.com/0xRampey) in [#8](https://github.com/stackrlabs/go-daash/pull/8)
+- VectorX integration by [@0xRampey](https://github.com/0xRampey) in [#13](https://github.com/stackrlabs/go-daash/pull/13/commits/63e7b2660879e3b0641c4ecb053785fea7ca7df6).
+- Refactor of DA interface by [@0xRampey](https://github.com/0xRampey) in [#13](https://github.com/stackrlabs/go-daash/pull/13/commits/01f9541f8eb615fe863881bb0c1af6add768962d).
+
+Full Changelog: [v0.1.7...v0.2.0](https://github.com/stackrlabs/go-daash/compare/v0.1.7...v0.2.0)
+
 ## v0.2.12-alpha to v0.2.17-alpha
 
 #### New Features
