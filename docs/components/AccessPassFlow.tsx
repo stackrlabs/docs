@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { sepolia } from "viem/chains";
 import { useAccount, useReadContracts } from "wagmi";
 import { nftRegistryContract } from "../constants";
-import { ConnectWallet } from "./ConnectWallet";
 import { MintNFT } from "./MintNFT";
 import { NFTMinted } from "./NFTMinted";
 import { NotApprovedToMint } from "./NotApprovedToMint";
 import { queryClient } from "./Web3Provider";
+import { ConnectWallet } from "./ConnectWallet";
 
 export const AccessPassFlow = () => {
   const { address, isConnected, chainId } = useAccount();

@@ -5,8 +5,8 @@ import { keccak256, toBytes } from "viem";
 import { sepolia } from "viem/chains";
 import { useAccount, useSignTypedData } from "wagmi";
 import { getLocalStorageItem, updateLocalStorageItem } from "../utils";
-import { ConnectWallet } from "./ConnectWallet";
 import { Field } from "./Field";
+import { ConnectWallet } from "./ConnectWallet";
 
 const hashFormData = (formData: Record<string, any>) => {
   return keccak256(toBytes(JSON.stringify(formData)));

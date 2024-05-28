@@ -7,3 +7,6 @@ tsconfig.*.tsbuildinfo
 vocs.config.ts.timestamp-*
 .vercel
 .vocs
+
+bun.lockb
+
