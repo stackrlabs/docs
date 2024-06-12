@@ -299,6 +299,10 @@ export default defineConfig({
                 link: "/build/framework/state-machine/state-transitions",
               },
               {
+                text: "Block Hooks",
+                link: "/build/framework/state-machine/block-hooks",
+              },
+              {
                 text: "Global Variables",
                 link: "/build/framework/global-variables",
               },
