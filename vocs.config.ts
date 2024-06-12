@@ -339,6 +339,10 @@ export default defineConfig({
             link: "/build/framework/block",
           },
           {
+            text: "Batch",
+            link: "/build/framework/batch",
+          },
+          {
             text: "Micro-Rollup",
             link: "/build/framework/micro-rollup",
           },

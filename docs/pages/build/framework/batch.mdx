@@ -1,0 +1,32 @@
+# Batch
+
+Batches are structured collections of blocks within a blockchain. It includes multiple blocks covering specific height ranges along with transaction hash and DA data. Confirmation statuses from ``C3A`` and beyond are fetched from batches.
+Also, batches gets settled on L1 every 6 hours.
+
+:::info
+As a developer/operator/end-user, you don't need to worry about batches.
+:::
+
+## Batches on Stackr
+
+A batch in Stackr framework looks like this :
+
+```ts [batch.ts]
+interface BatchInfo {
+  hash: string;
+  sequenceNumber: number;
+  firstBlockHeight: number;
+  lastBlockHeight: number;
+  daMetadata: Record<DA, Record<string, never>>;
+  l1TransactionHash: string;
+  l1BlockNumber?: number;
+}
+```
+
+- `hash` : The hash of the batch. It is the merklised hash of the block hashes of the blocks included in the batch.
+- `sequenceNumber` :  The sequential order in which batches are created, starting from 1.
+- `firstBlockHeight` : The block height of the first block included in the batch.
+- `lastBlockHeight` : The block height of the last block included in the batch.
+- `daMetadata` : The data fetched from the DA in the Vulcan response for the batch.
+- `l1TransactionHash` : The transaction hash for the finalisation of the batch on L1.
+- `l1BlockNumber` : The transaction number for the finalisation of the block on L1.
