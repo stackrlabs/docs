@@ -29,6 +29,14 @@ Submits an action to be processed by the rollup, routed based on the specified r
 
 **Returns:** `Promise<SerializedAcknowledgement>`
 
+### `ack.waitFor(actionConfirmationStatus?: ActionConfirmationStatus)`
+
+Waits for the action, for which the acknowledgment is created, to reach a specific confirmation status. Returns immediately if the action has already reached or surpassed the desired status.
+
+**Parameter:**
+
+- `actionConfirmationStatus`: Confirmation status to wait for (defaults to C1).
+
 ### `actions.getSchema(identifier: string)`
 
 Fetches a specific action schema by its identifier.
@@ -72,8 +80,8 @@ Waits for an action to reach a certain confirmation status. Returns immediately 
 
 **Parameter:**
 
-- `actionHash` : Hash of the action.
-- `actionConfirmationStatus` : Confirmation status to wait for (default to C1).
+- `actionHash`: Hash of the action.
+- `actionConfirmationStatus`: Confirmation status to wait for (defaults to C1).
 
 **Returns:** `Promise<SerializedAction | null>`
 

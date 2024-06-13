@@ -4,12 +4,12 @@ Batches are structured collections of blocks within a blockchain. It includes mu
 Also, batches gets settled on L1 every 6 hours.
 
 :::info
-As a developer/operator/end-user, you don't need to worry about batches.
+As an SDK user, you don't have to worry about Batches, they are abstracted from the SDK & handled by Vulcan _(verification layer)_.
 :::
 
 ## Batches on Stackr
 
-A batch in Stackr framework looks like this :
+A batch in Stackr framework looks like this
 
 ```ts [batch.ts]
 interface BatchInfo {
@@ -23,10 +23,10 @@ interface BatchInfo {
 }
 ```
 
-- `hash` : The hash of the batch. It is the merklised hash of the block hashes of the blocks included in the batch.
-- `sequenceNumber` :  The sequential order in which batches are created, starting from 1.
-- `firstBlockHeight` : The block height of the first block included in the batch.
-- `lastBlockHeight` : The block height of the last block included in the batch.
-- `daMetadata` : The data fetched from the DA in the Vulcan response for the batch.
-- `l1TransactionHash` : The transaction hash for the finalisation of the batch on L1.
-- `l1BlockNumber` : The transaction number for the finalisation of the block on L1.
+- `hash`: Keccak256 of encoded blocksRoot (_Merkle root of the Block hashes_), sequencerNumber and width _(number of blocks in the batch)_ of the batch.
+- `sequenceNumber`:  The sequential order in which batches are created, starting from 1.
+- `firstBlockHeight`: The block height of the first block included in the batch.
+- `lastBlockHeight`: The block height of the last block included in the batch.
+- `daMetadata`: Data Pointers of the posted batch on DA _(like blockNumber, height or txHash, etc.)_
+- `l1TransactionHash`: The transaction hash for the finalisation of the batch on L1.
+- `l1BlockNumber`: The block number of the block containing the transaction on L1.

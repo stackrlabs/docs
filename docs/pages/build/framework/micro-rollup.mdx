@@ -51,4 +51,4 @@ This is useful for testing and debugging purposes
 
 5. `stfSchemaMap` - A map of the schema names to the schema objects. This is used to map the schema names to the state transitions of the rollup.
 
-6. `blockHooks` -  Pre and Post block hooks to be added to the state machine.
+6. `blockHooks` -  An object containing two keys `pre` and `post` both being ordered array of names of the `hooks` to execute with each block.
