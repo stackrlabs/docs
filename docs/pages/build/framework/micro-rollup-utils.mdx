@@ -66,6 +66,17 @@ Retrieves an action based on inputs provided and sender's address.
 
 **Returns:** `Promise<SerializedAction | null>`
 
+### `actions.waitFor(actionHash: Keccak256, actionConfirmationStatus = ActionConfirmationStatus.C1)`
+
+Waits for an action to reach a certain confirmation status. Returns immediately if the action is already at or higher than the desired status.
+
+**Parameter:**
+
+- `actionHash` : Hash of the action.
+- `actionConfirmationStatus` : Confirmation status to wait for (default to C1).
+
+**Returns:** `Promise<SerializedAction | null>`
+
 ## Sequencer Functions
 
 ### `sequencer.start()`
