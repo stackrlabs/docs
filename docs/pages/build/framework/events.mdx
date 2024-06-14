@@ -121,7 +121,7 @@ Triggered when actions are ordered by the sequencer.
 
 Occurs when a block is proposed by the sequencer.
 
-**Event Arguments:** `SequencerBatchOrderEventArgs`
+**Event Arguments:** `SequencerProposeBlockEventArgs`
 
 - `block`: Data of the block proposed.
 
@@ -131,7 +131,7 @@ Occurs when a block is sequenced by the sequencer.
 
 **Event Arguments:** `SequencerSequenceBlockEventArgs`
 
-- `block`: Data of the block proposed.
+- `block`: Data of the block sequenced.
 
 ## Confirmation Events
 
@@ -196,7 +196,6 @@ Triggered when an action's block receives final confirmation from ethereum. This
 **Event Arguments:** `C3EventArgs`
 
 - `block`: Data of the confirmed block.
-- `vulcanResponse`: Optional response from Vulcan that confirms or details the final status of the block.
 
 ## Executor Events
 
@@ -221,29 +220,63 @@ Occurs when the state is advanced following action execution.
 - `payload`: Inputs of the action.
 - `updateResults`: Results of the state update.
 
-## Vulcan Events
+## Chain Events
 
-### `VulcanEvents.POST_BLOCK`
+### `ChainEvents.REORG`
 
-Triggered when a block is posted to Vulcan.
+Triggered when the chain is reorged.
 
-**Event Arguments:** `VulcanPostBatchEventArgs`
+**Event Arguments:** `ChainReOrgEventArgs`
 
-- `block`: Data of the block posted.
+- `blockHashes`: Hashes of the blocks reverted
 
-### `VulcanEvents.BLOCK_ACK`
+## Block Events
+
+### `BlockEvents.SUBMITTED`
+
+Triggered when a block is submitted.
+
+**Event Arguments:** `BlockEventArgs`
+
+- `block`: Data of the block submitted.
+- `vulcanResponse`: Optional response from Vulcan, if applicable, that may influence the final confirmation status.
+
+### `BlockEvents.ACK`
 
 Occurs when a block is acknowledged by Vulcan.
 
-**Event Arguments:** `VulcanAckEventArgs`
+**Event Arguments:** `BlockEventArgs`
 
-- `blockHash`: Hash of the acknowledged block.
-- `status`: Status of the acknowledgment.
+- Follows the same structure as `BlockEvents.SUBMITTED`.
 
-### `VulcanEvents.BLOCK_NACK`
+### `BlockEvents.NACK`
 
 Triggered when a block is not acknowledged (NACK) by Vulcan.
 
-**Event Arguments:** `VulcanAckEventArgs`
+**Event Arguments:** `BlockEventArgs`
 
-- Follows the same structure as `VulcanEvents.BLOCK_ACK`.
+- Follows the same structure as `BlockEvents.SUBMITTED`.
+
+### `BlockEvents.DA_FINALIZED`
+
+Triggered when a block is finalized by the DA.
+
+**Event Arguments:** `BlockEventArgs`
+
+- Follows the same structure as `BlockEvents.SUBMITTED`.
+
+### `BlockEvents.L1_POSTED`
+
+Triggered when a block is posted on the L1.
+
+**Event Arguments:** `BlockEventArgs`
+
+- Follows the same structure as `BlockEvents.SUBMITTED`.
+
+### `BlockEvents.L1_FINALIZED`
+
+Triggered when a block is finalized on the L1.
+
+**Event Arguments:** `BlockEventArgs`
+
+- Follows the same structure as `BlockEvents.SUBMITTED`.

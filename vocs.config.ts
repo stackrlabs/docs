@@ -299,7 +299,7 @@ export default defineConfig({
                 link: "/build/framework/state-machine/state-transitions",
               },
               {
-                text: "Block Hooks",
+                text: "Block Execution Hooks",
                 link: "/build/framework/state-machine/block-hooks",
               },
               {

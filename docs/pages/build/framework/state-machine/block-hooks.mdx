@@ -1,10 +1,10 @@
-# Block Hooks [Triggered on every block]
+# Block Hooks
 
-Blocks hooks are functions that are automatically executed before and after the execution of a block. Similar to [State transition functions](/build/framework/state-machine/state-transitions) , they also have an handler . They operate at the block level, affecting the entire block's execution.
+Blocks hooks are functions (Similar to [State transition functions](/build/framework/state-machine/state-transitions)) that are automatically executed before or after the execution of all the actions on the block as per configuration. Hooks are executed once per block and a representation of the same is stored in Block Headers for verification later
 
 ## Hooks in Stackr
 
-Stackr SDK also provides a way to create hooks for the blocks.
+Our SDK provides a way to create execution hooks for the blocks.
 
 A basic hook in Stackr looks like this:
 
@@ -32,11 +32,11 @@ export const hooks: Hooks<CounterState> = {
 };
 ```
 
-In the above example, we have two hooks `addTwo` and `minusTwo`. These hooks have a handler , and they take in current state , applies the hook logic & return the new state.
+In the above example, we have two hooks `addTwo` and `minusTwo`. These hooks have a handler, and they take in current state, applies the hook logic & return the new state.
 
 ## Hooks in Detail
 
-The most important part of the Hooks is the `handler` function. This function only has access to the current state & the blockInfo `height` , `timestamp` & `parentHash`. Like State Transition Functions , they should be pure functions too & should return the new state after the applying the logic.
+The most important part of the Hooks is the `handler` function. This function only has access to the current state & the blockInfo `height`, `timestamp` & `parentHash`. Like State Transition Functions, they should be pure functions too & should return the new state after the applying the logic.
 
 :::warning
 There is no execution status for the hooks. If a hook execution fails, then the block execution fails too.
@@ -58,7 +58,7 @@ const mru = await MicroRollup({
 });
 ```
 
-In this case , we call `addTwo` before and `minusTwo` after the block is executed. Mutliple hooks can be added for both of the triggers by just passing the hook name as string in the array.
+In this case, we call `addTwo` before and `minusTwo` after the block is executed. Mutliple hooks can be added for both of the triggers by just passing the hook name as string in the array.
 
 :::info
 When dealing with multiple hooks, ensure that the names of the hooks in the array are passed in the order corresponding to their intended execution.
