@@ -208,3 +208,17 @@ Retrieves a block by its hash.
 ### `events`
 
 Handles events within the Micro-Rollup framework. Specific methods and operations depend on the implementation of `EventHandler`. More about these in the next section.
+
+## Logs and Errors
+
+### `action.logs`
+
+Returns the execution logs for the action. If not null, the execution succeeded without any errors. It is null if the action has not yet been executed.
+
+**Returns:** `ExecutionLog[] | null`
+
+### `action.errors`
+
+Returns any errors that occurred during the execution of the action. It is null if the action has not yet been executed.
+
+**Returns:** `ExecutionError[] | null;`
