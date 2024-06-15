@@ -37,7 +37,7 @@ Waits for the action, for which the acknowledgment is created, to reach a specif
 
 - `actionConfirmationStatus`: Confirmation status to wait for (defaults to C1).
 
-**Returns:** `Promise<SerializedAction>`
+**Returns:** `Promise<SerializedAction>` [here](/build/framework/action/serialized-action)
 
 ### `actions.getSchema(identifier: string)`
 
@@ -57,7 +57,7 @@ Retrieves a serialized action from the rollup using its hash.
 
 - `actionHash`: Hash of the action.
 
-**Returns:** `Promise<SerializedAction | null>`
+**Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
 ### `actions.getAllSchemas()`
 
@@ -74,7 +74,7 @@ Retrieves an action based on inputs provided and sender's address.
 - `inputs`: Inputs to the action.
 - `sender`: Sender's address.
 
-**Returns:** `Promise<SerializedAction | null>`
+**Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
 ### `actions.waitFor(actionHash: Keccak256, actionConfirmationStatus = ActionConfirmationStatus.C1)`
 
@@ -85,7 +85,7 @@ Waits for an action to reach a certain confirmation status. Returns immediately 
 - `actionHash`: Hash of the action.
 - `actionConfirmationStatus`: Confirmation status to wait for (defaults to C1).
 
-**Returns:** `Promise<SerializedAction | null>`
+**Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
 ## Sequencer Functions
 
@@ -209,16 +209,3 @@ Retrieves a block by its hash.
 
 Handles events within the Micro-Rollup framework. Specific methods and operations depend on the implementation of `EventHandler`. More about these in the next section.
 
-## Logs and Errors
-
-### `action.logs`
-
-Returns the execution logs for the action. If not null, the execution succeeded without any errors. It is null if the action has not yet been executed.
-
-**Returns:** `ExecutionLog[] | null`
-
-### `action.errors`
-
-Returns any errors that occurred during the execution of the action. It is null if the action has not yet been executed.
-
-**Returns:** `ExecutionError[] | null;`

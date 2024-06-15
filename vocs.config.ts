@@ -332,6 +332,10 @@ export default defineConfig({
                 text: "Confirmation Status",
                 link: "/build/framework/action/confirmation-status",
               },
+              {
+                text: "Serialized Action",
+                link: "/build/framework/action/serialized-action",
+              },
             ],
           },
           {
