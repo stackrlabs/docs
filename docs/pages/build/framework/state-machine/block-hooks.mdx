@@ -44,7 +44,7 @@ There is no execution status for the hooks. If a hook execution fails, then the 
 
 ## Defining the Hooks for MicroRollup
 
-To configure these hooks, `pre` & `post` hooks can be defined as follows on the MircoRollup :
+To configure these hooks, `hooks` has to be passed in [StateMachine](/build/framework/state-machine/introduction#state-machines-in-stackr) & then `pre` & `post` hooks can be defined as follows on the MircoRollup :
 
 ```ts [mru.ts]
 const mru = await MicroRollup({
