@@ -2,20 +2,18 @@
 
 ## SDK v0.4.3
 
-- Dump latest state in a JSON file if SDK version does not meet Vulcan's minimum SDK supported version. This is useful to restore state in a new MRU deployment.
+- [SDK] On MRU bootup, if SDK version does not meet Vulcan's minimum SDK supported version requirement then the latest state is dumped in a JSON file . This is useful to restore state in a new MRU deployment.
 
 ## SDK v0.4.2, CLI v0.0.20
 
-### SDK
+#### Features
 
-- feat: expose `emit` function in STF that can be used to record custom logs.
-- feat: add fields `logs` and `errors` to `SerializedAction`.
-- perf: Wasm execution optimizations.
+- [SDK] Expose `emit` function in STF that can be used to record custom logs.
+- [SDK] Add fields `logs` and `errors` to `SerializedAction`.
 
-### CLI
+#### Fixes
 
-- perf: reduce Wasm binary size by minifying the JS file before compiling.
-- perf: Wasm execution optimizations.
+- [SDK & CLI] Significantly optimize Wasm execution.
 
 ## v0.2.18-alpha to v0.4.1, CLI v0.0.19 and more
 
