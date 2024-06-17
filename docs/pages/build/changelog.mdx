@@ -1,10 +1,10 @@
 # Changelog [What's new]
 
-## SDK v0.4.3
+## v0.4.3
 
 - [SDK] On MRU bootup, if SDK version does not meet Vulcan's minimum SDK supported version requirement then the latest state is dumped in a JSON file. This is useful to restore state in a new MRU deployment.
 
-## SDK v0.4.2, CLI v0.0.20
+## v0.4.2 (and CLI v0.0.20)
 
 #### Features
 
@@ -13,7 +13,8 @@
 
 #### Improvements
 
-- [SDK & CLI] Significantly optimize Wasm execution.
+- [CLI] Minified bundled JS file to optimize Wasm binary size.
+- [SDK] Removed redundant state computation to optimize Wasm execution.
 
 ## v0.2.18-alpha to v0.4.1, CLI v0.0.19 and more
 
