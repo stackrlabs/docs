@@ -1,7 +1,9 @@
 # Batch
 
-Batches are structured collections of blocks within a blockchain. It includes multiple blocks covering specific height ranges along with transaction hash and DA data. Confirmation statuses from ``C3A`` and beyond are fetched from batches.
-Also, batches gets settled on L1 every 6 hours.
+Batches are ordered sets of blocks within a blockchain. Each batch includes multiple blocks covering specific height ranges along with transaction hashes and DA data. 
+Vulcan, by default, is configured to settle batches every 6 hours or when the maximum blob size is reached, whichever happens first.
+
+The main motivations for using batches are cost savings, by amortizing settlement costs across multiple blocks, and composability, by supporting atomic execution and interconnectedness between different micro rollups.
 
 :::info
 As an SDK user, you don't have to worry about Batches, they are abstracted from the SDK & handled by Vulcan _(verification layer)_.
