@@ -1,5 +1,29 @@
 # Changelog [What's new]
 
+## v0.5.0 (and CLI v0.0.21)
+
+> Upgrade guide: [here](/build/upgrade-guide).
+
+#### Breaking Changes
+
+- Blocks are now rolled up into batches by Vulcan every some fixed interval. Therefore, C3A and above confirmation levels are now received on the batch level from Vulcan and L1. [Learn more](/build/framework/batch).
+- State Updates are now stored on the Block level and not Action level. In case of a chain revert, the state reverts to the last block having status equal to or higher than `Sequenced`.
+- Renamed `batchSize` and `batchTime` fields in `StackrConfig` to `blockSize` and `blockTime` respectively.
+
+#### Features / Improvements
+
+- Pre and post Block execution hooks. [Learn more](/build/framework/state-machine/block-hooks).
+- Ability to create empty blocks by setting `sequencer.enableEmptyBlocks` to `true` in `StackrConfig`.
+- Add `logs` and `errors` fields to `ActionExecutionStatusEventArgs` interface.
+- Add default value for `syncer.slotTime` field (in `StackrConfig`) to be a minimum of `max(1000, blockTime)` ms.
+- [CLI] Use dynamic linking for reduced Wasm binary size.
+
+#### Bug Fixes
+
+- Prevent concurrent sequencer ticks.
+- Prevent concurrent Vulcan block submission ticks.
+- Fix some types not being exported correctly from the build.
+
 ## v0.4.3
 
 - [SDK] On MRU bootup, if SDK version does not meet Vulcan's minimum SDK supported version requirement then the latest state is dumped in a JSON file. This is useful to restore state in a new MRU deployment.
@@ -31,13 +55,12 @@
 
 - feat: `C3B` confirmation now comes on Consensus Layer finalization
 - feat: Prune `state_updates` for old finalized blocks
-    - Remove all the state updates for actions in the finalized block once it receives C3B. This makes the datastore lighter.
+  - Remove all the state updates for actions in the finalized block once it receives C3B. This makes the datastore lighter.
 - feat: Store `fuelConsumed` in DB along with BlockData
 - feat: store `l1BlockNumber` and use it for query while doing C3B finalization
-- feat: add `Block` object (*containing height, timestamp and parentHash*) in STF
+- feat: add `Block` object (_containing height, timestamp and parentHash_) in STF
 - feat: new Bridge plugin
 - feat: expose `actions.query` in MicroRollupResponse
-
 
 #### Other changes
 
@@ -70,7 +93,7 @@
 
 - feat: Support default export and declaration export for State Machines
 - feat: Update datastore in config & fixes in query config
-- feat: [COMMAND] `transfer-ownership` along with `--privateKey` support 
+- feat: [COMMAND] `transfer-ownership` along with `--privateKey` support
 - feat: add `--privateKey` flag support for for `register` and `deploy`
 - feat: [COMMAND] `add <entity> <address>` changes `add-bridge` to `add bridge`
 - docs: Add docker instructions in README
