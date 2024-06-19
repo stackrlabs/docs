@@ -10,10 +10,9 @@ Yes, in fact we encourage developers to host their Micro-Rollups after developem
 :::
 
 :::details[Why is it taking so long to get C3A/C3B confirmation on my batch?]
-If you send in multiple batches from your Micro-rollup, they will be ordered and settled one-by-one on Vulcan tp preserve the chain of batches.
-Therefore, subsequent batches will take more time to get C3A/C3B confirmation. 
+If you send in multiple blocks from your Micro-rollup, they will be ordered and settled one-by-one on Vulcan to preserve the chain of blocks.
+Therefore, subsequent batches will take more time to get C3A/C3B confirmation.
 Also expect about a minute to get C3A confirmation on the first batch, after C2 confirmation. This is roughly how much time it takes to confirm data publication of the batch on a data availability layer.
 After this, depending on Sepolia's network congestion, it may take 10-30s to submit the batch to your app's inbox and receive C3B confirmation.
 
 If you have any more questions, please reach out to us on our [Discord](https://discord.gg/4wChdkN2) server.
-

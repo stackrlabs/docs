@@ -12,17 +12,19 @@ The sequencer module has the following parameters that are set in the `stackr.co
 
 ```ts [stackr.config.ts]
  sequencer: {
-    batchSize: 16,
-    batchTime: 1000,
+    blockSize: 16,
+    blockTime: 10,
+    enableEmptyBlocks: true,
   },
 ```
 
-- `batchSize`: The number of actions that the sequencer picks up in a single batch.
-- `batchTime`: The time interval after which the sequencer picks up the actions in a batch.
+- `blockSize`: The number of actions that the sequencer picks up in a single block.
+- `blockTime`: The time interval after which the sequencer picks up the actions in a block.
+- `enableEmptyBlocks`: A flag to allow creation of empty blocks (the one with no actions).
 
 ## Lazy blocks
 
-In the above example it means that the sequencer picks upto 16 actions every second and orders them in a batch. If there are no actions in the pool then the sequencer does not create a block.
+In the above example it means that the sequencer picks upto 16 actions every second and orders them in a block. If there are no actions in the pool then the sequencer does not create a block.
 
 If there are less than 16 actions in the pool when the timer expires then the sequencer picks up any remaining number of actions and creates a block.
 
