@@ -133,13 +133,13 @@ Lists all transitions available within the state machines.
 
 ## Syncer Functions
 
-### `syncer.start(batchTime)`
+### `syncer.start(slotTime)`
 
-Starts the syncer with a specified batch time.
+Starts the syncer with a specified slot time.
 
 **Parameters:**
 
-- `batchTime`: Time interval in milliseconds between each batch.
+- `slotTime`: Time interval in milliseconds between each block.
 
 **Returns:** `void`
 
@@ -149,9 +149,9 @@ Stops the syncer.
 
 **Returns:** `void`
 
-### `syncer.sendBatch()`
+### `syncer.submitBlock()`
 
-Sends the current batch of actions for processing.
+Submits the current block to Vulcan.
 
 **Returns:** `Promise<void>`
 
@@ -208,4 +208,3 @@ Retrieves a block by its hash.
 ### `events`
 
 Handles events within the Micro-Rollup framework. Specific methods and operations depend on the implementation of `EventHandler`. More about these in the next section.
-
