@@ -15,7 +15,7 @@
 - Pre and post Block execution hooks. [Learn more](/build/framework/state-machine/block-hooks).
 - Ability to create empty blocks by setting `sequencer.enableEmptyBlocks` to `true` in `StackrConfig`.
 - Add `logs` and `errors` fields to `ActionExecutionStatusEventArgs` interface.
-- Add default value for `syncer.slotTime` field (in `StackrConfig`) to be a minimum of `max(1000, blockTime)` ms.
+- Make `syncer.slotTime` an optional field (in `StackrConfig`) having a default value of `max(1000, blockTime)` ms. If provided value is less than `1000` ms, it defaults to `max(1000, blockTime)` ms too.
 - [CLI] Use dynamic linking for reduced Wasm binary size.
 
 #### Bug Fixes
