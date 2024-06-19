@@ -42,7 +42,7 @@ export default defineConfig({
       link: "https://litepaper.stf.xyz",
     },
     {
-      text: "v0.4.3",
+      text: "v0.5.0",
       items: [
         {
           text: "Changelog",
@@ -421,6 +421,10 @@ export default defineConfig({
           {
             text: "Changelog",
             link: "/build/changelog",
+          },
+          {
+            text: "Upgrade Guide",
+            link: "/build/upgrade-guide",
           },
         ],
       },
