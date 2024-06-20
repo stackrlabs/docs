@@ -35,11 +35,12 @@ const stackrConfig: StackrConfig = {
     salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   },
   datastore: {
-    uri: "./db.sqlite",
+    type: "sqlite",
+    uri: process.env.DATABASE_URI,
   },
   registryContract: REGISTRY_CONTRACT,
   preferredDA: DA.AVAIL,
-  logLevel: "error",
+  logLevel: "log",
 };
 ```
 

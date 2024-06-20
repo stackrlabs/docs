@@ -5,15 +5,10 @@ export default defineConfig({
   iconUrl: "/logo/favicon.svg",
   sponsors: [
     {
-      name: "Join Beta",
+      name: "Stackr Docs",
       height: 150,
       items: [
         [
-          {
-            name: "Beta",
-            link: "/beta/beta-access",
-            image: "/assets/icons/beta.svg",
-          },
           {
             name: "Concepts",
             link: "/concepts/micro-rollup/introduction",
@@ -92,33 +87,6 @@ export default defineConfig({
   },
   title: "Stackr",
   sidebar: {
-    "/beta/": [
-      {
-        text: "Beta Access",
-        link: "/beta/beta-access",
-      },
-      {
-        text: "Mint Pass",
-        link: "/beta/mint-access",
-      },
-      {
-        text: "What to build?",
-        link: "/beta/what-to-build",
-      },
-      {
-        text: "",
-        items: [
-          {
-            text: "Learn Concepts",
-            link: "/concepts/micro-rollup/introduction",
-          },
-          {
-            text: "Start Building",
-            link: "/build/zero-to-one/getting-started",
-          },
-        ],
-      },
-    ],
     "/concepts/": [
       {
         text: "Micro-Rollups",
@@ -205,10 +173,6 @@ export default defineConfig({
         text: "",
         items: [
           {
-            text: "Apply for Beta",
-            link: "/beta/beta-access",
-          },
-          {
             text: "Start Building",
             link: "/build/zero-to-one/getting-started",
           },
@@ -220,9 +184,17 @@ export default defineConfig({
         text: "",
         items: [
           {
+            "text": "What to build",
+            "link": "/build/what-to-build",
+          },
+          {
             text: "Zero-to-One",
             collapsed: true,
             items: [
+              {
+                text: "Before You Proceed",
+                link: "/build/zero-to-one/before-you-proceed",
+              },
               {
                 text: "Getting Started",
                 link: "/build/zero-to-one/getting-started",
@@ -427,10 +399,6 @@ export default defineConfig({
       {
         text: "",
         items: [
-          {
-            text: "Apply for Beta",
-            link: "/beta/beta-access",
-          },
           {
             text: "Learn Concepts",
             link: "/concepts/micro-rollup/introduction",

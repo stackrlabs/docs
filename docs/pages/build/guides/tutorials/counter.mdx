@@ -226,7 +226,6 @@ export { machine }; // [!code focus]
 
 Hence exporting the machine as a `export machine` would not work.
 
-:::
 
 ## Set the config
 
@@ -275,7 +274,8 @@ const stackrConfig: StackrConfig = {
     salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   },
   datastore: {
-    uri: "./db.sqlite",
+    type: "sqlite",
+    uri: process.env.DATABASE_URI,
   },
   registryContract: REGISTRY_CONTRACT,
   logLevel: "log",
