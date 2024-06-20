@@ -1,0 +1,59 @@
+import { Callout } from "vocs/components";
+
+# Upgrade Guide
+
+This page has instructions on upgrading your Micro-Rollup to a specific or latest versions of the Stackr SDK and CLI.
+
+## Upgrading to v0.5.0
+
+To upgrade your existing application to SDK version v0.5.0 from any older version, you need to perform a "squash fork". It basically is
+a new registration and deployment of your application but using the previous latest state as the new genesis state.
+
+<Callout type="info">
+  Note: Before moving forward, if you wish to preserve your application's state,
+  please follow the instructions in the "[Backing up your Micro-Rollup
+  state](#backing-up-your-micro-rollup-state)" section below so you obtain the
+  state JSON file for restoration.
+</Callout>
+
+1. Delete existing registration.
+
+```bash
+$ rm deployment.json && rm db.sqlite
+```
+
+2. Update the SDK version in your `package.json` and the Stackr CLI version as well.
+
+```bash
+$ npm install @stackr/sdk@v0.5.0
+$ npm install -g @stackr/cli
+```
+
+3. In your `stackr.config.ts` file, rename the `batchSize` and `batchTime` fields to `blockSize` and `blockTime` respectively.
+
+4. Re-register and re-deploy your MRU as a new application.
+
+```bash
+$ stackr register
+$ stackr deploy
+```
+
+With this, you now have a new application with the restored state! ✨
+
+### Backing up your Micro-Rollup state
+
+To get your application's latest state dumped into a JSON file, follow these steps:
+
+1. Update the SDK version in your `package.json`. If you are upgrading from version < v0.4.3, update to v0.4.3 first for this step.
+
+```bash
+$ npm install @stackr/sdk@v0.4.3
+```
+
+2. Try to boot up the application. It should fail with an error stating "SDK version mismatch with Vulcan" and will dump your MRU's latest state into a `latest-state.json` file.
+
+3. Restore this dumped state JSON file as the new genesis state.
+
+```bash
+$ mv latest-state.json genesis-state.json
+```
