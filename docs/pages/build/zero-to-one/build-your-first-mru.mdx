@@ -75,7 +75,7 @@ DATABASE_URI=<DATABASE_URI>
 ```
 
 :::info
-`PRIVATE_KEY` is the private key of account used to register the rollup.
+`PRIVATE_KEY` is the private key of account you want to register and deploy the rollup with.
 
 We don't store your private key anywhere. It's only used to sign the transactions and is stored in your local environment.
 :::
@@ -155,6 +155,10 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
   ```
 
 - `transitions.ts` contains the `STF` (State Transition Functions) for your application.
+
+:::warning
+ it is recommended that the machine.ts or the file containing the StateMachine, doesn't import anything from @stackr/sdk instead uses @stackr/sdk/machine for the StateMachine, State, Transitions and other utility classes.
+:::
 
 ## Advanced
 
