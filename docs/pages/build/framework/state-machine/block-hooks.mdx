@@ -1,6 +1,10 @@
 # Block Hooks
 
-Blocks hooks are functions (Similar to [State transition functions](/build/framework/state-machine/state-transitions)) that are automatically executed before or after the execution of all the actions on the block as per configuration. Hooks are executed once per block and a representation of the same is stored in Block Headers for verification later
+Blocks hooks are functions (Similar to [State transition functions](/build/framework/state-machine/state-transitions)) that are automatically executed before or after the execution of all the actions on the block as per configuration. Hooks are executed once per block and a representation of the same is stored in Block Headers for verification later.
+
+:::warning
+Unlike STFs, hooks are not supposed to fail. If a hook fails, the block execution fails too.
+:::
 
 ## Hooks in Stackr
 

@@ -29,13 +29,13 @@ Submits an action to be processed by the rollup, routed based on the specified r
 
 **Returns:** `Promise<SerializedAcknowledgement>`
 
-### `ack.waitFor(actionConfirmationStatus?: ActionConfirmationStatus)`
+### `ack.waitFor(confirmationStatus?: ActionConfirmationStatus)`
 
 Waits for the action, for which the acknowledgment is created, to reach a specific confirmation status. Returns immediately if the action has already reached or surpassed the desired status.
 
 **Parameter:**
 
-- `actionConfirmationStatus`: Confirmation status to wait for (defaults to C1).
+- `confirmationStatus`: Confirmation status to wait for (defaults to C1). Can take one of C1, C2, C3A or C3B.
 
 **Returns:** `Promise<SerializedAction>` [here](/build/framework/action/serialized-action)
 
@@ -76,14 +76,14 @@ Retrieves an action based on inputs provided and sender's address.
 
 **Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
-### `actions.waitFor(actionHash: Keccak256, actionConfirmationStatus = ActionConfirmationStatus.C1)`
+### `actions.waitFor(actionHash: Keccak256, confirmationStatus = ActionConfirmationStatus.C1)`
 
 Waits for an action to reach a certain confirmation status. Returns immediately if the action is already at or higher than the desired status.
 
 **Parameter:**
 
 - `actionHash`: Hash of the action.
-- `actionConfirmationStatus`: Confirmation status to wait for (defaults to C1).
+- `confirmationStatus`: Confirmation status to wait for (defaults to C1). Can take one of C1, C2, C3A or C3B.
 
 **Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
