@@ -6,7 +6,6 @@ export default defineConfig({
   sponsors: [
     {
       name: "Stackr Docs",
-      height: 150,
       items: [
         [
           {
@@ -184,8 +183,8 @@ export default defineConfig({
         text: "",
         items: [
           {
-            "text": "What to build",
-            "link": "/build/what-to-build",
+            text: "What to build",
+            link: "/build/what-to-build",
           },
           {
             text: "Zero-to-One",
