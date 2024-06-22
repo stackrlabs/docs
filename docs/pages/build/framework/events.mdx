@@ -60,6 +60,8 @@ Fires when there is a status update on the execution of an action.
 - `actionName`: Name of the action.
 - `actionHash`: Hash of the action.
 - `status`: Execution status of the action.
+- `logs`: Logs during the execution of action.
+- `errors`: Errors during the execution of action.
 
 ### `ActionEvents.CONFIRMATION_STATUS`
 
@@ -80,22 +82,6 @@ Occurs when an action is enqueued.
 **Event Arguments:** `ActionPoolEnqueueEventArgs`
 
 - `actionHash`: Hash of the action enqueued.
-
-### `ActionPoolEvents.PAUSED`
-
-Triggered when the action pool is paused.
-
-**Event Arguments:** `ActionPoolPausedEventArgs`
-
-- `reason`: Reason for the pause.
-
-### `ActionPoolEvents.RESUMED`
-
-Fires when the action pool is resumed.
-
-**Event Arguments:** `ActionPoolPausedEventArgs`
-
-- `reason`: Reason for the resumption (similar structure as the paused event).
 
 ## Sequencer Events
 
@@ -121,9 +107,33 @@ Triggered when actions are ordered by the sequencer.
 
 Occurs when a block is proposed by the sequencer.
 
-**Event Arguments:** `SequencerBatchOrderEventArgs`
+**Event Arguments:** `SequencerProposeBlockEventArgs`
 
 - `block`: Data of the block proposed.
+
+### `SequencerEvents.SEQUENCE_BLOCK`
+
+Occurs when a block is sequenced by the sequencer.
+
+**Event Arguments:** `SequencerSequenceBlockEventArgs`
+
+- `block`: Data of the block sequenced.
+
+### `SequencerEvents.PAUSED`
+
+Triggered when the sequencer is paused.
+
+**Event Arguments:** `SequencerPausedEventArgs`
+
+- `reason`: Reason for the pause.
+
+### `SequencerEvents.RESUMED`
+
+Fires when the sequencer is resumed.
+
+**Event Arguments:** `SequencerPausedEventArgs`
+
+- `reason`: Reason for the resumption (similar structure as the paused event).
 
 ## Confirmation Events
 
@@ -140,7 +150,7 @@ Triggered when action receives and acknowledgement from the rollup operator
 - `msgSender`: Address of the sender.
 - `signature`: Signature of the action.
 - `payload`: Input types allowed for the action.
-- `actionNumber`: Sequential number of the action in the batch.
+- `actionNumber`: Sequential number of the action in the block.
 - `acknowledgement`: Data confirming the preliminary acknowledgment.
 
 ### `ConfirmationEvents.C1`
@@ -155,6 +165,8 @@ Occurs when an action has been successfully applied to the state of the rollup
 - `signature`: Signature of the action.
 - `payload`: Input types allowed for the action.
 - `state`: Current state or relevant state information pertaining to the action.
+
+We emit C1X event when the action execution fails.
 
 ### `ConfirmationEvents.C2`
 
@@ -188,54 +200,99 @@ Triggered when an action's block receives final confirmation from ethereum. This
 **Event Arguments:** `C3EventArgs`
 
 - `block`: Data of the confirmed block.
-- `vulcanResponse`: Optional response from Vulcan that confirms or details the final status of the block.
 
 ## Executor Events
 
-### `ExecutorEvents.EXECUTE_BATCH`
+### `ExecutorEvents.EXECUTE_BLOCK`
 
-Triggered when a batch of actions is executed.
+Triggered when a block is executed.
 
-**Event Arguments:** `ExecuteBatchEventArgs`
+**Event Arguments:** `ExecuteBlockEventArgs`
 
 - `state`: Current state after execution.
 - `stateRoot`: Root hash of the state.
 - `actionHashes`: List of hashes of executed actions.
+- `executionHooks`: string[][];
 
-### `ExecutorEvents.ADVANCE_STATE`
+### `ExecutorEvents.EXECUTE_HOOK`
 
-Occurs when the state is advanced following action execution.
+Triggered when a hook is executed.
 
-**Event Arguments:** `ExecuteAdvanceStateEventArgs`
+**Event Arguments:** `ExecuteHookEventArgs`
+
+- `type`: Type of the hook.
+- `hookName`: Name of the hook.
+- `blockInfo`: Information of the block is executed for.
+- `updateResults`: Results of the state update.
+
+### `ExecutorEvents.EXECUTE_ACTION`
+
+Triggered when an action is executed.
+
+**Event Arguments:** `ExecuteActionEventArgs`
 
 - `actionHash`: Hash of the action causing the state change.
 - `actionName`: Name of the action.
 - `payload`: Inputs of the action.
 - `updateResults`: Results of the state update.
 
-## Vulcan Events
+## Chain Events
 
-### `VulcanEvents.POST_BLOCK`
+### `ChainEvents.REORG`
 
-Triggered when a block is posted to Vulcan.
+Triggered when the chain is reorged.
 
-**Event Arguments:** `VulcanPostBatchEventArgs`
+**Event Arguments:** `ChainReOrgEventArgs`
 
-- `block`: Data of the block posted.
+- `blockHashes`: Hashes of the blocks reverted
 
-### `VulcanEvents.BLOCK_ACK`
+## Block Events
+
+### `BlockEvents.SUBMITTED`
+
+Triggered when a block is submitted.
+
+**Event Arguments:** `BlockEventArgs`
+
+- `block`: Data of the block submitted.
+- `vulcanResponse`: Optional response from Vulcan, if applicable, that may influence the final confirmation status.
+
+### `BlockEvents.ACK`
 
 Occurs when a block is acknowledged by Vulcan.
 
-**Event Arguments:** `VulcanAckEventArgs`
+**Event Arguments:** `BlockEventArgs`
 
-- `blockHash`: Hash of the acknowledged block.
-- `status`: Status of the acknowledgment.
+- Follows the same structure as `BlockEvents.SUBMITTED`.
 
-### `VulcanEvents.BLOCK_NACK`
+### `BlockEvents.NACK`
 
 Triggered when a block is not acknowledged (NACK) by Vulcan.
 
-**Event Arguments:** `VulcanAckEventArgs`
+**Event Arguments:** `BlockEventArgs`
 
-- Follows the same structure as `VulcanEvents.BLOCK_ACK`.
+- Follows the same structure as `BlockEvents.SUBMITTED`.
+
+### `BlockEvents.DA_FINALIZED`
+
+Triggered when a block is finalized by the DA.
+
+**Event Arguments:** `BlockEventArgs`
+
+- Follows the same structure as `BlockEvents.SUBMITTED`.
+
+### `BlockEvents.L1_POSTED`
+
+Triggered when a block is posted on the L1.
+
+**Event Arguments:** `BlockEventArgs`
+
+- Follows the same structure as `BlockEvents.SUBMITTED`.
+
+### `BlockEvents.L1_FINALIZED`
+
+Triggered when a block is finalized on the L1.
+
+**Event Arguments:** `BlockEventArgs`
+
+- Follows the same structure as `BlockEvents.SUBMITTED`.

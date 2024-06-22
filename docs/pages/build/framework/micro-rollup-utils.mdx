@@ -29,6 +29,16 @@ Submits an action to be processed by the rollup, routed based on the specified r
 
 **Returns:** `Promise<SerializedAcknowledgement>`
 
+### `ack.waitFor(confirmationStatus?: ActionConfirmationStatus)`
+
+Waits for the action, for which the acknowledgment is created, to reach a specific confirmation status. Returns immediately if the action has already reached or surpassed the desired status.
+
+**Parameter:**
+
+- `confirmationStatus`: Confirmation status to wait for (defaults to C1). Can take one of C1, C2, C3A or C3B.
+
+**Returns:** `Promise<SerializedAction>` [here](/build/framework/action/serialized-action)
+
 ### `actions.getSchema(identifier: string)`
 
 Fetches a specific action schema by its identifier.
@@ -47,7 +57,7 @@ Retrieves a serialized action from the rollup using its hash.
 
 - `actionHash`: Hash of the action.
 
-**Returns:** `Promise<SerializedAction | null>`
+**Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
 ### `actions.getAllSchemas()`
 
@@ -64,7 +74,18 @@ Retrieves an action based on inputs provided and sender's address.
 - `inputs`: Inputs to the action.
 - `sender`: Sender's address.
 
-**Returns:** `Promise<SerializedAction | null>`
+**Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
+
+### `actions.waitFor(actionHash: Keccak256, confirmationStatus = ActionConfirmationStatus.C1)`
+
+Waits for an action to reach a certain confirmation status. Returns immediately if the action is already at or higher than the desired status.
+
+**Parameter:**
+
+- `actionHash`: Hash of the action.
+- `confirmationStatus`: Confirmation status to wait for (defaults to C1). Can take one of C1, C2, C3A or C3B.
+
+**Returns:** `Promise<SerializedAction | null>` [here](/build/framework/action/serialized-action)
 
 ## Sequencer Functions
 
@@ -112,13 +133,13 @@ Lists all transitions available within the state machines.
 
 ## Syncer Functions
 
-### `syncer.start(batchTime)`
+### `syncer.start(slotTime)`
 
-Starts the syncer with a specified batch time.
+Starts the syncer with a specified slot time.
 
 **Parameters:**
 
-- `batchTime`: Time interval in milliseconds between each batch.
+- `slotTime`: Time interval in milliseconds between each block.
 
 **Returns:** `void`
 
@@ -128,9 +149,9 @@ Stops the syncer.
 
 **Returns:** `void`
 
-### `syncer.sendBatch()`
+### `syncer.submitBlock()`
 
-Sends the current batch of actions for processing.
+Submits the current block to Vulcan.
 
 **Returns:** `Promise<void>`
 

@@ -26,6 +26,7 @@ const machine = new StateMachine({
   stateClass: CounterState,
   initialState: genesisState.state,
   on: transitions,
+  hooks
 });
 ```
 
@@ -33,6 +34,7 @@ const machine = new StateMachine({
 - `stateClass`: A class that defines the states of the state machine.
 - `initialState`: The initial state of the state machine.
 - `on`: A set of transition rules that define how the state machine transitions between states.
+- `hooks (optional)`: A set of hooks functions that runs before or after (based on configuration) execution of all actions of block.
 
 More on each of these components in the following sections.
 

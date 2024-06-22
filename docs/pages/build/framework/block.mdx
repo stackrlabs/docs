@@ -34,6 +34,7 @@ interface BlockData {
       operatorSignature: SignatureLike;
     };
   }[];
+  batchInfo?: BatchInfo;
 }
 ```
 
@@ -50,6 +51,7 @@ interface BlockData {
 - `operatorSignature`: The signature of the operator on the block.
 - `builderSignature`: The signature of the builder on the block.
 - `executionStatus`: The status of the block execution. It is an encoded value that represents which action succeeded and which failed.
+- `batchInfo`: Metadata of the batch that includes this block. It is not populated by default and is later fetched from Vulcan (Verification layer).
 
 ### Body
 

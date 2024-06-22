@@ -5,15 +5,10 @@ export default defineConfig({
   iconUrl: "/logo/favicon.svg",
   sponsors: [
     {
-      name: "Join Beta",
+      name: "Stackr Docs",
       height: 150,
       items: [
         [
-          {
-            name: "Beta",
-            link: "/beta/beta-access",
-            image: "/assets/icons/beta.svg",
-          },
           {
             name: "Concepts",
             link: "/concepts/micro-rollup/introduction",
@@ -42,7 +37,7 @@ export default defineConfig({
       link: "https://litepaper.stf.xyz",
     },
     {
-      text: "v0.4.3",
+      text: "v0.5.0",
       items: [
         {
           text: "Changelog",
@@ -92,33 +87,6 @@ export default defineConfig({
   },
   title: "Stackr",
   sidebar: {
-    "/beta/": [
-      {
-        text: "Beta Access",
-        link: "/beta/beta-access",
-      },
-      {
-        text: "Mint Pass",
-        link: "/beta/mint-access",
-      },
-      {
-        text: "What to build?",
-        link: "/beta/what-to-build",
-      },
-      {
-        text: "",
-        items: [
-          {
-            text: "Learn Concepts",
-            link: "/concepts/micro-rollup/introduction",
-          },
-          {
-            text: "Start Building",
-            link: "/build/zero-to-one/getting-started",
-          },
-        ],
-      },
-    ],
     "/concepts/": [
       {
         text: "Micro-Rollups",
@@ -205,10 +173,6 @@ export default defineConfig({
         text: "",
         items: [
           {
-            text: "Apply for Beta",
-            link: "/beta/beta-access",
-          },
-          {
             text: "Start Building",
             link: "/build/zero-to-one/getting-started",
           },
@@ -220,9 +184,17 @@ export default defineConfig({
         text: "",
         items: [
           {
+            "text": "What to build",
+            "link": "/build/what-to-build",
+          },
+          {
             text: "Zero-to-One",
             collapsed: true,
             items: [
+              {
+                text: "Before You Proceed",
+                link: "/build/zero-to-one/before-you-proceed",
+              },
               {
                 text: "Getting Started",
                 link: "/build/zero-to-one/getting-started",
@@ -299,6 +271,10 @@ export default defineConfig({
                 link: "/build/framework/state-machine/state-transitions",
               },
               {
+                text: "Block Execution Hooks",
+                link: "/build/framework/state-machine/block-hooks",
+              },
+              {
                 text: "Global Variables",
                 link: "/build/framework/global-variables",
               },
@@ -328,11 +304,19 @@ export default defineConfig({
                 text: "Confirmation Status",
                 link: "/build/framework/action/confirmation-status",
               },
+              {
+                text: "Serialized Action",
+                link: "/build/framework/action/serialized-action",
+              },
             ],
           },
           {
             text: "Block",
             link: "/build/framework/block",
+          },
+          {
+            text: "Batch",
+            link: "/build/framework/batch",
           },
           {
             text: "Micro-Rollup",
@@ -410,15 +394,15 @@ export default defineConfig({
             text: "Changelog",
             link: "/build/changelog",
           },
+          {
+            text: "Upgrade Guide",
+            link: "/build/upgrade-guide",
+          },
         ],
       },
       {
         text: "",
         items: [
-          {
-            text: "Apply for Beta",
-            link: "/beta/beta-access",
-          },
           {
             text: "Learn Concepts",
             link: "/concepts/micro-rollup/introduction",

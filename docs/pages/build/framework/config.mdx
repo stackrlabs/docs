@@ -9,8 +9,9 @@ const stackrConfig: StackrConfig = {
     appInbox: deployment.appInbox,
   },
   sequencer: {
-    batchSize: 16,
-    batchTime: 10,
+    blockSize: 16,
+    blockTime: 10,
+    enableEmptyBlocks: true,
   },
   syncer: {
     slotTime: 1000,
@@ -34,11 +35,12 @@ const stackrConfig: StackrConfig = {
     salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   },
   datastore: {
-    uri: "./db.sqlite",
+    type: "sqlite",
+    uri: process.env.DATABASE_URI,
   },
   registryContract: REGISTRY_CONTRACT,
   preferredDA: DA.AVAIL,
-  logLevel: "error",
+  logLevel: "log",
 };
 ```
 
@@ -52,8 +54,9 @@ This is set during registration of the micro-rollup with the registry contract u
 
 2. `sequencer`: Contains the parameters for the sequencer module.
 
-- `batchSize`: The number of actions that the sequencer picks up in a single batch.
-- `batchTime`: The time interval after which the sequencer picks up the actions in a batch.
+- `blockSize`: The number of actions that the sequencer picks up in a single block.
+- `blockTime`: The time interval after which the sequencer picks up the actions in a block.
+- `enableEmptyBlocks`: A flag to allow creation of empty blocks (the one with no actions).
 
 ---
 

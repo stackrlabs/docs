@@ -1,0 +1,34 @@
+# Batch
+
+Batches are ordered sets of blocks within a blockchain. Each batch includes multiple blocks covering specific height ranges along with transaction hashes and DA data. 
+Vulcan, by default, is configured to settle batches every 6 hours or when the maximum blob size is reached, whichever happens first.
+
+The main motivations for using batches are cost savings, by amortizing settlement costs across multiple blocks, and composability, by supporting atomic execution and interconnectedness between different micro rollups.
+
+:::info
+As an SDK user, you don't have to worry about Batches, they are abstracted from the SDK & handled by Vulcan _(verification layer)_.
+:::
+
+## Batches on Stackr
+
+A batch in Stackr framework looks like this
+
+```ts [batch.ts]
+interface BatchInfo {
+  hash: string;
+  sequenceNumber: number;
+  firstBlockHeight: number;
+  lastBlockHeight: number;
+  daMetadata: Record<DA, Record<string, never>>;
+  l1TransactionHash: string;
+  l1BlockNumber?: number;
+}
+```
+
+- `hash`: Keccak256 of encoded blocksRoot (_Merkle root of the Block hashes_), sequencerNumber and width _(number of blocks in the batch)_ of the batch.
+- `sequenceNumber`:  The sequential order in which batches are created, starting from 1.
+- `firstBlockHeight`: The block height of the first block included in the batch.
+- `lastBlockHeight`: The block height of the last block included in the batch.
+- `daMetadata`: Data Pointers of the posted batch on DA _(like blockNumber, height or txHash, etc.)_
+- `l1TransactionHash`: The transaction hash for the finalisation of the batch on L1.
+- `l1BlockNumber`: The block number of the block containing the transaction on L1.
