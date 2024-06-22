@@ -16,6 +16,7 @@
 - Ability to create empty blocks by setting `sequencer.enableEmptyBlocks` to `true` in `StackrConfig`.
 - Add `logs` and `errors` fields to `ActionExecutionStatusEventArgs` interface.
 - Make `syncer.slotTime` an optional field (in `StackrConfig`) having a default value of `max(1000, blockTime)` ms. If provided value is less than `1000` ms, it defaults to `max(1000, blockTime)` ms too.
+- Add `C1X` as a new action confirmation level that represents failed execution.
 - [CLI] Use dynamic linking for reduced Wasm binary size.
 
 #### Bug Fixes
@@ -32,8 +33,9 @@
 
 #### Features
 
-- [SDK] Expose `emit` function in STF that can be used to record custom logs.
+- [SDK] Expose `emit` method in STF that can be used to record custom logs.
 - [SDK] Add fields `logs` and `errors` to `SerializedAction`.
+- [SDK] Expose [`waitFor`](/build/framework/micro-rollup-utils#ackwaitforconfirmationstatus-actionconfirmationstatus) method in the `SerializedAcknowledgement` object returned from `submitAction`.
 
 #### Improvements
 
