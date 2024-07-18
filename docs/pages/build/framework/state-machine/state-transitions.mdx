@@ -48,7 +48,7 @@ The transition function is a pure function. This means that it should not have a
 
 ## Passing Inputs to the Transition Function
 
-The state transition functions accept inputs, which is available through the `inputs` argumaent on the handler. These inputs are derived through which `ActionSchema` was used to trigger the STF.
+The state transition functions accept inputs, which is available through the `inputs` argument on the handler. These inputs are derived through the related `ActionSchema` was used to trigger the STF.
 
 ```tsx [transitions.ts]
 const increment: STF<CounterState> = {
