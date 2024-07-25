@@ -86,7 +86,7 @@ This is useful for testing and debugging purposes.
 
 ---
 
-2. `deploymentFile`: Path to the deployment file containing the `appId`, `appInbox` and `chainId` of the micro-rollup. Defaults to `deployment.json`.
+2. `deploymentFile`: Relative path to the deployment file containing the `appId`, `appInbox` and `chainId` of the micro-rollup. Defaults to `deployment.json`.
 
 This file is created automatically during registration of the micro-rollup with the registry contract using `stackr register` command. See [Register](/build/cli/register) for more details.
 
@@ -123,7 +123,7 @@ This file is created automatically during registration of the micro-rollup with 
 - `version`: The version of the micro-rollup
 - `salt`: A random salt value
 
-The other fields `chainId` and `verifyingContract` required by EIP-712 domain definition are taken from the given deployment file.
+The other fields, `chainId` and `verifyingContract`, required by EIP-712 domain definition are taken automatically from the given deployment file.
 
 ---
 

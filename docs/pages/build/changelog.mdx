@@ -3,8 +3,8 @@
 ## v0.5.2 (and CLI v0.1.2)
 
 - [SDK] Breaking changes: revamp the fields in [`StackrConfig`](/build/framework/config) and arguments to [`MicroRollup`](/build/framework/micro-rollup) constructor. See [upgrade guide](/build/upgrade-guide).
-- [SDK] Perform C2, C3A, C3B syncs for stale blocks on MRU start-up.
-- [SDK] Add `previousState` `previousStateRoot` fields to `ExecutorEvents.EXECUTE_BLOCK` event payload ([`ExecuteBlockEventArgs`](/build/framework/events/#executoreventsexecute_block)).
+- [SDK] Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some time.
+- [SDK] Add `previousState` and `previousStateRoot` fields to `ExecutorEvents.EXECUTE_BLOCK` event payload ([`ExecuteBlockEventArgs`](/build/framework/events/#executoreventsexecute_block)).
 - [SDK] Remove `previousStateRoot` and `newStateRoot` fields from `ExecutorEvents.EXECUTE_ACTION` event payload ([`ExecuteActionEventArgs`](/build/framework/events/#executoreventsexecute_action)).
 - [CLI] New `verify` command: Verify that the source state machine binary matches with the registered binary on AppInbox. [Learn more](https://github.com/stackrlabs/cli/tree/main?tab=readme-ov-file#stackr-verify-appinboxcontract).
 

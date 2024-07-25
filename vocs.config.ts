@@ -36,7 +36,7 @@ export default defineConfig({
       link: "https://litepaper.stf.xyz",
     },
     {
-      text: "v0.5.1",
+      text: "v0.5.2",
       items: [
         {
           text: "Changelog",
