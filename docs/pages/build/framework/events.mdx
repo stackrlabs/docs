@@ -209,7 +209,9 @@ Triggered when a block is executed.
 
 **Event Arguments:** `ExecuteBlockEventArgs`
 
+- `previousState`: Previous state before execution.
 - `state`: Current state after execution.
+- `previousStateRoot`: Root hash of the previous state.
 - `stateRoot`: Root hash of the state.
 - `actionHashes`: List of hashes of executed actions.
 - `executionHooks`: string[][];
