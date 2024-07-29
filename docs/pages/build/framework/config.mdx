@@ -81,8 +81,7 @@ interface StackrConfig {
 
 1. `isSandbox`: A boolean flag to indicate if the rollup is running in a sandbox environment. Defauts to `false`.
 
-When running in a sandbox mode, the rollup creates a temporary sqlite database to store the state and the actions and the blocks are not sent to Vulcan or L1 for verification.
-This is useful for testing and debugging purposes.
+When running an MRU in sandbox mode, the rollup creates a temporary SQLite database to store data and the blocks are not sent to Vulcan or L1 for verification. Vulcan and L1 Syncers are disabled in sandbox mode and therefore the only confirmation you get on an action is `C1`.
 
 ---
 
@@ -106,8 +105,8 @@ This file is created automatically during registration of the micro-rollup with 
 - `slotTime`: The time interval after which the rollup sends a block to Vulcan for verification and finalization.
 - `vulcanRPC`: The RPC endpoint of the Vulcan chain. Can be found in [Network Configuration](/build/references/providers-and-rpc).
 - `L1RPC`: The RPC endpoint of the L1 chain. Can be found in [Network Configuration](/build/references/providers-and-rpc).
-- `disableVulcanSync`: A flag to indicate if the rollup should not sync with Vulcan. This happens by default in sandbox mode. Defauts to `false`.
-- `disableL1Sync`: A flag to indicate if the rollup should not sync with the L1 chain. This happens by default in sandbox mode. Defauts to `false`.
+- `disableVulcanSync`: A flag to indicate if the rollup should not sync with Vulcan. Defaults to `false`, except in Sandbox mode, where it defaults to `true`.
+- `disableL1Sync`: A flag to indicate if the rollup should not sync with the L1 chain. Defaults to `false`, except in Sandbox mode, where it defaults to `true`.
 
 ---
 
@@ -123,7 +122,7 @@ This file is created automatically during registration of the micro-rollup with 
 - `version`: The version of the micro-rollup
 - `salt`: A random salt value
 
-The other fields, `chainId` and `verifyingContract`, required by EIP-712 domain definition are taken automatically from the given deployment file.
+The other fields, `chainId` and `verifyingContract`, required by [EIP-712](https://eips.ethereum.org/EIPS/eip-712) domain definition are taken automatically from the given deployment file.
 
 ---
 

@@ -14,7 +14,7 @@
 - Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some time.
 - Add `previousState`, `previousStateRoot` and `executionHooksLogs` fields to `ExecutorEvents.EXECUTE_BLOCK` event payload ([`ExecuteBlockEventArgs`](/build/framework/events/#executoreventsexecute_block)).
 - The `sequencer.tick()` method exposed in `MicroRollupResponse` now returns a boolean value indicating whether a new block was sequenced or not.
-- [CLI] New `verify` command: Verify that the source state machine binary matches with the registered binary on AppInbox. [Learn more](https://github.com/stackrlabs/cli/tree/main?tab=readme-ov-file#stackr-verify-appinboxcontract).
+- [CLI] New `verify` command: Verify that the source state machine binary matches with the registered binary on AppInbox. [Learn more](https://www.npmjs.com/package/@stackr/cli#stackr-verify-appinboxcontract).
 
 #### Bug Fixes
 
@@ -60,7 +60,7 @@
 
 #### Features
 
-- [SDK] Expose `emit` method in STF that can be used to record custom logs. [Learn more](/build/framework/global-variables/#custom-execution-logs).
+- [SDK] Expose `emit` method in STF that can be used to record custom logs. [Learn more](/build/framework/state-machine/state-transitions#custom-execution-logs).
 - [SDK] Add fields `logs` and `errors` to `SerializedAction`.
 - [SDK] Expose [`waitFor`](/build/framework/micro-rollup-utils#ackwaitforconfirmationstatus-actionconfirmationstatus) method in the `SerializedAcknowledgement` object returned from `submitAction`.
 
