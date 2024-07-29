@@ -214,7 +214,8 @@ Triggered when a block is executed.
 - `previousStateRoot`: Root hash of the previous state.
 - `stateRoot`: Root hash of the state.
 - `actionHashes`: List of hashes of executed actions.
-- `executionHooks`: string[][];
+- `executionHooks`: List of list of pre and post hooks that were executed as part of this block.
+- `executionHooksLogs`: Logs emitted from block hooks.
 
 ### `ExecutorEvents.EXECUTE_HOOK`
 
@@ -225,7 +226,7 @@ Triggered when a hook is executed.
 - `type`: Type of the hook.
 - `hookName`: Name of the hook.
 - `blockInfo`: Information of the block is executed for.
-- `updateResults`: Results of the state update.
+- `updateResults`: Results of the state update containing `previousState`, `newState` and `logs`.
 
 ### `ExecutorEvents.EXECUTE_ACTION`
 
@@ -236,7 +237,7 @@ Triggered when an action is executed.
 - `actionHash`: Hash of the action causing the state change.
 - `actionName`: Name of the action.
 - `payload`: Inputs of the action.
-- `updateResults`: Results of the state update.
+- `updateResults`: Results of the state update containing `previousState`, `newState` and `logs`.
 
 ## Chain Events
 
@@ -298,3 +299,23 @@ Triggered when a block is finalized on the L1.
 **Event Arguments:** `BlockEventArgs`
 
 - Follows the same structure as `BlockEvents.SUBMITTED`.
+
+## Unsubscribing to events
+
+You can unsubscribe an existing event subscription like this:
+
+{/* prettier-ignore */}
+```ts
+const listener = (args) => {...};
+rollup.events.subscribe(ConfirmationEvents.C0, listener); // previously subscribed event
+rollup.events.unsubscribe(ConfirmationEvents.C0, listener); // [!code focus]
+```
+
+## Inspecting active subscriptions
+
+You can inspect all active subscriptions for a particular event like this:
+
+{/* prettier-ignore */}
+```ts
+const listeners: { name: string, code: string }[] = rollup.events.getListeners(ConfirmationEvents.C0);
+```

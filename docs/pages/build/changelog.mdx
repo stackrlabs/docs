@@ -2,11 +2,24 @@
 
 ## v0.5.2 (and CLI v0.1.2)
 
-- [SDK] Breaking changes: revamp the fields in [`StackrConfig`](/build/framework/config) and arguments to [`MicroRollup`](/build/framework/micro-rollup) constructor. See [upgrade guide](/build/upgrade-guide).
-- [SDK] Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some time.
-- [SDK] Add `previousState` and `previousStateRoot` fields to `ExecutorEvents.EXECUTE_BLOCK` event payload ([`ExecuteBlockEventArgs`](/build/framework/events/#executoreventsexecute_block)).
-- [SDK] Remove `previousStateRoot` and `newStateRoot` fields from `ExecutorEvents.EXECUTE_ACTION` event payload ([`ExecuteActionEventArgs`](/build/framework/events/#executoreventsexecute_action)).
+#### Breaking Changes
+
+- Revamp the fields in [`StackrConfig`](/build/framework/config) and arguments to [`MicroRollup`](/build/framework/micro-rollup) constructor. See [upgrade guide](/build/upgrade-guide).
+- Remove `previousStateRoot` and `newStateRoot` fields from `ExecutorEvents.EXECUTE_ACTION` event payload ([`ExecuteActionEventArgs`](/build/framework/events/#executoreventsexecute_action)).
+
+#### Features / Improvements
+
+- Expose `emit` in block hooks as well (previously it was available only in STFs). [Learn more](/build/framework/state-machine/block-hooks#custom-execution-logs).
+- Add ability to [unsubscribe](/build/framework/events#unsubscribing-to-events) or [inspect active listeners](/build/framework/events#unsubscribing-to-events) to MRU events.
+- Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some time.
+- Add `previousState`, `previousStateRoot` and `executionHooksLogs` fields to `ExecutorEvents.EXECUTE_BLOCK` event payload ([`ExecuteBlockEventArgs`](/build/framework/events/#executoreventsexecute_block)).
+- The `sequencer.tick()` method exposed in `MicroRollupResponse` now returns a boolean value indicating whether a new block was sequenced or not.
 - [CLI] New `verify` command: Verify that the source state machine binary matches with the registered binary on AppInbox. [Learn more](https://github.com/stackrlabs/cli/tree/main?tab=readme-ov-file#stackr-verify-appinboxcontract).
+
+#### Bug Fixes
+
+- Fixes a bug where it was possible to force create an empty block by returning an empty list of actions from sequencer strategy.
+- [Playground] Fix state rendering for non-JSON state.
 
 ## v0.5.1 (and CLI v0.1.1)
 

@@ -103,9 +103,9 @@ Stops the sequencer.
 
 ### `sequencer.tick()`
 
-Processes the next set of actions in one sequencer tick.
+Processes the next set of actions in one sequencer tick. Returns flag indicating whether a new block was sequenced or not.
 
-**Returns:** `Promise<void>`
+**Returns:** `Promise<boolean>`
 
 ## State Machine Operations
 

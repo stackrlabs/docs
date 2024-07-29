@@ -273,10 +273,6 @@ export default defineConfig({
                 text: "Block Execution Hooks",
                 link: "/build/framework/state-machine/block-hooks",
               },
-              {
-                text: "Global Variables",
-                link: "/build/framework/global-variables",
-              },
             ],
           },
           {
