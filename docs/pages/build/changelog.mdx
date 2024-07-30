@@ -11,7 +11,7 @@
 
 - Expose `emit` in block hooks as well (previously it was available only in STFs). [Learn more](/build/framework/state-machine/block-hooks#custom-execution-logs).
 - Add ability to [unsubscribe](/build/framework/events#unsubscribing-to-events) or [inspect active listeners](/build/framework/events#unsubscribing-to-events) to MRU events.
-- Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some time.
+- Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some downtime.
 - Add `previousState`, `previousStateRoot` and `executionHooksLogs` fields to `ExecutorEvents.EXECUTE_BLOCK` event payload ([`ExecuteBlockEventArgs`](/build/framework/events/#executoreventsexecute_block)).
 - The `sequencer.tick()` method exposed in `MicroRollupResponse` now returns a boolean value indicating whether a new block was sequenced or not.
 - [CLI] New `verify` command: Verify that the source state machine binary matches with the registered binary on AppInbox. [Learn more](https://www.npmjs.com/package/@stackr/cli#stackr-verify-appinboxcontract).
