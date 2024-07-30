@@ -79,7 +79,7 @@ interface StackrConfig {
 
 ## Parameters
 
-1. `isSandbox`: A boolean flag to indicate if the rollup is running in a sandbox environment. Defauts to `false`.
+1. `isSandbox`: A boolean flag to indicate if the rollup is running in a sandbox environment. Defaults to `false`.
 
 When running an MRU in sandbox mode, the rollup creates a temporary SQLite database to store data and the blocks are not sent to Vulcan or L1 for verification. Vulcan and L1 Syncers are disabled in sandbox mode and therefore the only confirmation you get on an action is `C1`.
 
@@ -95,8 +95,8 @@ This file is created automatically during registration of the micro-rollup with 
 
 - `blockSize`: The number of actions that the sequencer picks up from the pool to build a block.
 - `blockTime`: The time interval after which the sequencer picks up actions from the pool to build a block.
-- `enableEmptyBlocks`: A flag to allow creation of empty blocks (the one with no actions). Defauts to `false`.
-- `disableBuilder`: A flag to indicate if the rollup should not use the builder to generate new blocks. This is useful for [functionally generating blocks](/build/framework/micro-rollup-utils#sequencertick) when needed. Defauts to `false`.
+- `enableEmptyBlocks`: A flag to allow creation of empty blocks (the one with no actions). Defaults to `false`.
+- `disableBuilder`: A flag to indicate if the rollup should not use the builder to generate new blocks. This is useful for [functionally generating blocks](/build/framework/micro-rollup-utils#sequencertick) when needed. Defaults to `false`.
 
 ---
 
