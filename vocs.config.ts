@@ -365,7 +365,7 @@ export default defineConfig({
             link: "/build/cli/transfer-ownership",
           },
           {
-            text: "Verfy",
+            text: "Verify",
             link: "/build/cli/verify",
           },
         ],
