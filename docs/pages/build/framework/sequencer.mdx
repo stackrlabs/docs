@@ -14,14 +14,14 @@ The sequencer module has the following parameters that are set in the `stackr.co
  sequencer: {
     blockSize: 16,
     blockTime: 10,
-    enableEmptyBlocks: true,
+    allowEmptyBlocks: true,
     disableBuilder: false,
   },
 ```
 
 - `blockSize`: The number of actions that the sequencer picks up from the pool to build a block.
 - `blockTime`: The time interval after which the sequencer picks up actions from the pool to build a block.
-- `enableEmptyBlocks`: A flag to allow creation of empty blocks (the one with no actions). Defaults to `false`.
+- `allowEmptyBlocks`: A flag to allow creation of empty blocks (the one with no actions). Defaults to `false`.
 - `disableBuilder`: A flag to indicate if the rollup should not use the builder to generate new blocks. This is useful for [functionally generating blocks](/build/framework/micro-rollup-utils#sequencertick) when needed. Defaults to `false`.
 
 ## Lazy blocks

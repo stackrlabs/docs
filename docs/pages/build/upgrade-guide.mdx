@@ -12,7 +12,8 @@ This release introduces some changes in [`StackrConfig`](/build/framework/config
 - Remove the line which imports the `deployment.json` file. The file is now directly read by the SDK. If you renamed this file, specify the path in `deploymentFile` field.
 - Remove the `stackrApp` field. 
 - Remove `domain.chainId` and `domain.verifyingContract` fields.
-2. If you are passing any of `isSandbox`, `disableBuilder`, `disableVulcanSync` or `disableL1Sync` arguments to `MicroRollup`, they should be moved to the config now.
+- Rename `enableEmptyBlocks` to `allowEmptyBlocks` in `sequencer` field.
+2. If you are passing any of `isSandbox`, `disableBuilder`, `disableVulcanSync` or `disableL1Sync` arguments to `MicroRollup`, they should be moved to the config now, in corresponding sections.
 
 ## Upgrading to v0.5.0
 
