@@ -36,7 +36,7 @@ export default defineConfig({
       link: "https://litepaper.stf.xyz",
     },
     {
-      text: "v0.5.1",
+      text: "v0.5.2",
       items: [
         {
           text: "Changelog",
@@ -273,10 +273,6 @@ export default defineConfig({
                 text: "Block Execution Hooks",
                 link: "/build/framework/state-machine/block-hooks",
               },
-              {
-                text: "Global Variables",
-                link: "/build/framework/global-variables",
-              },
             ],
           },
           {
@@ -359,6 +355,18 @@ export default defineConfig({
           {
             text: "Add Bridge",
             link: "/build/cli/add-bridge",
+          },
+          {
+            text: "Add Hook",
+            link: "/build/cli/add-hook",
+          },
+          {
+            text: "Transfer Ownership",
+            link: "/build/cli/transfer-ownership",
+          },
+          {
+            text: "Verify",
+            link: "/build/cli/verify",
           },
         ],
       },

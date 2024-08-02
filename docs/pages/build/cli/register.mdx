@@ -9,6 +9,23 @@ Any application must be registered before beginning development as the Stackr-SD
 ## Usage
 
 ```bash
+» stackr register --help
+USAGE
+  $ stackr register [--envFile <value>] [--privateKey <value>]
+
+FLAGS
+  --envFile=<value>     [default: .env] Path to the .env file
+  --privateKey=<value>  Private key of the account to be used to register the contract
+
+EXAMPLES
+  $ stackr register
+
+  $ stackr register --privateKey <privateKey> --envFile <path>
+```
+
+## Example
+
+```bash
 npx @stackr/cli@latest register
 ```
 
@@ -24,14 +41,14 @@ We have kept this fees in this initial phase to prevent spamming and to ensure t
 The deployment fees is dynamic and increases with the number of applications deployed on the network. if the same app operator tries to deploy more than 10 applications, the fees will become 0.05 ETH for each new application.
 :::
 
-## Output
+### Output
 
 ```bash
 ✔ 📝 Registered application on registry
 ✔ 🧰 Updated deployment.json
 ```
 
-Once the registration is successful, a new `deployment.json` file is created in the root of your project directory. This file looks like this -
+Once the registration is successful, a new `deployment.json` file is created in the root of your project directory. This file looks like this:
 
 ```json [deployment.json]
 {

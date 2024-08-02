@@ -103,9 +103,9 @@ Stops the sequencer.
 
 ### `sequencer.tick()`
 
-Processes the next set of actions in one sequencer tick.
+Processes the next set of actions in one sequencer tick. Returns flag indicating whether a new block was sequenced or not.
 
-**Returns:** `Promise<void>`
+**Returns:** `Promise<boolean>`
 
 ## State Machine Operations
 
@@ -173,26 +173,6 @@ Retrieves a block by its height.
 
 **Returns:** `Promise<BlockData | null>`
 
-### `chain.getBlockByActionHash(actionHash)`
-
-Retrieves a block containing a specific action by its hash.
-
-**Parameters:**
-
-- `actionHash`: Hash of the action.
-
-**Returns:** `Promise<BlockData | null>`
-
-### `chain.getBlockHashByActionHash(actionHash)`
-
-Retrieves the block hash for a block containing a specific action.
-
-**Parameters:**
-
-- `actionHash`: Hash of the action.
-
-**Returns:** `Promise<Keccak256 | null>`
-
 ### `chain.getBlockByHash(hash)`
 
 Retrieves a block by its hash.
@@ -200,6 +180,16 @@ Retrieves a block by its hash.
 **Parameters:**
 
 - `hash`: Hash of the block.
+
+**Returns:** `Promise<BlockData | null>`
+
+### `chain.getBlockByActionHash(actionHash)`
+
+Retrieves a block containing a specific action by its hash.
+
+**Parameters:**
+
+- `actionHash`: Hash of the action.
 
 **Returns:** `Promise<BlockData | null>`
 
