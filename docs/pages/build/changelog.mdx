@@ -9,6 +9,7 @@
 
 #### Features / Improvements
 
+- Micro-rollups can now be ran in "Sandbox" mode, without registration. The new config changes removes dependencies on `deployment.json` and `stackrApp` fields.
 - Expose `emit` in block hooks as well (previously it was available only in STFs). [Learn more](/build/framework/state-machine/block-hooks#custom-execution-logs).
 - Add ability to [unsubscribe](/build/framework/events#unsubscribing-from-events) or [inspect/list active listeners](/build/framework/events/#inspecting-active-subscriptions) to MRU events.
 - Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some downtime.
