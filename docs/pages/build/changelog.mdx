@@ -1,5 +1,17 @@
 # Changelog [What's new]
 
+## v0.5.3
+
+#### Features / Improvements
+
+- Change datatype of `msgSender` and `signature` fields to `string` everywhere (such as `STF` args and `ActionParams` interface).
+Earlier, these were `AddressLike` / `SignatureLike` which weren't really useful without wrapping them in `String(v)` anyway.
+
+#### Bug Fixes
+
+- Fix ordering of properties in `Domain` type returned from [`MicroRollupResponse.config.domain`](/build/framework/micro-rollup-utils#config).
+- Fix a bug where the L1 listener would at times run into `"filter not found"` error.
+
 ## v0.5.2 (and CLI v0.1.2)
 
 #### Breaking Changes

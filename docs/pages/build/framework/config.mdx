@@ -152,3 +152,33 @@ with more support of data availability layers coming soon. No additional configu
 10. `logLevel`: The log level of the micro-rollup. Defaults to `log`.
 
 This is used for viewing the logs of the micro-rollup during runtime. Logs are a useful tool for debugging and monitoring the micro-rollup and checking for any errors.
+
+
+## Accessing config values
+
+It's recommended to not use the `stackrConfig` object defined above directly in your rollup code, other than for initializing `MicroRollup`.
+
+Instead, to read any value from the config, use the [`MicroRollupResponse.config`](/build/framework/micro-rollup-utils#config) object which returns a `Readonly<ExternalConfig>` object whose type definition is:
+
+```ts
+type ExternalConfig = {
+  appId: number;
+  appInbox: string;
+  chainId: number;
+  disableBuilder: boolean;
+  blockSize: number;
+  blockTime: number;
+  allowEmptyBlocks: boolean;
+  disableVulcanSync: boolean;
+  disableL1Sync: boolean;
+  slotTime: number;
+  vulcanRPC: string;
+  L1RPC: string;
+  isSandbox: boolean;
+  domain: Domain;
+  registryContract: string;
+  preferredDA: DA;
+  accounts: PublicAccount[];
+  logLevel: LogLevel;
+};
+```

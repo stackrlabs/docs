@@ -42,7 +42,7 @@ interface BlockData {
 }
 ```
 
-### Header
+### Block header attributes
 
 - `appId`: The application id to which this block belongs to.
 - `parentHash`: The hash of the parent block.
@@ -55,7 +55,7 @@ interface BlockData {
 - `builderSignature`: The signature of the builder on the block.
 - `executionStatus`: The status of the block execution. It is an encoded value that represents which action succeeded and which failed.
 
-### Body
+### Block body attributes
 
 - `hash`: The hash of the block. This is Keccak-256 of encoded header.
 - `operatorSignature`: The signature of the operator on the block's hash.
