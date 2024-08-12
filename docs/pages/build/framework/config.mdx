@@ -156,7 +156,7 @@ This is used for viewing the logs of the micro-rollup during runtime. Logs are a
 
 ## Accessing config values
 
-It's recommended to not use the `stackrConfig` object defined above directly in your rollup code, other than for initializing `MicroRollup`.
+It's not recommended to use the `stackrConfig` object defined above directly in your rollup code, other than for initializing `MicroRollup`.
 
 Instead, to read any value from the config, use the [`MicroRollupResponse.config`](/build/framework/micro-rollup-utils#config) object which returns a `Readonly<ExternalConfig>` object whose type definition is:
 

@@ -48,7 +48,7 @@ Returns any errors that occurred during the execution of the action. It is null 
 
 ## Serialized Block
 
-In some places, the `SerializedAction` also includes block details. Then its datatype is `SerializedActionAndBlock` as given below
+When using the [`MicroRollupResponse.actions.query`](/build/framework/micro-rollup-utils/#actionsqueryfilters-actionfilterparams-orderasc-boolean) method, the `SerializedAction` also includes block details. Then its datatype is `SerializedActionAndBlock` and looks like
 
 ```ts
 interface SerializedBlock {
