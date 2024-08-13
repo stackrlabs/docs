@@ -56,16 +56,14 @@ interface IBaseHook {
 ```
 
 ```solidity [Hook.sol]
-contract Hook is IBaseHook {
-    event PostEvent();
+contract MyHook is IBaseHook {
+    event MyEvent();
 
     function postSubmit(
         IAppInbox.Batch calldata _batch,
         address _submitter
     ) external override {
-        _batch;
-        _submitter;
-        emit PostEvent();
+        emit MyEvent();
     }
 }
 ```

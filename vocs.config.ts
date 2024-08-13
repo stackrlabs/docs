@@ -206,6 +206,10 @@ export default defineConfig({
                 text: "Let's run it",
                 link: "/build/zero-to-one/run-it",
               },
+              {
+                text: "Registration and Deployment",
+                link: "/build/zero-to-one/registration-and-deployment",
+              },
             ],
           },
           {
@@ -213,7 +217,7 @@ export default defineConfig({
             link: "/build/development-paradigm",
           },
           {
-            text: "Configuration",
+            text: "Network Configuration",
             link: "/build/references/providers-and-rpc",
           },
           {
@@ -343,6 +347,10 @@ export default defineConfig({
           {
             text: "Initialize",
             link: "/build/cli/init",
+          },
+          {
+            text: "Compile",
+            link: "/build/cli/compile",
           },
           {
             text: "Register",
