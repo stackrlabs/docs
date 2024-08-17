@@ -132,11 +132,11 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
 
   :::code-group
 
-  ```ts [machine.ts (named export)] 
+  ```ts [machine.ts (declaration export)]
   export const myMachine = new StateMachine({ ... });
   ```
 
-  ```ts [machine.ts (named re-export)] 
+  ```ts [machine.ts (named export)]
   const myMachine = new StateMachine({ ... });
 
   export { myMachine };
