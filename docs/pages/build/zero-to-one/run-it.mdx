@@ -70,7 +70,7 @@ In this example, we will run our micro-rollup in sandbox mode.
 **Sandbox mode** 🧪
 
 Sandbox mode doesn't require registration or deployment of your MRU. The SDK creates a temporary SQLite database to store data and the blocks are not sent to Vulcan or L1 for verification.
-It's recommended to use this mode while development and for experimentation.
+It's recommended to use this mode while development and for experimentation. Enable this by setting `isSandbox` property to `true` in `stackr.config.ts`.
 :::
 
 ### Run using Node.js 
@@ -98,8 +98,7 @@ docker build -t app_name:latest .
 ```bash [Mac w/ Apple Silicon]
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  -t app_name:latest . \
-  --build-arg NPM_TOKEN=<NPM_TOKEN>
+  -t app_name:latest .
 ```
 :::
 
@@ -246,10 +245,8 @@ In this section, we learned how to run our micro-rollup and interact with it.
 You can find the full breakdown of this app in the [Counter Rollup Tutorial](/build/guides/tutorials/counter) guide.
 :::
 
-You can now start building and customizing your own rollup using the Stackr SDK. Start by modifying the `machine.ts`, `transitions.ts` and relevant files to suit your requirements.
+You can now start building and customizing your rollup using the Stackr SDK. Start by modifying the `machine.ts`, `transitions.ts`, and relevant files as per your requirements.
 
 You can wrap the micro-rollup in a REST API or GraphQL API to interact with it from the frontend.
 
 In the next section, we will learn how to register and deploy our application on Stackr's network and on-chain.
-
-

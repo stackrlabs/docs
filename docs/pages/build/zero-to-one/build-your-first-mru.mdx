@@ -85,9 +85,11 @@ We don't store your private key anywhere, it is stored in your local environment
 
 ### Setup `stackr.config.ts`
 
-- Now let's dive into the `stackr.config.ts` file.
+Now let's dive into the `stackr.config.ts` file.
+
+- By default, the micro-rollup is configured to run in Sandbox mode (`isSandbox`). This is explained in the next section.
 - The main properties you might wish to tune here are `blockSize` and `blockTime` of your micro-rollup.
-You can also set `allowEmptyBlocks` to `true` if you want your micro-rollup to always produce blocks (even when there are no actions).
+You can also set `allowEmptyBlocks` to `true` if you want your micro-rollup to always produce blocks every `blockTime` milliseconds (even when there are no actions).
   ```ts [stackr.config.ts]
   sequencer: {
     blockSize: 16,
@@ -103,7 +105,7 @@ You can also set `allowEmptyBlocks` to `true` if you want your micro-rollup to a
     salt: "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   }
   ```
-- You can refer to [Stackr Config](/build/framework/config) section on explanation of each and every available configuration property.
+- You can refer to [Stackr Config](/build/framework/config) section for the explanation of every available configuration property.
 
 ## Project Structure
 
@@ -126,13 +128,27 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
 
 - `machine.ts` contains the [`StateMachine`](/build/framework/state-machine/introduction) and [`State`](/build/framework/state-machine/state) classes for your application.
 
-  - Please make sure to export the `StateMachine` object from this file.
+  - Please make sure to export the `StateMachine` object from this file in one of the following ways:
 
-  ```ts [machine.ts]
-  const myMachine = new StateMachine({ ... })
+  :::code-group
+
+  ```ts [machine.ts (named export)] 
+  export const myMachine = new StateMachine({ ... });
+  ```
+
+  ```ts [machine.ts (named re-export)] 
+  const myMachine = new StateMachine({ ... });
 
   export { myMachine };
   ```
+
+  ```ts [machine.ts (default export)]
+  const myMachine = new StateMachine({ ... });
+
+  export default myMachine;
+  ```
+
+  :::
 
 - `actions.ts` contains the [Action Schemas](/build/framework/action/action-schema) for your application.
 - `transitions.ts` contains the [State Transition Functions (STF)](/build/framework/state-machine/state-transitions) for your application.

@@ -4,7 +4,7 @@ The `deploy` command is used to deploy your Micro-Rollup to the Vulcan network a
 
 It performs the following 3 operations:
 
-1. Extracts and compiles the State Machine into WASM ([`compile`](/build/cli/compile) command)
+1. Extracts and compiles the State Machine into Wasm ([`compile`](/build/cli/compile) command)
 2. Creates a commitment of the Wasm (binary) and genesis state (JSON), signs it using the operator private key and sends it to the `AppInbox` contract to initialize the application
 3. Uploads the Wasm binary to Vulcan.
 
