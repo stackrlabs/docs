@@ -93,12 +93,12 @@ bun start
 :::code-group
 
 ```bash [Linux]
-docker build -t app_name:latest .
+docker build -t <app_name>:latest .
 ```
 ```bash [Mac w/ Apple Silicon]
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  -t app_name:latest .
+  -t <app_name>:latest .
 ```
 :::
 
@@ -106,15 +106,15 @@ docker buildx build \
 
 :::code-group
 ```bash [File-based DB]
-docker run \
+docker run --env-file .env \
   -v ./db.sqlite:/app/db.sqlite \
   -p <HOST_PORT>:<CONTAINER_PORT> \
-  --name=app_name -it app_name:latest
+  --name=<app_name> -it <app_name>:latest
 ```
 ```bash [URI-based DB]
-docker run \
+docker run --env-file .env \
   -p <HOST_PORT>:<CONTAINER_PORT> \
-  --name=app_name -it app_name:latest
+  --name=<app_name> -it <app_name>:latest
 ```
 :::
 
