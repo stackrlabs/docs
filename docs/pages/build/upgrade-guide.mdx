@@ -31,6 +31,9 @@ This release introduces breaking changes in how to write action schemas, state t
      config: stackrConfig,
      actionSchemas: [UpdateCounterSchema],
      stateMachines: [machine],
+     stfSchemaMap: {
+      increment: UpdateCounterSchema,
+     },
    });
    ```
 

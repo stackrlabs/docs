@@ -36,7 +36,7 @@ export default defineConfig({
       link: "https://litepaper.stf.xyz",
     },
     {
-      text: "v0.5.4",
+      text: "v0.5.5",
       items: [
         {
           text: "Changelog",
@@ -296,10 +296,6 @@ export default defineConfig({
                 link: "/build/framework/action/introduction",
               },
               {
-                text: "Action Schema",
-                link: "/build/framework/action/action-schema",
-              },
-              {
                 text: "Lifecycle",
                 link: "/build/framework/action/lifecycle",
               },
@@ -310,10 +306,6 @@ export default defineConfig({
               {
                 text: "Confirmation Status",
                 link: "/build/framework/action/confirmation-status",
-              },
-              {
-                text: "Serialized Action",
-                link: "/build/framework/action/serialized-action",
               },
             ],
           },
@@ -337,6 +329,10 @@ export default defineConfig({
           {
             text: "Sequencer",
             link: "/build/framework/sequencer",
+          },
+          {
+            text: "Types Definitions",
+            link: "/build/framework/type-definitions",
           },
           // {
           //   text: "Executor",
