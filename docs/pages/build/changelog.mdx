@@ -1,5 +1,12 @@
 # Changelog [What's new]
 
+## CLI v0.1.5
+
+- The EIP-712 domain for the app is now injected into the `stf.wasm`.
+- Shows the actual error message if any step in `compile` (or `deploy`) command fails.
+- Fixes reading of leaf-level shorthand property assingments in `stackr.config.ts`.
+- Fixes using the `deploymentFile` property from `stackr.config.ts` for deployment file name if specified (defaults to `deployment.json`).
+
 ## v0.5.4 (and CLI v0.1.4)
 
 - Sandbox mode now uses Sepolia's Chain ID (`11155111`) for faster testing.
