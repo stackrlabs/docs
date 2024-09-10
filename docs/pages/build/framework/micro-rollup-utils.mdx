@@ -6,7 +6,7 @@ The Micro-Rollup object exposes a few utility functions that can be used for var
 
 ### `init()`
 
-Initializes the Micro-Rollup instance. Sets up all necessary configurations, action schemas, and state machines required for the rollup to operate.
+Initializes the Micro-Rollup instance. Sets up all necessary configurations, and state machines required for the rollup to operate.
 
 **Returns:** `Promise<void>`
 
@@ -26,22 +26,21 @@ A readonly object representing the final configuration of the Micro-Rollup. This
 
 ### `getStfSchemaMap()`
 
-A map of the STF names to the ActionSchema names. Available only if [`stfSchemaMap`](/build/framework/micro-rollup#optional-parameters) parameter was passed to `MicroRollup` constructor.
+A map of the STF names to the EIP-712 types definition.
 
-**Returns:** `Record<string, string>`
+**Returns:** `Record<string, Record<string, TypedDataField[]>>`
 
 ## Action Handling
 
-### `submitAction(reducerName: string, action: Action)`
+### `submitAction(actionParams: ActionParams)`
 
-Submits an action to be processed by the rollup, routed based on the specified reducer.
+Submits an action to be processed by the rollup, routed based on the specified transition name.
 
 **Parameters:**
 
-- `reducerName`: Name of the reducer handling the action.
-- `action`: Action object to be processed.
+- `actionParams`: ActionParams object to be processed. ([definition](/build/framework/type-definitions#actionparams))
 
-**Returns:** `Promise<SerializedAcknowledgement>`
+**Returns:** `Promise<SerializedAcknowledgement>` ([definition](/build/framework/type-definitions#serializedacknowledgment))
 
 ### `ack.waitFor(confirmationStatus? = ActionConfirmationStatus.C1)`
 
@@ -51,17 +50,7 @@ Waits for the action, for which the acknowledgment is created, to reach a specif
 
 - `confirmationStatus`: `ActionConfirmationStatus` to wait for (defaults to C1). Can take one of C1, C2, C3A or C3B.
 
-**Returns:** `Promise<SerializedAction>` ([definition](/build/framework/action/serialized-action))
-
-### `actions.getSchema(identifier: string)`
-
-Fetches a specific action schema by its identifier.
-
-**Parameters:**
-
-- `identifier`: Unique identifier of the schema.
-
-**Returns:** `ActionSchema | undefined`
+**Returns:** `Promise<SerializedAction>` ([definition](/build/framework/type-definitions#serializedaction))
 
 ### `actions.getByHash(actionHash: string)`
 
@@ -71,24 +60,7 @@ Retrieves a serialized action from the rollup using its hash.
 
 - `actionHash`: Hash of the action.
 
-**Returns:** `Promise<SerializedAction | null>` ([definition](/build/framework/action/serialized-action))
-
-### `actions.getAllSchemas()`
-
-Returns all action schemas available in the Micro-Rollup.
-
-**Returns:** `SchemaObject[]`
-
-### `actions.waitFor(actionHash: Keccak256, confirmationStatus = ActionConfirmationStatus.C1)`
-
-Waits for an action to reach a certain confirmation status. Returns immediately if the action is already at or higher than the desired status.
-
-**Parameter:**
-
-- `actionHash`: Hash of the action.
-- `confirmationStatus`: Confirmation status to wait for (defaults to C1). Can take one of C1, C2, C3A or C3B.
-
-**Returns:** `Promise<SerializedAction | null>` ([definition](/build/framework/action/serialized-action))
+**Returns:** `Promise<SerializedAction | null>` ([definition](/build/framework/type-definitions#serializedaction))
 
 ### `actions.query(filters: ActionFilterParams, orderAsc?: boolean)`
 
@@ -101,7 +73,6 @@ Query and fetch list of actions along with their block data (if applicable) from
   ```ts
   interface ActionFilterParams {
     name?: string;
-    schemaIdentifier?: string;
     executionStatus?: ActionExecutionStatus | ActionExecutionStatus[];
     confirmationStatus?: ActionConfirmationStatus | ActionConfirmationStatus[];
     block?: {
@@ -113,7 +84,7 @@ Query and fetch list of actions along with their block data (if applicable) from
 
 - `orderAsc`: Whether the actions should be sorted in ascending or descending order of block height and position in block. Defaults to ascending order.
 
-**Returns:** `Promise<SerializedActionAndBlock[]>` ([definition](/build/framework/action/serialized-action#serialized-block))
+**Returns:** `Promise<SerializedActionAndBlock[]>` ([definition](/build/framework/type-definitions#serializedactionandblock))
 
 ## Sequencer Functions
 
@@ -205,7 +176,7 @@ Retrieves a block by its height.
 
 - `height`: Height of the block.
 
-**Returns:** `Promise<BlockData | null>`
+**Returns:** `Promise<BlockData | null>` ([definition](/build/framework/block#blocks-on-stackr))
 
 ### `chain.getBlockByHash(hash)`
 
@@ -215,7 +186,7 @@ Retrieves a block by its hash.
 
 - `hash`: Hash of the block.
 
-**Returns:** `Promise<BlockData | null>`
+**Returns:** `Promise<BlockData | null>` ([definition](/build/framework/block#blocks-on-stackr))
 
 ### `chain.getBlockByActionHash(actionHash)`
 
@@ -225,7 +196,7 @@ Retrieves a block containing a specific action by its hash.
 
 - `actionHash`: Hash of the action.
 
-**Returns:** `Promise<BlockData | null>`
+**Returns:** `Promise<BlockData | null>` ([definition](/build/framework/block#blocks-on-stackr))
 
 ## Event Handling
 

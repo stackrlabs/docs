@@ -53,25 +53,34 @@ export class CounterState extends State<number> {
 The hashing function could be any function that takes the state as input and returns a hash determinitically. The hash should be a `BytesLike` type.
 :::
 
-## Define Action Schema
-
-Next we define the actions that can be performed on the state. We do this by defining a schema for the action.
-
-Over here we just use a single schema for updating the counter value. Both increment and decrement actions can be performed using the same schema. It is the responsibility of the state transition function to determine the action based on the input.
-
-We dont really need any input for the action, so we just define a timestamp field to keep the actions unique. It works as a nonce for the action.
-
-```ts [schemas.ts]
-import { ActionSchema, SolidityType } from "@stackr/sdk";
-
-export const UpdateCounterSchema = new ActionSchema("update-counter", {
-  timestamp: SolidityType.UINT,
-});
-```
-
 ## Define State Transition Functions (STF)
 
-Next we define the state transition functions that will be used to transition the state based on the action. We define two functions, one for incrementing the counter and one for decrementing the counter.
+Next we define the state transition functions that will be used to update the state by submitting actions to the rollup.
+
+We define two functions, one for incrementing the counter and one for decrementing the counter.
+
+### Define input schema
+
+Each STF must have a `schema` defined which represents the type definition for the inputs accepted by the transition function. These schemas are used to generate equivalent EIP-712 types for signing purposes.
+
+Over here, both increment and decrement actions can be performed using the same input schema.
+
+:::info
+We don't really need any input for the action, so we just define a `timestamp` field to keep the actions unique. It works as a nonce for the action.
+:::
+
+{/* prettier-ignore */}
+```ts [transitions.ts]
+import { SolidityType } from "@stackr/sdk/machine";
+
+const schema = { // [!code focus]
+  timestamp: SolidityType.UINT, // [!code focus]
+} as const; // [!code focus]
+
+/* ... */
+```
+
+To learn more on how to write schemas, refer to [Passings Inputs to an STF](/build/framework/state-machine/state-transitions#passing-inputs-to-an-stf).
 
 ### Increment
 
@@ -79,28 +88,22 @@ We define a state transition function that increments the counter value by 1. It
 
 {/* prettier-ignore */}
 ```ts [transitions.ts]
-import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
+import { REQUIRE, SolidityType, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
 import { CounterState } from "./machine"; // [!code focus]
 
-const increment: STF<CounterState> = { // [!code focus]
+const schema = {
+  timestamp: SolidityType.UINT,
+} as const;
+
+const increment: STF<CounterState, typeof schema> = { // [!code focus]
+  schema,
   handler: ({ state }) => { // [!code focus]
     state += 1; // [!code focus]
     return state; // [!code focus]
   }, // [!code focus]
 }; // [!code focus]
 
-const decrement: STF<CounterState> = {
-  handler: ({ state }) => {
-    state -= 1;
-    REQUIRE(state > 0, "Cannot decrement below 0");
-    return state;
-  },
-};
-
-export const transitions: Transitions<CounterState> = {
-  increment,
-  decrement,
-};
+/* ... */
 ```
 
 ### Decrement
@@ -109,17 +112,17 @@ Next we define a state transition function that decrements the counter value by 
 
 {/* prettier-ignore */}
 ```ts [transitions.ts]
-import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
+import { REQUIRE, SolidityType, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
 import { CounterState } from "./machine"; // [!code focus]
 
-const increment: STF<CounterState> = { 
-  handler: ({ state }) => { 
-    state += 1; 
-    return state; 
-  }, 
-}; 
+const schema = {
+  timestamp: SolidityType.UINT,
+} as const;
 
-const decrement: STF<CounterState> = { // [!code focus]
+/* ... */
+
+const decrement: STF<CounterState, typeof schema> = { // [!code focus]
+  schema,
   handler: ({ state }) => { // [!code focus]
     state -= 1; // [!code focus]
     REQUIRE(state > 0, "Cannot decrement below 0"); // [!code focus]
@@ -127,10 +130,7 @@ const decrement: STF<CounterState> = { // [!code focus]
   }, // [!code focus]
 }; // [!code focus]
 
-export const transitions: Transitions<CounterState> = {
-  increment,
-  decrement,
-};
+/* ... */
 ```
 
 Note that we also add a check to ensure that the counter value does not go below 0. it is done using the `REQUIRE` function from the SDK. It works similarly to the `require` function in Solidity.
@@ -141,17 +141,23 @@ Finally we export the transitions so that they can be used in the state machine.
 
 {/* prettier-ignore */}
 ```ts [transitions.ts]
-import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine";
+import { REQUIRE, SolidityType, STF, Transitions } from "@stackr/sdk/machine";
 import { CounterState } from "./machine";
 
-const increment: STF<CounterState> = { 
+const schema = {
+  timestamp: SolidityType.UINT,
+} as const;
+
+const increment: STF<CounterState, typeof schema> = {
+  schema,
   handler: ({ state }) => { 
     state += 1; 
     return state; 
   }, 
 }; 
 
-const decrement: STF<CounterState> = {
+const decrement: STF<CounterState, typeof schema> = {
+  schema,
   handler: ({ state }) => {
     state -= 1;
     REQUIRE(state > 0, "Cannot decrement below 0");
@@ -281,19 +287,18 @@ export { stackrConfig };
 
 Once we are done with the state machine, we can define the rollup using the `MicroRollup` class from the SDK which includes all the neccessary components to run the state machine.
 
-The rollup takes 3 parameters:
+The rollup takes 2 parameters:
 
 1. `config`: The configuration object for the rollup.
-2. `actionSchemas`: The action schemas that the rollup will use. This is an array of action schemas that we defined earlier.
-3. `stateMachines`: The state machines that the rollup will use.
+2. `stateMachines`: The state machines that the rollup will use.
 
 ```ts [rollup.ts]
 import { MicroRollup } from "@stackr/sdk";
 import { stackrConfig } from "../stackr.config";
+import { machine } from "./machine.ts";
 
 const mru = await MicroRollup({
   config: stackrConfig,
-  actionSchemas: [UpdateCounterSchema],
   stateMachines: [machine],
 });
 
@@ -302,11 +307,11 @@ await mru.init();
 
 ## All Set!
 
-We have now successfully created a Counter Rollup using the Stackr SDK. We have defined the state, action schema, state transition functions, genesis state, state machine, configuration and the rollup.
+We have now successfully created a Counter Rollup using the Stackr SDK. We have defined the state, state transition functions, genesis state, state machine, configuration and the rollup.
 
 ## Interacting with the Rollup
 
-Now that we have the rollup setup, we can interact with it by sending it actions. We can use the `submitAction` method to send actions to the rollup.
+Now that we have the rollup setup, we can interact with it by sending it actions. We can use the [`submitAction`](/build/framework/micro-rollup-utils#submitactionactionparams-actionparams) method to send actions to the rollup.
 
 ### Create an Input
 
@@ -317,21 +322,11 @@ We define the inputs for the action. In this case we just need a timestamp as de
 const inputs = { // [!code focus]
   timestamp: Date.now(), // [!code focus]
 }; // [!code focus]
-
-const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
-const incrementAction = UpdateCounterSchema.actionFrom({
-  inputs,
-  signature,
-  msgSender: wallet.address,
-});
-
-const ack = await mru.submitAction("increment", incrementAction);
-console.log(ack);
 ```
 
 ### Sign the input to create a signature
 
-Next we sign the inputs using the `signMessage` function. This function takes the wallet, action schema and inputs as parameters and returns a signature. This uses `EIP-712` to sign the message.
+Next we sign the inputs using the [`wallet.signTypedData`](https://docs.ethers.org/v6/api/providers/#Signer-signTypedData) function. This uses `EIP-712` domain and types definitions to sign the message.
 
 {/* prettier-ignore */}
 ```ts [index.ts]
@@ -339,34 +334,14 @@ const inputs = {
   timestamp: Date.now(),
 };
 
-const signMessage = async ( // [!code focus]
-  wallet: HDNodeWallet, // [!code focus]
-  schema: ActionSchema, // [!code focus]
-  payload: AllowedInputTypes // [!code focus]
-) => { // [!code focus]
-  const signature = await wallet.signTypedData( // [!code focus]
-    schema.domain, // [!code focus] 
-    schema.EIP712TypedData.types,   // [!code focus]
-    payload // [!code focus]
-  ); // [!code focus]
-  return signature; // [!code focus]
-}; // [!code focus]
-
-const signature = await signMessage(wallet, UpdateCounterSchema, inputs); // [!code focus]
-
-const incrementAction = UpdateCounterSchema.actionFrom({
-  inputs,
-  signature,
-  msgSender: wallet.address,
-});
-
-const ack = await mru.submitAction("increment", incrementAction);
-console.log(ack);
+const domain = mru.config.domain;
+const types = mru.getStfSchemaMap()["increment"];
+const signature = await wallet.signTypedData(domain, types, inputs); // [!code focus]
 ```
 
 ### Create an action from the inputs
 
-Next we create an action from the inputs, signature and the sender address. We do this using the `actionFrom` method of the action schema.
+Next we construct the action parameters from the inputs, signature and the sender address.
 
 {/* prettier-ignore */}
 ```ts [index.ts]
@@ -374,21 +349,20 @@ const inputs = {
   timestamp: Date.now(),
 };
 
-const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
-
-const incrementAction = UpdateCounterSchema.actionFrom({ // [!code focus]
+const domain = mru.config.domain;
+const types = mru.getStfSchemaMap()["increment"];
+const signature = await wallet.signTypedData(domain, types, inputs); 
+const incrementActionParams = { // [!code focus]
+  name: "increment", // [!code focus]
   inputs, // [!code focus]
   signature, // [!code focus]
   msgSender: wallet.address, // [!code focus]
-}); // [!code focus]
-
-const ack = await mru.submitAction("increment", incrementAction);
-console.log(ack)
+}; // [!code focus]
 ```
 
 ### Submit the action to the rollup
 
-Finally we submit the action to the rollup using the `submitAction` method. This method takes the action type and the action as parameters and returns an acknowledgement.
+Finally we submit the action to the rollup using the `submitAction` method. This method takes the action parameters and returns an acknowledgement.
 
 {/* prettier-ignore */}
 ```ts [index.ts]
@@ -396,15 +370,17 @@ const inputs = {
   timestamp: Date.now(),
 };
 
-const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
-
-const incrementAction = UpdateCounterSchema.actionFrom({
+const domain = mru.config.domain;
+const types = mru.getStfSchemaMap()["increment"];
+const signature = await wallet.signTypedData(domain, types, inputs); 
+const incrementActionParams = {
+  name: "increment",
   inputs,
   signature,
   msgSender: wallet.address,
-});
+};
 
-const ack = await mru.submitAction("increment", incrementAction); // [!code focus]
+const ack = await mru.submitAction(incrementActionParams); // [!code focus]
 console.log(ack) // [!code focus]
 ```
 

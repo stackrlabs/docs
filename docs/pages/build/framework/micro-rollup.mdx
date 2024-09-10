@@ -10,35 +10,28 @@ import { MicroRollup } from "@stackr/sdk";
 
 const rollup = await MicroRollup({
   config: stackrConfig,
-  actionSchemas: [...actionSchemas],
   stateMachines: [machine],
 });
 
 await rollup.init();
 ```
 
-The Micro-rollup object takes in 3 main parameters -
+The Micro-rollup object takes in 2 main parameters -
 
 1. `config` - The stackr configuration object
 
 all the details that you set in the [`stackr.config.ts`](/build/framework/config) file is passed to the micro-rollup like this. It uses this configuration to set up the environment for the rollup and instantiate the Sequencer, Executor and Syncer.
 
-2. `actionSchemas` - The action schemas defined earlier
-
-The action schemas are the blueprints for the actions that the rollup can perform. These are defined previously and are passed to the micro-rollup to be used in the execution of the actions. The rollup takes in an action and matches it with state transition rules to execute the action.
-
-3. `stateMachines` - The state machine
+2. `stateMachines` - The state machine
 
 The state machine is the heart of the rollup. It defines the state transition rules and the actions that can be performed in each state.
 
 :::info
-Currently the Micro-Rollup supports only 1 state machine. This will be extended in the future.
+Currently the Micro-Rollup supports only 1 state machine. This may be extended in the future.
 :::
 
 ## Optional parameters
 
-The Micro-Rollup object also takes in a few optional parameters
+The Micro-Rollup object also takes in a few optional parameters:
 
-1. `stfSchemaMap` - A map of the STF names to the schema objects. This is used to map the schemas to the state transitions of the rollup. Defining this allows validation on action submission and auto-fill in Playground.
-
-2. `blockHooks` - An object containing two keys `pre` and `post` both being ordered array of names of the `hooks` to execute with each block.
+1. `blockHooks` - An object containing two keys `pre` and `post` both being ordered array of names of the `hooks` to execute with each block.

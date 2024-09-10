@@ -43,7 +43,7 @@ This is done by defining a new class that extends `BaseStrategy` class with the 
 :::code-group
 
 ```ts [strategy.ts]
-import { BaseStrategy, Action } from "@stackr/sdk";
+import { AcknowledgedAction, BaseStrategy, Keccak256 } from "@stackr/sdk";
 
 /**
  * RandomStrategy is responsible for ordering actions in a random order.
@@ -60,14 +60,14 @@ export class RandomStrategy extends BaseStrategy {
    * Custom ordering logic for actions
    * returns the actions in a random order
    * @param actions - Unordered List of actions
-   * @returns - Ordered list of actions
+   * @returns - Ordered list of action hashes
    */
-  async getOrderedActions(actions: Action[]): Promise<Action[]> {
-    return Promise.resolve(
-      actions.sort(() => {
-        return 0.5 - Math.random();
-      })
-    );
+  async getOrderedActions(
+    actions: Readonly<AcknowledgedAction[]>
+  ): Promise<Keccak256[]> {
+    const actionHashes = actions.map(({ action }) => action.hash);
+    const randomOrdered = actionHashes.sort(() => 0.5 - Math.random());
+    return Promise.resolve(randomOrdered);
   }
 }
 ```

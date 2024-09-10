@@ -99,8 +99,7 @@ In our Bridge contract, we created a ticket with the identifier of `BRIDGE_ETH`.
 
 The function defined as a handler has to return —
 
-1. `transitionName` - Name of the transition to trigger.
-2. `action` - Action object that has the `inputs` to pass to the transition, `signature` of the MRU's operator on the inputs, and the `msgSender`.
+1. `actionParams` - An [`ActionParams`](/build/framework/type-definitions#actionparams) object.
 
 {/* prettier-ignore */}
 ```ts [index.ts]
@@ -113,18 +112,21 @@ Bridge.init(rollup, {
                 address: _to,
                 amount: Number(_amount)
             }
-            const signature = await signMessage(operator, MintTokenSchema, inputs);
+
+            const domain = rollup.config.domain;
+            const types = rollup.getStfSchemaMap()['mintToken'];
+            const signature = await operator.signTypedData(domain, types, inputs);
             
-            const action = MintTokenSchema.actionFrom({ 
+            const actionParams = {
+                name: 'mintToken',
                 inputs,
                 signature,
                 msgSender: operator.address
-            })
+            };
 
             return {
-                transitionName: 'mintToken',
-                action: action
-            }
+                actionParams
+            };
         }
     }
 })
@@ -134,8 +136,8 @@ The function to handle `BRIDGE_ETH` tickets —
 
 1. First, decodes the data sent with the ticket.
 2. Generates the operator's signature on the data.
-3. Creates an action to be submitted to the rollup.
-4. Returns the `transitionName` and the `action`.
+3. Constructs action parameters to be submitted to the rollup.
+4. Returns the `actionParams` object.
 
 The micro-rollup then takes over and submits the returned action to the correct transition.
 

@@ -18,18 +18,6 @@ const rollup = await MicroRollup({
 });
 ```
 
-### Action Registration
-
-You have added all the `ActionSchema`s to the `MicroRollup` constructor like this
-
-```ts showLineNumbers [index.ts]
-const rollup = await MicroRollup({
-  config: stackrConfig,
-  actionSchemas: [ActionSchema1, ActionSchema2, ...], // [!code focus]
-  ...
-});
-```
-
 ### State Machine Registration
 
 You have added the State Machine lazily to the micro-rollup, using
@@ -37,9 +25,7 @@ You have added the State Machine lazily to the micro-rollup, using
 ```ts showLineNumbers [index.ts]
 const rollup = await MicroRollup({
   config: stackrConfig,
-  actionSchemas: [ActionSchema1, ActionSchema2, ...],
   stateMachines: [machine], // [!code focus]
-  ...
 });
 ```
 
@@ -50,12 +36,10 @@ You have started the micro-rollup using
 ```ts showLineNumbers [index.ts]
 const rollup = await MicroRollup({
   config: stackrConfig,
-  actionSchemas: [ActionSchema1, ActionSchema2, ...],
   stateMachines: [machine],
-  ...
 });
 
-await rollup.init() // [!code focus]
+await rollup.init(); // [!code focus]
 ```
 
 ::::
@@ -73,13 +57,14 @@ Sandbox mode doesn't require registration or deployment of your MRU. The SDK cre
 It's recommended to use this mode while development and for experimentation. Enable this by setting `isSandbox` property to `true` in `stackr.config.ts`.
 :::
 
-### Run using Node.js 
+### Run using Node.js
 
 :::code-group
 
 ```bash [npm]
 npm start
 ```
+
 ```bash [bun]
 bun start
 ```
@@ -95,27 +80,32 @@ bun start
 ```bash [Linux]
 docker build -t <app_name>:latest .
 ```
+
 ```bash [Mac w/ Apple Silicon]
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t <app_name>:latest .
 ```
+
 :::
 
 - Run the Docker container using the following command:
 
 :::code-group
+
 ```bash [File-based DB]
 docker run --env-file .env \
   -v ./db.sqlite:/app/db.sqlite \
   -p <HOST_PORT>:<CONTAINER_PORT> \
   --name=<app_name> -it <app_name>:latest
 ```
+
 ```bash [URI-based DB]
 docker run --env-file .env \
   -p <HOST_PORT>:<CONTAINER_PORT> \
   --name=<app_name> -it <app_name>:latest
 ```
+
 :::
 
 If everything is working fine, you should see the logs in the terminal, like this:
@@ -136,45 +126,48 @@ If you are using the "Counter" example, the `index.ts` file already contains the
 
 ### Submitting Action
 
-Using the [`submitAction`](/build/framework/micro-rollup-utils#submitactionreducername-string-action-action) method, you can submit the action to the micro-rollup.
+Using the [`submitAction`](/build/framework/micro-rollup-utils#submitactionactionparams-actionparams) method, you can submit an action to the micro-rollup.
 
 ```ts [index.ts]
+import { SerializedAcknowledgement } from "@stackr/sdk";
+
 const inputs = {
   timestamp: Date.now(),
 };
 
-const signature = await signMessage(wallet, UpdateCounterSchema, inputs);
-// [!code word:actionFrom]
-const incrementAction = UpdateCounterSchema.actionFrom({
-  // [!code word:inputs]
+const domain = mru.config.domain;
+const types = mru.getStfSchemaMap()["increment"];
+const signature = await wallet.signTypedData(domain, types, inputs);
+const incrementActionParams = {
+  name: "increment",
   inputs,
   signature,
   msgSender: wallet.address,
-});
+};
 
-const ack = await mru.submitAction("increment", incrementAction); // [!code hl]
+const ack: SerializedAcknowledgement = await mru.submitAction( // [!code hl]
+  incrementActionParams // [!code hl]
+); // [!code hl]
 ```
 
 :::info
-The code above is just for reference, mostly you won't be signing the message here on your backend. Rather you'll get the action parameters (`inputs`, `signature` and `msgSender`) together from the frontend and then submit the action to the micro-rollup.
+The code above is just for reference, mostly you won't be signing the message here on your backend. Rather you'll get the action parameters (`name`, `inputs`, `signature` and `msgSender`) together from the frontend and then submit the action to the micro-rollup.
 :::
 
-
-Once an action is submitted to the micro-rollup, you get an acknowledgment in the form of a `Promise` which resolves to the `Acknowledgment` object. You can use this object to track the status of the action.
+Once an action is submitted to the micro-rollup, you get an acknowledgment in the form of a `Promise` which resolves to the [`SerializedAcknowledgement`](/build/framework/type-definitions#serializedacknowledgment) object. You can use this object to track the status of the action.
 
 ### Tracking Action's Lifecycle
 
 #### Using `ack.waitFor`
 
-The `Acknowledgment` object returned by `submitAction` contains a [`waitFor`](/build/framework/micro-rollup-utils#ackwaitforconfirmationstatus--actionconfirmationstatusc1) method that can be used to wait for the action to reach a specific confirmation status.
+The `SerializedAcknowledgement` object returned by `submitAction` contains a [`waitFor`](/build/framework/micro-rollup-utils#ackwaitforconfirmationstatus--actionconfirmationstatusc1) method that can be used to wait for the action to reach a specific confirmation status.
 
 ```ts [index.ts]
-import { SerializedAction } from "@stackr/sdk";
+import { ActionConfirmationStatus, SerializedAction } from "@stackr/sdk";
 
 /* ... */
 
 // resolves when action reaches C1
-// [!code word:waitFor]
 const action: SerializedAction = await ack.waitFor(ActionConfirmationStatus.C1); // [!code hl]
 ```
 
@@ -186,7 +179,7 @@ Since micro-rollups [execute actions within millseconds](/build/framework/action
 
 #### Using events
 
-You can also use the `subscribe` method to listen for changes to the action's lifecycle. 
+You can also use the `subscribe` method to listen for changes to the action's lifecycle.
 
 For example, you can define a custom callback function subscribing to the [`ActionEvents.CONFIRMATION_STATUS`](/build/framework/events/#actioneventsconfirmation_status) event that is called whenever the confirmation status of the action changes, like this:
 
@@ -195,9 +188,12 @@ import { ActionEvents } from "@stackr/sdk";
 
 /* ... */
 
-mru.events.subscribe(ActionEvents.CONFIRMATION_STATUS, ({ actionName, actionHash, status }) => {
-  console.log({ actionName, actionHash, status });
-});
+mru.events.subscribe(
+  ActionEvents.CONFIRMATION_STATUS,
+  ({ actionName, actionHash, status }) => {
+    console.log({ actionName, actionHash, status });
+  }
+);
 ```
 
 Refer to the [Events](/build/framework/events) section for more details on this.

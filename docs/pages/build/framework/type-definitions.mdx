@@ -1,0 +1,110 @@
+# Type Definitions [Reference of useful types exposed by the SDK]
+
+## `ActionParams`
+
+The minimum required fields to construct an Action. Consists of `name` of the transition, the `inputs` to pass to the transition, `signature` of the user on the inputs, and the `msgSender` being the user's address.
+
+```ts
+interface ActionParams {
+  name: string;
+  inputs: AllowedInputTypes;
+  signature: string;
+  msgSender: string;
+}
+```
+
+## `SerializedAction`
+
+```ts
+interface SerializedAction {
+  name: string;
+  signature: string;
+  msgSender: string;
+  payload: AllowedInputTypes;
+  executionStatus: ActionExecutionStatus | null;
+  confirmationStatus: ActionConfirmationStatus | null;
+  isReverted: boolean;
+  hash: string;
+  logs: ExecutionLog[] | null;
+  errors: ExecutionError[] | null;
+}
+```
+
+- `name`: The name of the action sent.
+- `signature`: The signature of the action. This is used to authenticate the user who signed the action.
+- `msgSender`: The address of the user who sent the action.
+- `payload`: The data of the action. This is the actual data that the action is supposed to mutate the state with.
+- `executionStatus`: The status of the execution of the action (Defaults to `CREATED`). More on this [here](/build/framework/action/execution-status).
+- `confirmationStatus`: The confirmation status for the action (Defaults to `CX`). More on this [here](/build/framework/action/confirmation-status).
+- `isReverted`: A boolean flag to indicate if the action is reverted or not at the execution level.
+- `hash`: The keccak256 hash of the action.
+- `logs`: Returns the execution logs for the action. If not null, the execution succeeded without any errors. It is null if the action has not yet been executed.
+- `errors`: Returns any errors that occurred during the execution of the action. It is null if the action has not yet been executed.
+
+## `SerializedBlock`
+
+```ts
+interface SerializedBlock {
+  height: number;
+  hash: string;
+  timestamp: number;
+  status: BlockStatus;
+  batchInfo?: BatchInfo;
+}
+```
+
+These fields are described in the [Block](/build/framework/block) section.
+
+## `SerializedActionAndBlock`
+
+When using the [`MicroRollupResponse.actions.query`](/build/framework/micro-rollup-utils/#actionsqueryfilters-actionfilterparams-orderasc-boolean) method, the `SerializedAction` also includes block details. Then its datatype is `SerializedActionAndBlock` and looks like
+
+```ts
+interface SerializedActionAndBlock extends SerializedAction {
+  block: SerializedBlock | null;
+}
+```
+
+## `SerializedAcknowledgment`
+
+```ts
+type WaitableConfirmationStatus =
+  | ActionConfirmationStatus.C1
+  | ActionConfirmationStatus.C2
+  | ActionConfirmationStatus.C3A
+  | ActionConfirmationStatus.C3B;
+
+interface SerializedAcknowledgement {
+  hash: Keccak256;
+  actionHash: Keccak256;
+  currentHeight: number;
+  timestamp: number;
+  operatorSignature: SignatureLike;
+  operator: AddressLike;
+  waitFor(
+    confirmationStatus?: WaitableConfirmationStatus,
+  ): Promise<SerializedAction>;
+}
+```
+
+## `AcknowledgedAction`
+
+```ts
+interface AcknowledgedAction {
+  action: {
+    hash: Keccak256;
+    name: string;
+    payload: AllowedInputTypes;
+    msgSender: AddressLike;
+    signature: SignatureLike;
+    executionStatus: ActionExecutionStatus | null;
+    confirmationStatus: ActionConfirmationStatus | null;
+  };
+  acknowledgement: {
+    hash: Keccak256;
+    height: number;
+    timestamp: number;
+    operatorSignature: SignatureLike;
+  };
+}
+```

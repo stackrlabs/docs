@@ -53,7 +53,6 @@ To configure these hooks, `hooks` has to be passed in [StateMachine](/build/fram
 ```ts [mru.ts]
 const mru = await MicroRollup({
   config: stackrConfig,
-  actionSchemas: [UpdateCounterSchema],
   stateMachines: [machine],
   blockHooks: // [!code hl] {
     pre: ["addTwo"], // [!code hl]

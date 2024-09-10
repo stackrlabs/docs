@@ -1,5 +1,27 @@
 # Changelog [What's new]
 
+## v0.5.5
+
+#### Breaking changes
+
+- Completely remove the need for `ActionSchema`. Input schemas are now [defined directly inside the STFs](/build/framework/state-machine/state-transitions#passing-inputs-to-an-stf). See [upgrade guide](/build/upgrade-guide).
+- The [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy now accepts list of actions as a `Readonly<AcknowledgedAction[]>` type
+and is supposed to only return the ordered list of action hashes as opposed to `Action` objects earlier.
+
+#### Bug Fixes
+
+- Fix BigInt handling for PostgreSQL.
+
+#### Improvements
+
+- Enable [WAL](https://www.sqlite.org/draft/wal.html) for SQLite. This enables better concurrency between readers and writers.
+- Optimized execution time by removing duplicate calculation of state root before and after applying all of the block's actions.
+
+#### Other changes
+
+- Bumps dependencies version to address high-security vulnerabilities
+
+
 ## v0.5.4 (and CLI v0.1.4)
 
 - Sandbox mode now uses Sepolia's Chain ID (`11155111`) for faster testing.
