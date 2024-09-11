@@ -1,5 +1,29 @@
 # Changelog [What's new]
 
+## v0.5.5
+
+#### Breaking changes
+
+- The [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy now accepts list of actions as a `Readonly<AcknowledgedAction[]>` type
+  and is supposed to only return the ordered list of action hashes as opposed to `Action` objects earlier.
+
+#### Bug Fixes
+
+- Fix BigInt handling for PostgreSQL.
+
+#### Improvements
+
+- Enable [WAL](https://www.sqlite.org/draft/wal.html) for SQLite. This enables better concurrency between readers and writers.
+- Optimized execution time by removing duplicate calculation of state root before and after applying all of the block's actions.
+
+#### Other changes
+
+- Bumps dependencies version to address high-security vulnerabilities
+
+## CLI v0.1.6
+
+- Remove the `add hook` command.
+
 ## CLI v0.1.5
 
 - The EIP-712 domain for the app is now injected into the `stf.wasm`.

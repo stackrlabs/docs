@@ -36,7 +36,7 @@ export default defineConfig({
       link: "https://litepaper.stf.xyz",
     },
     {
-      text: "v0.5.4",
+      text: "v0.5.5",
       items: [
         {
           text: "Changelog",
@@ -371,10 +371,6 @@ export default defineConfig({
           {
             text: "Add Bridge",
             link: "/build/cli/add-bridge",
-          },
-          {
-            text: "Add Hook",
-            link: "/build/cli/add-hook",
           },
           {
             text: "Transfer Ownership",
