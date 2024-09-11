@@ -15,6 +15,7 @@
 
 - Enable [WAL](https://www.sqlite.org/draft/wal.html) for SQLite. This enables better concurrency between readers and writers.
 - Optimized execution time by removing duplicate calculation of state root before and after applying all of the block's actions.
+- Enforce max size on action submission (~128kb). This limit is also enforced when collecting actions for block building.
 
 #### Other changes
 

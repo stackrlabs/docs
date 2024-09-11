@@ -87,6 +87,10 @@ These are state transition functions that you will be defining in the `src/stack
 On succesful submission, you will recieve an `Acknowledment` object that acts like a transaction receipt and is also considered a `C0` confirmation.
 This is proof of the action being successfully submitted to the state machine.
 
+:::note
+An action's payload size should not exceed ~128kb. This limit is enforced to keep batch size well within the means of different DA layer's maximum supported blob size. 
+:::
+
 ## EIP-712 Signing
 
 EIP 712 is a standard for signing structured data. It is used to sign actions in this version of Stackr.
