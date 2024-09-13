@@ -15,7 +15,7 @@
 
 - Enable [WAL](https://www.sqlite.org/draft/wal.html) for SQLite. This enables better concurrency between readers and writers.
 - Optimized execution time by removing duplicate calculation of state root before and after applying all of the block's actions.
-- Enforce max size on action submission (~128kb). This limit is also enforced when collecting actions for block building.
+- Enforce max size on action's payload during submission (~128kb). This limit is also enforced when collecting actions for block building.
 
 #### Other changes
 
@@ -24,6 +24,7 @@
 ## CLI v0.1.6
 
 - Remove the `add hook` command.
+- Perform lint checks in `compile` command before building Wasm. This makes use of [`@stackr/eslint-plugin`](https://github.com/stackrlabs/eslint-stackr), an ESLint plugin with few rules to prevent devs from adding non-deterministic code in transition functions.
 
 ## CLI v0.1.5
 
