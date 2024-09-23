@@ -10,7 +10,7 @@ Stackr provides a very simple and intuitive way to manage the application state.
 
 The application state is defined as a class that extends the `State` class provided by Stackr.
 
-```ts [machines.ts]
+```ts [state.ts]
 import { State } from "@stackr/sdk/machine";
 
 // provide the type of the state
@@ -39,7 +39,7 @@ The other thing to note is that the state class should implement the `getRootHas
 Sometimes it maybe required that the Raw representation of the state is too slim to be able to operate on it. In such cases, the raw state can be wrapped into an object that can create a richer representation of the state. The optional `transformer` method can be used to define how the state should be wrapped and unwrapped.
 
 {/* prettier-ignore */}
-```ts [machines.ts]
+```ts [state.ts]
 import { State } from "@stackr/sdk/machine";
 
 export class CounterState extends State<number> {

@@ -8,7 +8,23 @@ The first step to start developing Micro-Rollups with Stackr is to prepare your 
 
 Incase you don't already have it, you can follow the instructions at [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
+### Bun
+
+The Bun runtime to required to run the micro-rollups and optionally for package management.
+
+:::info
+Right now, we only support the Bun runtime due to some of its unique capabilities. However, Bun is not stable and often runs into memory leaks. We are actively working on supporting Node.js runtime.
+:::
+
+```bash [Linux / MacOS]
+curl -fsSL https://bun.sh/install | bash
+```
+
+More information regarding Bun can be found at https://bun.sh/docs/installation.
+
 ### NodeJS LTS or above
+
+Node.js is only required for npm, if you wish to use it for package management.
 
 :::code-group
 

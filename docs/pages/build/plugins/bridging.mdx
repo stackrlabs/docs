@@ -112,13 +112,14 @@ Bridge.init(rollup, {
                 address: _to,
                 amount: Number(_amount)
             }
+            const name = 'mintToken';
 
             const domain = rollup.config.domain;
-            const types = rollup.getStfSchemaMap()['mintToken'];
-            const signature = await operator.signTypedData(domain, types, inputs);
+            const types = rollup.getStfSchemaMap()[name];
+            const signature = await operator.signTypedData(domain, types, { name, inputs });
             
             const actionParams = {
-                name: 'mintToken',
+                name,
                 inputs,
                 signature,
                 msgSender: operator.address

@@ -150,12 +150,16 @@ We don't enforce any specific restrictions on the naming of the files, but keepi
 
   :::
 
+- `state.ts` contains the custom state class (extending [`State`](/build/framework/state-machine/state)) for your application.
 - `transitions.ts` contains the [State Transition Functions (STF)](/build/framework/state-machine/state-transitions) for your application.
 - `hooks.ts` contains the [Block Hooks](/build/framework/state-machine/block-hooks) for your application, if any.
 
 :::warning
 
-It is recommended that the `machine.ts` or the file containing the `StateMachine` instance, doesn't import anything from `@stackr/sdk` instead uses `@stackr/sdk/machine` for the `StateMachine`, `State`, `Transitions` and other utility classes.
+Note that:
+
+1. It's recommended that all 4 of the above files shouldn't import anything from `@stackr/sdk` and instead use `@stackr/sdk/machine` for the `StateMachine`, `State`, `Transitions`, `Hooks` and other utility classes.
+2. It's recommended to not keep the `State` and `StateMachine` classes in the same file as this would cause circular-import issue when importing the `State` class for writing STFs in `transitions.ts`.
 
 :::
 

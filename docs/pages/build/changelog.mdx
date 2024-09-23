@@ -6,17 +6,18 @@
 
 > See [upgrade guide](/build/upgrade-guide).
 
-- Completely remove the need for `ActionSchema`. Input schemas are now [defined directly inside the STFs](/build/framework/state-machine/state-transitions#passing-inputs-to-an-stf).
-- Action signatures are now enforced over both STF name and inputs as opposed to inputs only earlier.
+- Add new `State.STF` and `State.Hook` static methods to define STFs and Hooks.
+- Remove `ActionSchema`. Input schemas are now [defined directly inside the STFs](/build/framework/state-machine/state-transitions#passing-inputs-to-an-stf).
+- Action signatures are now enforced over both STF name and inputs, as opposed to inputs only earlier.
 
 #### Bug Fixes
 
-- Fix a bug where if a custom sequencer strategy were to discard actions they would get removed from the action pool. Such discarded actions, if any, are now re-enqueued to the front of the action pool.
+- Fix a bug where if a custom sequencer strategy were to discard actions, they would get removed from the action pool. Such discarded actions, if any, are now re-enqueued to the front of the action pool.
 
 #### Improvements
 
-- Add `sdkVersion` field to [`ExternalConfig`](<(/build/framework/config#accessing-config-values)>).
-- Expose [`chainData`](/build/framework/type-definitions##chaindata) in [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy for increased context.
+- Add `sdkVersion` field to [`ExternalConfig`](/build/framework/config#accessing-config-values).
+- Expose [`ChainData`](/build/framework/type-definitions#chaindata) in [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy for increased context.
 
 ## v0.5.5
 

@@ -14,15 +14,16 @@ A basic hook in Stackr looks like this:
 
 ```ts [hooks.ts]
 import { Hook, Hooks } from "@stackr/sdk/machine";
-import { CounterState } from "./machine";
+import { CounterState } from "./state";
 
-const addTwo: Hook<CounterState> = {
+const addTwo = CounterState.Hook({
   handler: ({ state }) => {
     state += 2;
     return state;
   },
-};
+});
 
+// a hook can also be written in this manner
 const minusTwo: Hook<CounterState> = {
   handler: ({ state }) => {
     state -= 2;
@@ -82,7 +83,6 @@ There are 3 special variables which always exist inside the handler of a block h
 ```tsx twoslash [hooks.ts]
 // @noErrors
 type MachineState = unknown;
-
 interface Hook<MachineState> {
   handler: (props: {
     state: MachineState;
@@ -94,9 +94,12 @@ interface Hook<MachineState> {
     emit: (ExecutionLog) => void; 
   }) => MachineState;
 }
+const CounterState = {
+  Hook: (params: Hook<MachineState>) => params as Hook<MachineState>;
+}
 // ---cut---
 // Without Destructuring
-const superCoolBlockHook: Hook<MachineState> = {
+const superCoolBlockHook = CounterState.Hook({
   handler: (props) => {
     const state = props.
     //                  ^|
@@ -107,15 +110,15 @@ const superCoolBlockHook: Hook<MachineState> = {
     const height = props.block.
     //                         ^|
   },
-};
+});
 
 
 // With Destructuring
-const anotherSuperCoolBlockHook: Hook<MachineState> = {
+const anotherSuperCoolBlockHook = CounterState.Hook({
   handler: ({ s }) => {
     //         ^|
   },
-};
+});
 ```
 
 ### State
@@ -143,7 +146,7 @@ The `emit` variable passed to a hook is a method that can be used to record cust
 Example usage:
 
 ```ts [hooks.ts]
-const checkEven: Hook<CounterState> = {
+const checkEven = CounterState.Hook({
   // [!code word:emit]
   handler: ({ state, emit }) => {
     if (state % 2 === 0) {
@@ -151,5 +154,5 @@ const checkEven: Hook<CounterState> = {
     }
     return state;
   },
-};
+});
 ```

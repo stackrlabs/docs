@@ -44,7 +44,7 @@ This release introduces breaking changes in how to write action schemas, state t
        amount: SolidityType.UINT,
      },
      handler: ({ state, inputs }) => {
-       state += inputs.amount;
+       state += inputs.amount; // input types are now automatically inferred from schema
        return state;
      },
    });
@@ -58,7 +58,7 @@ This release introduces breaking changes in how to write action schemas, state t
 
    :::
 
-2. Changes in creating and submitting an action:
+2. Changes in generating signature and creating/submitting an action:
 
    :::code-group
 
@@ -79,7 +79,7 @@ This release introduces breaking changes in how to write action schemas, state t
    await mru.submitAction("increment", incrementAction);
    ```
 
-   ```ts [after v0.5.5]
+   ```ts [after v0.6.0]
    const name = "increment";
    const inputs = { amount: 1 };
 

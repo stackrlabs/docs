@@ -11,28 +11,28 @@ Stackr provides a toolkit to create state transition functions.
 A basic transition function in Stackr looks like this:
 
 ```typescript
-import { SolidityType, STF, Transitions } from "@stackr/sdk/machine";
-import { CounterState } from "./machine";
+import { SolidityType, Transitions } from "@stackr/sdk/machine";
+import { CounterState } from "./state";
 
 const schema = {
   timestamp: SolidityType.UINT,
 } as const;
 
-const increment: STF<CounterState, typeof schema> = {
+const increment = CounterState.STF({
   schema,
   handler: ({ state }) => {
     state += 1;
     return state;
   },
-};
+});
 
-const decrement: STF<CounterState, typeof schema> = {
+const decrement = CounterState.STF({
   schema,
   handler: ({ state }) => {
     state -= 1;
     return state;
   },
-};
+});
 
 export const transitions: Transitions<CounterState> = {
   increment,
@@ -59,27 +59,27 @@ The transition function is a pure function. This means that it should not have a
 Each STF must have a `schema` defined which represents the type definition for the user inputs accepted by the transition function. These are then available via the `inputs` argument on the handler.
 
 ```tsx [transitions.ts]
-const schema = {
-  amount: SolidityType.UINT,
-} as const;
-
-const increment: STF<CounterState, typeof schema> = {
-  schema,
+const increment = CounterState.STF({
+  // [!code word:schema]
+  schema: {
+    amount: SolidityType.UINT,
+  },
   // [!code word:inputs]
   handler: ({ state, inputs }) => {
     state += inputs.amount;
     return state;
   },
-};
+});
 ```
 
 The schema is a key-value object where key is the field name and value being the Solidity type to use for encoding the field's value. The supported types are:
-  - `address`
-  - `bool`
-  - `bytes`
-  - `bytes32`
-  - `string`
-  - `uint256`
+
+- `address`
+- `bool`
+- `bytes`
+- `bytes32`
+- `string`
+- `uint256`
 
 The solidity types can be accessed using the `SolidityType` enum provided with the SDK.
 
@@ -194,7 +194,6 @@ const burnSchema = {
 
 </Callout>
 
-
 ## Variables available inside an STF
 
 There are 6 special variables which always exist inside the handler of the State transition function. These can be used by the developer to write the logic of the state transition function:
@@ -204,9 +203,9 @@ There are 6 special variables which always exist inside the handler of the State
 3. `inputs`
 4. `signature`
 5. `block`
-    - `block.height`
-    - `block.timestamp`
-    - `block.parentHash`
+   - `block.height`
+   - `block.timestamp`
+   - `block.parentHash`
 6. `emit`
 
 {/* prettier-ignore */}
@@ -214,25 +213,28 @@ There are 6 special variables which always exist inside the handler of the State
 // @noErrors
 type MachineState = unknown;
 type InputTypes = any;
-
-interface STF<MachineState, InputTypes> {
+type HandlerProps = {
+  state: MachineState;
+  msgSender: string;
+  inputs: InputTypes;
+  signature: string;
+  block: {
+    height: number;
+    timestamp: number;
+    parentHash: BytesLike;
+  };
+  emit: (ExecutionLog) => void;
+}
+interface Transition<MachineState, InputTypes> {
   schema: SchemaType,
-  handler: (props: {
-    state: MachineState;
-    msgSender: string;
-    inputs: InputTypes;
-    signature: string;
-    block: {
-      height: number;
-      timestamp: number;
-      parentHash: BytesLike;
-    };
-    emit: (ExecutionLog) => void; 
-  }) => MachineState;
+  handler: (props: HandlerProps) => MachineState;
+}
+const CounterState = {
+  STF: (params: Transition<MachineState, InputTypes>) => params as Transition<MachineState, InputTypes>;
 }
 // ---cut---
 // Without Destructuring
-const superCoolStf: STF<MachineState, typeof schema> = {
+const superCoolStf = CounterState.STF({
   schema,
   handler: (props) => {
     const state = props.
@@ -244,16 +246,16 @@ const superCoolStf: STF<MachineState, typeof schema> = {
     const height = props.block.
     //                         ^|
   },
-};
+});
 
 
 // With Destructuring
-const anotherSuperCoolStf: STF<MachineState, typeof schema> = {
+const anotherSuperCoolStf = CounterState.STF({
   schema,
   handler: ({ s }) => {
     //         ^|
   },
-};
+});
 ```
 
 ### State
@@ -295,14 +297,15 @@ The `emit` variable passed to STF is a method that can be used to record custom 
 Example usage:
 
 ```tsx [transitions.ts]
-const increment: STF<CounterState> = {
+const increment = CounterState.STF({
+  schema,
   // [!code word:emit]
   handler: ({ state, inputs, emit }) => {
     state += inputs.amount;
     emit({ name: "incremented", value: inputs.amount });
     return state;
   },
-};
+});
 ```
 
 ## Bonus: Pseudo-Random Number Generation

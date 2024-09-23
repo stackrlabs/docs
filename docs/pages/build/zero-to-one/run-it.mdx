@@ -57,16 +57,16 @@ Sandbox mode doesn't require registration or deployment of your MRU. The SDK cre
 It's recommended to use this mode while development and for experimentation. Enable this by setting `isSandbox` property to `true` in `stackr.config.ts`.
 :::
 
-### Run using Node.js
+### Run using Bun
 
 :::code-group
 
 ```bash [npm]
+# Note that `npm` is just used to run script in package.json here, start command still points to `bun`
 npm start
 ```
 
 ```bash [bun]
-# Note that `bun` is just used to run script in package.json here, start command still points to `tsx`
 bun start
 ```
 
@@ -132,15 +132,14 @@ Using the [`submitAction`](/build/framework/micro-rollup-utils#submitactionactio
 ```ts [index.ts]
 import { SerializedAcknowledgement } from "@stackr/sdk";
 
-const inputs = {
-  timestamp: Date.now(),
-};
+const name = "increment";
+const inputs = { timestamp: Date.now() };
 
 const domain = mru.config.domain;
-const types = mru.getStfSchemaMap()["increment"];
-const signature = await wallet.signTypedData(domain, types, inputs);
+const types = mru.getStfSchemaMap()[name];
+const signature = await wallet.signTypedData(domain, types, { name, inputs });
 const incrementActionParams = {
-  name: "increment",
+  name,
   inputs,
   signature,
   msgSender: wallet.address,

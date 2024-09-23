@@ -13,7 +13,7 @@ We define a very basic state that will hold a single number. This state will be 
 We do this by extending the `State` class and passing the type of the state as `number` a generic parameter.
 
 {/* prettier-ignore */}
-```ts [machine.ts]
+```ts [state.ts]
 // [!code word:State,]
 import { BytesLike, State, StateMachine } from "@stackr/sdk/machine"; // [!code focus]
 
@@ -34,7 +34,7 @@ export class CounterState extends State<number> { // [!code focus]
 Next we need to define the hashing function that will be used to calculate the root hash of the state. Over here we just use the `solidityPackedKeccak256` function from ethers.js to hash the state as it is a simple number.
 
 {/* prettier-ignore */}
-```ts [machine.ts]
+```ts [state.ts]
 import { BytesLike, State, StateMachine } from "@stackr/sdk/machine"; 
 
 // [!code word:number]
@@ -88,20 +88,20 @@ We define a state transition function that increments the counter value by 1. It
 
 {/* prettier-ignore */}
 ```ts [transitions.ts]
-import { REQUIRE, SolidityType, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
-import { CounterState } from "./machine"; // [!code focus]
+import { REQUIRE, SolidityType, Transitions } from "@stackr/sdk/machine"; // [!code focus]
+import { CounterState } from "./state"; // [!code focus]
 
 const schema = {
   timestamp: SolidityType.UINT,
 } as const;
 
-const increment: STF<CounterState, typeof schema> = { // [!code focus]
+const increment = CounterState.STF({ // [!code focus]
   schema,
   handler: ({ state }) => { // [!code focus]
     state += 1; // [!code focus]
     return state; // [!code focus]
   }, // [!code focus]
-}; // [!code focus]
+}); // [!code focus]
 
 /* ... */
 ```
@@ -112,8 +112,8 @@ Next we define a state transition function that decrements the counter value by 
 
 {/* prettier-ignore */}
 ```ts [transitions.ts]
-import { REQUIRE, SolidityType, STF, Transitions } from "@stackr/sdk/machine"; // [!code focus]
-import { CounterState } from "./machine"; // [!code focus]
+import { REQUIRE, SolidityType, Transitions } from "@stackr/sdk/machine"; // [!code focus]
+import { CounterState } from "./state"; // [!code focus]
 
 const schema = {
   timestamp: SolidityType.UINT,
@@ -121,14 +121,14 @@ const schema = {
 
 /* ... */
 
-const decrement: STF<CounterState, typeof schema> = { // [!code focus]
+const decrement = CounterState.STF({ // [!code focus]
   schema,
   handler: ({ state }) => { // [!code focus]
     state -= 1; // [!code focus]
     REQUIRE(state > 0, "Cannot decrement below 0"); // [!code focus]
     return state; // [!code focus]
   }, // [!code focus]
-}; // [!code focus]
+}); // [!code focus]
 
 /* ... */
 ```
@@ -141,29 +141,29 @@ Finally we export the transitions so that they can be used in the state machine.
 
 {/* prettier-ignore */}
 ```ts [transitions.ts]
-import { REQUIRE, SolidityType, STF, Transitions } from "@stackr/sdk/machine";
-import { CounterState } from "./machine";
+import { REQUIRE, SolidityType, Transitions } from "@stackr/sdk/machine";
+import { CounterState } from "./state";
 
 const schema = {
   timestamp: SolidityType.UINT,
 } as const;
 
-const increment: STF<CounterState, typeof schema> = {
+const increment = CounterState.STF({
   schema,
   handler: ({ state }) => { 
     state += 1; 
     return state; 
   }, 
-}; 
+}); 
 
-const decrement: STF<CounterState, typeof schema> = {
+const decrement = CounterState.STF({
   schema,
   handler: ({ state }) => {
     state -= 1;
     REQUIRE(state > 0, "Cannot decrement below 0");
     return state;
   },
-};
+});
 
 export const transitions: Transitions<CounterState> = { // [!code focus]
   increment, // [!code focus]
@@ -198,26 +198,10 @@ The machine takes 4 parameters:
 
 ```ts [machine.ts]
 // [!code word:StateMachine]
-import { BytesLike, State, StateMachine } from "@stackr/sdk/machine";
+import { BytesLike, StateMachine } from "@stackr/sdk/machine";
 
 import * as genesis from "../../genesis-state.json";
-import { transitions } from "./transitions";
-
-const machine = new StateMachine({
-  id: "counter",
-  stateClass: CounterState,
-  initialState: genesis.state,
-  on: transitions,
-});
-
-export { machine };
-```
-
-```ts [machine.ts]
-// [!code word:StateMachine]
-import { BytesLike, State, StateMachine } from "@stackr/sdk/machine";
-
-import * as genesis from "../../genesis-state.json";
+import { CounterState } from "./state";
 import { transitions } from "./transitions";
 
 const machine = new StateMachine({
@@ -231,7 +215,6 @@ export { machine }; // [!code focus]
 ```
 
 Hence exporting the machine as a `export machine` would not work.
-
 
 ## Set the config
 
@@ -319,24 +302,21 @@ We define the inputs for the action. In this case we just need a timestamp as de
 
 {/* prettier-ignore */}
 ```ts [index.ts]
-const inputs = { // [!code focus]
-  timestamp: Date.now(), // [!code focus]
-}; // [!code focus]
+const inputs = { timestamp: Date.now() }; // [!code focus]
 ```
 
 ### Sign the input to create a signature
 
-Next we sign the inputs using the [`wallet.signTypedData`](https://docs.ethers.org/v6/api/providers/#Signer-signTypedData) function. This uses `EIP-712` domain and types definitions to sign the message.
+Next we sign the inputs (combined with the STF name) using the [`wallet.signTypedData`](https://docs.ethers.org/v6/api/providers/#Signer-signTypedData) function. This uses `EIP-712` domain and types definitions to sign the message.
 
 {/* prettier-ignore */}
 ```ts [index.ts]
-const inputs = {
-  timestamp: Date.now(),
-};
+const name = "increment";
+const inputs = { timestamp: Date.now() };
 
 const domain = mru.config.domain;
-const types = mru.getStfSchemaMap()["increment"];
-const signature = await wallet.signTypedData(domain, types, inputs); // [!code focus]
+const types = mru.getStfSchemaMap()[name];
+const signature = await wallet.signTypedData(domain, types, { name, inputs }); // [!code focus]
 ```
 
 ### Create an action from the inputs
@@ -345,15 +325,14 @@ Next we construct the action parameters from the inputs, signature and the sende
 
 {/* prettier-ignore */}
 ```ts [index.ts]
-const inputs = {
-  timestamp: Date.now(),
-};
+const name = "increment";
+const inputs = { timestamp: Date.now() };
 
 const domain = mru.config.domain;
-const types = mru.getStfSchemaMap()["increment"];
-const signature = await wallet.signTypedData(domain, types, inputs); 
+const types = mru.getStfSchemaMap()[name];
+const signature = await wallet.signTypedData(domain, types, { name, inputs });
 const incrementActionParams = { // [!code focus]
-  name: "increment", // [!code focus]
+  name, // [!code focus]
   inputs, // [!code focus]
   signature, // [!code focus]
   msgSender: wallet.address, // [!code focus]
@@ -366,15 +345,14 @@ Finally we submit the action to the rollup using the `submitAction` method. This
 
 {/* prettier-ignore */}
 ```ts [index.ts]
-const inputs = {
-  timestamp: Date.now(),
-};
+const name = "increment";
+const inputs = { timestamp: Date.now() };
 
 const domain = mru.config.domain;
-const types = mru.getStfSchemaMap()["increment"];
-const signature = await wallet.signTypedData(domain, types, inputs); 
+const types = mru.getStfSchemaMap()[name];
+const signature = await wallet.signTypedData(domain, types, { name, inputs }); 
 const incrementActionParams = {
-  name: "increment",
+  name,
   inputs,
   signature,
   msgSender: wallet.address,
