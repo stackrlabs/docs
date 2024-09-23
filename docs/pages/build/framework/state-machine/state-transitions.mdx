@@ -10,10 +10,29 @@ Stackr provides a toolkit to create state transition functions.
 
 A basic transition function in Stackr looks like this:
 
-```typescript
+```tsx twoslash [transitions.ts]
+// @noErrors
+type MachineState = unknown;
+interface Hook<MachineState> {
+  handler: (props: {
+    state: MachineState;
+    block: {
+      height: number;
+      timestamp: number;
+      parentHash: BytesLike;
+    };
+    emit: (ExecutionLog) => void; 
+  }) => MachineState;
+}
+const CounterState = {
+  STF: (params: { schema: unknown, handler: Args<CounterState> }) => r as Transition<CounterState, unknown>;
+}
+// ---cut---
 import { SolidityType, Transitions } from "@stackr/sdk/machine";
 import { CounterState } from "./state";
 
+// Note that you should declare schema "as const", if not defining them in place.
+// This prevents the types not being inferred correctly.
 const schema = {
   timestamp: SolidityType.UINT,
 } as const;
