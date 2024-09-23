@@ -4,7 +4,7 @@ import { Callout } from "vocs/components";
 
 This page has instructions on upgrading your Micro-Rollup to a specific or latest versions of the Stackr SDK and CLI.
 
-## Upgrading to v0.5.5
+## Upgrading to v0.6.0
 
 This release introduces breaking changes in how to write action schemas, state transition functions, and creating and submitting an action.
 
@@ -12,7 +12,7 @@ This release introduces breaking changes in how to write action schemas, state t
 
    :::code-group
 
-   ```ts [before v0.5.5]
+   ```ts [before v0.6.0]
    // schemas.ts
    const UpdateCounterSchema = new ActionSchema("update-counter", {
      amount: SolidityType.UINT,
@@ -32,24 +32,22 @@ This release introduces breaking changes in how to write action schemas, state t
      actionSchemas: [UpdateCounterSchema],
      stateMachines: [machine],
      stfSchemaMap: {
-      increment: UpdateCounterSchema,
+       increment: UpdateCounterSchema,
      },
    });
    ```
 
-   ```ts [after v0.5.5]
+   ```ts [after v0.6.0]
    // transitions.ts
-   const schema = {
-     amount: SolidityType.UINT,
-   } as const;
-
-   const increment: STF<CounterState, typeof schema> = {
-     schema,
+   const increment = CounterState.STF({
+     schema: {
+       amount: SolidityType.UINT,
+     },
      handler: ({ state, inputs }) => {
        state += inputs.amount;
        return state;
      },
-   };
+   });
 
    // index.ts
    const mru = await MicroRollup({
@@ -64,10 +62,8 @@ This release introduces breaking changes in how to write action schemas, state t
 
    :::code-group
 
-   ```ts [before v0.5.5]
-   const inputs = {
-     amount: 1,
-   };
+   ```ts [before v0.6.0]
+   const inputs = { amount: 1 };
 
    const signature = await wallet.signTypedData(
      UpdateCounterSchema.domain,
@@ -80,25 +76,27 @@ This release introduces breaking changes in how to write action schemas, state t
      msgSender: wallet.address,
    });
 
-   const ack = await mru.submitAction("increment", incrementAction);
+   await mru.submitAction("increment", incrementAction);
    ```
 
    ```ts [after v0.5.5]
-   const inputs = {
-     amount: 1,
-   };
+   const name = "increment";
+   const inputs = { amount: 1 };
 
    const domain = mru.config.domain;
-   const types = mru.getStfSchemaMap()["increment"];
-   const signature = await wallet.signTypedData(domain, types, inputs);
+   const types = mru.getStfSchemaMap()[name];
+   const signature = await wallet.signTypedData(domain, types, {
+     name,
+     inputs,
+   }); // signature is over both name and inputs now
    const incrementActionParams = {
-     name: "increment",
+     name,
      inputs,
      signature,
      msgSender: wallet.address,
    };
 
-   const ack = await mru.submitAction(incrementActionParams);
+   await mru.submitAction(incrementActionParams);
    ```
 
    :::

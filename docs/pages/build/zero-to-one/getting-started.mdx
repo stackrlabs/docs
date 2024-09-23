@@ -13,7 +13,11 @@ Incase you don't already have it, you can follow the instructions at [here](http
 :::code-group
 
 ```bash [Linux / MacOS]
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash nvm install lts
+# Install Node Version Manager (nvm)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+
+# Install NodeJS and npm (LTS versions)
+nvm install --lts
 ```
 
 ```bash [Windows]
@@ -28,25 +32,13 @@ choco install nodejs --version="lts"
 
 :::
 
-### Bun
-
-We utilize some of the capabilities of Bun.
-
-:::info
-Make sure you have the latest version of Bun installed (i.e >= `1.0.15`)
-:::
-
-```sh copy
-curl -fsSL https://bun.sh/install | bash
-```
-
-More information regarding Bun can be found at https://bun.sh
-
 ### Stackr CLI
+
+The Stackr CLI helps you to create, register and deploy your micro-rollups.
 
 :::warning
 
-#### Remove previously installed Stackr CLI
+##### Remove previously installed Stackr CLI
 
 If you have previously installed the Stackr CLI binary from 2023, you need to uninstall it first.
 
@@ -56,7 +48,6 @@ rm -rf ~/.stackr
 
 :::
 
-CLI helps you to create, register and deploy your micro-rollups.
 Either you can install it globally using
 
 :::code-group

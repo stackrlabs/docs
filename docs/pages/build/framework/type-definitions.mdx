@@ -2,7 +2,7 @@
 
 ## `ActionParams`
 
-The minimum required fields to construct an Action. Consists of `name` of the transition, the `inputs` to pass to the transition, `signature` of the user on the inputs, and the `msgSender` being the user's address.
+The minimum required fields to construct an Action. Consists of `name` of the transition, the `inputs` to pass to the transition, `signature` of the user on the STF name and inputs, and the `msgSender` being the user's address.
 
 ```ts
 interface ActionParams {
@@ -106,5 +106,15 @@ interface AcknowledgedAction {
     timestamp: number;
     operatorSignature: SignatureLike;
   };
+}
+```
+
+## `ChainData`
+
+```ts
+interface ChainData {
+  appId: number;
+  parentHash: string;
+  height: number;
 }
 ```

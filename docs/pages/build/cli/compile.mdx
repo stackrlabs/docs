@@ -2,6 +2,8 @@
 
 The `compile` command is used to compile your Micro-Rollup's State Machine to portable WebAssembly (Wasm) binary.
 
+Before compiling, it also performs lint checks using the [`@stackr/eslint-plugin`](https://github.com/stackrlabs/eslint-stackr), an ESLint plugin with few rules to prevent devs from adding non-deterministic code in transition functions.
+
 :::info
 Generally, you wouldn't use this command manually since the [`deploy`]((/build/cli/deploy)) command takes care of this step internally.
 :::
@@ -11,10 +13,14 @@ Generally, you wouldn't use this command manually since the [`deploy`]((/build/c
 ```bash
 » stackr compile --help
 USAGE
-  $ stackr compile
+  $ stackr compile [--skipLintChecks]
+
+FLAGS
+  --skipLintChecks  Whether to skip lint checks before compiling (default: false)
 
 EXAMPLES
   $ stackr compile
+  $ stackr compile --skipLintChecks
 ```
 
 ## Example

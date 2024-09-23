@@ -10,7 +10,7 @@ USAGE
   $ stackr add [ENTITY] [CONTRACT] [--envFile <value>]
 
 ARGUMENTS
-  ENTITY    (bridge|hook) Entity to add to your App Inbox
+  ENTITY    (bridge) Entity to add to your App Inbox
   CONTRACT  Contract Address of the entity to add to your App Inbox
 
 FLAGS
@@ -19,9 +19,7 @@ FLAGS
 EXAMPLES
   $ stackr add bridge 0x1234567890abcdef1234567890abcdef12345678
 
-  $ stackr add hook 0x1234567890abcdef1234567890abcdef12345678
-
-  $ stackr add hook 0x1234567890abcdef1234567890abcdef12345678 --envFile=<relative path to file>
+  $ stackr add bridge 0x1234567890abcdef1234567890abcdef12345678 --envFile=<relative path to file>
 ```
 
 ## Example

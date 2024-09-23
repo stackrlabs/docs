@@ -116,6 +116,8 @@ Occurs when an action is picked by the sequencer.
 **Event Arguments:** `SequencerPickActionEventArgs`
 
 - `actionHash`: Hash of the action picked.
+- `blockParentHash`: Hash of the parent block.
+- `blockHeight`: Current block height.
 
 ### `SequencerEvents.ORDER_ACTIONS`
 
@@ -126,6 +128,8 @@ Triggered when actions are ordered by the sequencer.
 - `actionHashes`: List of action hashes ordered.
 - `actionRootHash`: Root hash of the ordered actions.
 - `signature`: Signature verifying the order.
+- `blockParentHash`: Hash of the parent block.
+- `blockHeight`: Current block height.
 
 ### `SequencerEvents.PROPOSE_BLOCK`
 

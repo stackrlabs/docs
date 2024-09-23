@@ -1,12 +1,29 @@
 # Changelog [What's new]
 
+## v0.6.0
+
+#### Breaking changes
+
+> See [upgrade guide](/build/upgrade-guide).
+
+- Completely remove the need for `ActionSchema`. Input schemas are now [defined directly inside the STFs](/build/framework/state-machine/state-transitions#passing-inputs-to-an-stf).
+- Action signatures are now enforced over both STF name and inputs as opposed to inputs only earlier.
+
+#### Bug Fixes
+
+- Fix a bug where if a custom sequencer strategy were to discard actions they would get removed from the action pool. Such discarded actions, if any, are now re-enqueued to the front of the action pool.
+
+#### Improvements
+
+- Add `sdkVersion` field to [`ExternalConfig`](<(/build/framework/config#accessing-config-values)>).
+- Expose [`chainData`](/build/framework/type-definitions##chaindata) in [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy for increased context.
+
 ## v0.5.5
 
 #### Breaking changes
 
-- Completely remove the need for `ActionSchema`. Input schemas are now [defined directly inside the STFs](/build/framework/state-machine/state-transitions#passing-inputs-to-an-stf). See [upgrade guide](/build/upgrade-guide).
-- The [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy now accepts list of actions as a `Readonly<AcknowledgedAction[]>` type
-and is supposed to only return the ordered list of action hashes as opposed to `Action` objects earlier.
+- The [`getOrderedActions`](/build/framework/sequencer#custom-ordering-strategy) method of a sequencer strategy now accepts a list of actions
+  as a `Readonly<AcknowledgedAction[]>` type and is supposed only to return the ordered list of action hashes as opposed to `Action` objects earlier.
 
 #### Bug Fixes
 
@@ -16,11 +33,23 @@ and is supposed to only return the ordered list of action hashes as opposed to `
 
 - Enable [WAL](https://www.sqlite.org/draft/wal.html) for SQLite. This enables better concurrency between readers and writers.
 - Optimized execution time by removing duplicate calculation of state root before and after applying all of the block's actions.
+- Enforce max size on action's payload during submission (~128kb). This limit is also enforced when collecting actions for block building.
 
 #### Other changes
 
 - Bumps dependencies version to address high-security vulnerabilities
 
+## CLI v0.1.6
+
+- Remove the `add hook` command.
+- Perform lint checks in `compile` command before building Wasm. This makes use of [`@stackr/eslint-plugin`](https://github.com/stackrlabs/eslint-stackr), an ESLint plugin with few rules to prevent devs from adding non-deterministic code in transition functions.
+
+## CLI v0.1.5
+
+- The EIP-712 domain for the app is now injected into the `stf.wasm`.
+- Outputs the actual error message if any step in `compile` (or `deploy`) command fails.
+- Fixes reading of leaf-level shorthand property assingments in `stackr.config.ts`.
+- Fixes using the `deploymentFile` property from `stackr.config.ts` for deployment file name if specified (defaults to `deployment.json`).
 
 ## v0.5.4 (and CLI v0.1.4)
 

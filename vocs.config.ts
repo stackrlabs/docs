@@ -369,10 +369,6 @@ export default defineConfig({
             link: "/build/cli/add-bridge",
           },
           {
-            text: "Add Hook",
-            link: "/build/cli/add-hook",
-          },
-          {
             text: "Transfer Ownership",
             link: "/build/cli/transfer-ownership",
           },

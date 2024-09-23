@@ -45,6 +45,10 @@ interface IAction {
 
 This is covered as part of the [Counter Rollup Tutorial](/build/guides/tutorials/counter#interacting-with-the-rollup).
 
+:::note
+An action's payload size should not exceed ~128kb. This limit is enforced to keep batch size well within the means of different DA layer's maximum supported blob size. 
+:::
+
 ## EIP-712 Signing
 
 [EIP-712](https://eips.ethereum.org/EIPS/eip-712) is a standard for signing structured data. It is used to sign actions in this version of Stackr.
