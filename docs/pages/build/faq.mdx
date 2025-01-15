@@ -11,14 +11,14 @@ Read our [Hosting guide](/build/guides/hosting) for more information.
 :::
 
 :::details[Why is it taking so long to get C3A/C3B confirmation on my blocks?]
-If you send in multiple blocks from your Micro-rollup, they will be ordered and rolled-up into a single block on Vulcan. Vulcan is configured to create batches every 6 hours or max blob size of chosen DA which ever comes first.
+If you send in multiple blocks from your Micro-rollup, they will be ordered and rolled-up into a single block on Vulcan. Vulcan is configured to create batches every 6 hours or max blob size of chosen DA whichever comes first.
 Therefore, subsequent blocks will take more time to get C3A/C3B confirmation.
-It takes few minutes roughly how much time it takes to confirm data publication of the batch on a data availability layer.
+It takes a few minutes roughly how much time it takes to confirm data publication of the batch on a data availability layer.
 After this, depending on Sepolia's network congestion, it may take 10-30s to submit the batch to your app's inbox and receive C3B confirmation.
 :::
 
 :::details[Getting `trace trap` when using Bun?]
-If you are getting `trace trap` error when using Bun. This is a known issue with Bun and SQLite, which got introduced in `v1.1.27` of bun. [More details here](https://discord.com/channels/876711213126520882/1282959007589601280/1283307017158791222).
+If you are getting `trace trap` error when using Bun. This is a known issue with Bun and SQLite, which was introduced in `v1.1.27` of bun. [More details here](https://discord.com/channels/876711213126520882/1282959007589601280/1283307017158791222).
 
 They've fixed the issue in `v1.1.28` and you can upgrade by running:
 

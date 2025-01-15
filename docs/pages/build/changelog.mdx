@@ -21,7 +21,7 @@
 
 #### Other changes
 
-- Updates in [CLI](https://www.npmjs.com/package/@stackr/cli) `v0.1.8`, [ESLint Plugin](https://www.npmjs.com/package/@stackr/eslint-plugin) `v0.1.2` and Playground for the above breaking changes. (Use latest for both for compatibility)
+- Updates in [CLI](https://www.npmjs.com/package/@stackr/cli) `v0.1.8`, [ESLint Plugin](https://www.npmjs.com/package/@stackr/eslint-plugin) `v0.1.2` and Playground for the above breaking changes. (Use the latest for both for compatibility)
 
 ## v0.5.5
 
@@ -37,7 +37,7 @@
 #### Improvements
 
 - Enable [WAL](https://www.sqlite.org/draft/wal.html) for SQLite. This enables better concurrency between readers and writers.
-- Optimized execution time by removing duplicate calculation of state root before and after applying all of the block's actions.
+- Optimized execution time by removing duplicate calculations of state root before and after applying all of the block's actions.
 - Enforce max size on action's payload during submission (~128kb). This limit is also enforced when collecting actions for block building.
 
 #### Other changes
@@ -82,7 +82,7 @@
 
 #### Features / Improvements
 
-- Micro-rollups can now be ran in "Sandbox" mode, without registration. The new config changes removes dependencies on `deployment.json` and `stackrApp` fields.
+- Micro-rollups can now be run in "Sandbox" mode, without registration. The new config changes removes dependencies on `deployment.json` and `stackrApp` fields.
 - Expose `emit` in block hooks as well (previously it was available only in STFs). [Learn more](/build/framework/state-machine/block-hooks#custom-execution-logs).
 - Add ability to [unsubscribe](/build/framework/events#unsubscribing-from-events) or [inspect/list active listeners](/build/framework/events/#inspecting-active-subscriptions) to MRU events.
 - Perform C2, C3A and C3B syncs for stale blocks on MRU start-up. This is useful to quickly sync latest states if you re-run the MRU after some downtime.
@@ -108,7 +108,7 @@
 
 #### Breaking Changes
 
-- Blocks are now rolled up into batches by Vulcan every some fixed interval. Therefore, C3A and above confirmation levels are now received on the batch level from Vulcan and L1. [Learn more](/build/framework/batch).
+- Blocks are now rolled up into batches by Vulcan at every some fixed interval. Therefore, C3A and above confirmation levels are now received on the batch level from Vulcan and L1. [Learn more](/build/framework/batch).
 - State Updates are now stored on the Block level and not Action level. In case of a chain revert, the state reverts to the last block having status equal to or higher than `Sequenced`.
 - Renamed `batchSize` and `batchTime` fields in `StackrConfig` to `blockSize` and `blockTime` respectively.
 
@@ -117,7 +117,7 @@
 - Pre and post Block execution hooks. [Learn more](/build/framework/state-machine/block-hooks).
 - Ability to create empty blocks by setting `sequencer.enableEmptyBlocks` to `true` in `StackrConfig`.
 - Add `logs` and `errors` fields to `ActionExecutionStatusEventArgs` interface.
-- Make `syncer.slotTime` an optional field (in `StackrConfig`) having a default value of `max(1000, blockTime)` ms. If provided value is less than `1000` ms, it defaults to `max(1000, blockTime)` ms too.
+- Make `syncer.slotTime` an optional field (in `StackrConfig`) having a default value of `max(1000, blockTime)` ms. If the provided value is less than `1000` ms, it defaults to `max(1000, blockTime)` ms too.
 - Add `C1X` as a new action confirmation level that represents failed execution.
 - [CLI] Use dynamic linking for reduced Wasm binary size.
 
@@ -247,7 +247,7 @@ Full Changelog: [v0.1.7...v0.2.0](https://github.com/stackrlabs/go-daash/compar
 
 #### Fixes
 
-1. [SDK] Fix duplication batch submission to Vulcan incase of high response times.
+1. [SDK] Fix duplication batch submission to Vulcan in case of high response times.
 2. [CLI] Sanitise URLs and payload before sending deployment requests to Parent Chain and Vulcan.
 3. [CLI] Handle Registration with `falsy` Genesis states.
 4. [SDK] Initialisation of Parent Chain listeners in `sandbox` Mode. [Lazy Initialisation]
